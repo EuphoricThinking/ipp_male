@@ -11,6 +11,18 @@ List* initNode(unsigned long long val) {
 	return l;
 }
 
+void deleteNode(List* l) {
+	l->next = NULL;
+	free(l);
+}
+
+void deleteNodesAll(List* l) {
+	if (l) {
+		deleteNodesAll(l->next);
+		deleteNode(l);
+	}
+}
+
 Queue* initQueue() {
 	Queue* q = malloc(sizeof(Queue));
 
@@ -36,4 +48,23 @@ void push(Queue* q, unsigned long long to_insert) {
 
 unsigned long long top(Queue* q) {
 	return q->first->val;
+}
+
+unsigned long long pop(Queue* q) {
+	int to_return = q->first->val;
+	List* second = q->first->next;
+	deleteNode(q->first);
+	q->first = second;
+	q->num_elements--;
+
+	return to_return;
+}
+
+void deleteQueue(Queue* q) {
+	deleteNodesAll(q->first);
+	free(q);
+}
+
+bool isEmpty(Queue* q) {
+	return q->num_elements == 0;
 }
