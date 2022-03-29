@@ -9,12 +9,19 @@ typedef struct List {
 typedef struct Queue {
 	List* first;
 	List* last;
-} queue;
 
-void push(unsigned long long val);
+	int num_elements;
+} Queue;
 
-unsigned long long top();
+extern void push(unsigned long long val, Queue* q);
 
-unsigned long long pop();
+extern unsigned long long top(Queue* q);
 
+extern unsigned long long pop(Queue* q);
+
+extern void deleteQueue(Queue* q);
+
+extern Queue* initQueue();
+
+extern isEmpty(Queue* q);
 #endif /* QUEUE_H */
