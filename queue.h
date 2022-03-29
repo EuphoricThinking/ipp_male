@@ -1,9 +1,10 @@
 #ifndef QUEUE_H
 #define QUEUE_H
+#include <stdbool.h>
 
 typedef struct List {
 	unsigned long long val;
-	List* next;
+	struct List* next;
 } List;
 
 typedef struct Queue {
@@ -13,7 +14,7 @@ typedef struct Queue {
 	int num_elements;
 } Queue;
 
-extern void push(unsigned long long val, Queue* q);
+extern void push(Queue* q, unsigned long long val);
 
 extern unsigned long long top(Queue* q);
 
@@ -23,5 +24,5 @@ extern void deleteQueue(Queue* q);
 
 extern Queue* initQueue();
 
-extern isEmpty(Queue* q);
+extern bool isEmpty(Queue* q);
 #endif /* QUEUE_H */
