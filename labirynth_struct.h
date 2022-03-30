@@ -1,5 +1,6 @@
 #ifndef LABIRYNTH_STRUCT_H
 #define LABIRYNTH_STRUCT_H
+#include <stddef.h>
 
 typedef struct Cube {
 	size_t* coordinates;

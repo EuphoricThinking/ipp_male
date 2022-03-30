@@ -10,4 +10,5 @@ const int ERR_4 = 5;
 const int ERR_5 = 6;
 
 extern void print_error(const int error_label);
+
 #endif
