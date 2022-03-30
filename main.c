@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "queue.h"
+#include "input_utils.h"
 
 int main() {
 	Queue* q = initQueue();
