@@ -7,6 +7,7 @@ typedef struct Cube {
 } Cube;
 
 typedef struct Labirynth {
+	unsigned long long labirynth_size;
 	size_t num_dimensions;
 	size_t* dimension_sizes;
 	size_t* start_coordinates;
