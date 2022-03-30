@@ -4,4 +4,6 @@
 
 Labirynth read_input();
 
+void free_input(Labirynth* l);
+
 #endif
