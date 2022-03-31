@@ -5,8 +5,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define DIV_64(x) (x >> 6)
-#define MOD_64(x) (x & (((uint64_t)1 << 6) - 1))
+#define DIV_64(x) ((x) >> 6)
+#define MOD_64(x) ((x) & (((uint64_t)1 << 6) - 1))
 
 typedef struct Cube {
 	size_t* coordinates;
