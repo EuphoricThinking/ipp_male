@@ -9,8 +9,9 @@
 #define E_VAL 14ULL
 #define F_VAL 15ULL
 
-#define BIAS 63ULL
-
+#define BIAS 		63ULL
+#define NUM_4_BIT_CELLS 16ULL
+#define HEX_CELL	4ULL
 unsigned long long return_hex_val(char sign) {
 	if (sign == 'A' || sign == 'a') return A_VAL;
 	else if (sign == 'B' || sign == 'b') return B_VAL;
@@ -36,7 +37,15 @@ Bitmap* create_bitmap(size_t length) {
 	return result;
 }
 
-Bitmap* convert_to_hex_bitmap(const char* hex, size_t length);
+Bitmap* convert_to_hex_bitmap(const char* hex, size_t length) {
+	Bitmap* converted = create_bitmap(length);
+
+	for (uint64_t cell = 0; cell < converted->length; cell++) {
+		uint64_t shift = 1;
+
+		for (uint64_5 i = 0; i < NUM_4_BIT_CELLS; i++) {
+		
+}
 
 
 
