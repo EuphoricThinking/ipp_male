@@ -120,8 +120,9 @@ void set_bit(Bitmap* bit_array, uint64_t index) {
 }
 
 bool is_empty_cell(Bitmap* bit_array, uint64_t index) {
-	if (((bit_array->array[DIV_64(index)] >> MOD_64(index)) & (uint64_t)1) == 0) return false;
-	return true;
+//	if (((bit_array->array[DIV_64(index)] >> MOD_64(index)) & (uint64_t)1) == 0) return false;
+//	return true;
+	return !(((bit_array->array[DIV_64(index)] >> MOD_64(index)) & (uint64_t)1) == 0);
 }
 
 void delete_bitmap(Bitmap* bit_array) {
@@ -130,7 +131,7 @@ void delete_bitmap(Bitmap* bit_array) {
 }
 
 bool check_correct(char c) {
-	if (!isdigit(r_number)) return false;
+	if (!isdigit(c)) return false;
 //	if (r_number << 32 & (((uint64_t)1 << 63) - 1) != 0) return false;
 	return true;
 }
@@ -147,11 +148,14 @@ Bitmap* convert_r_to_bitmap(const char* r, size_t r_length) {
 	uint32_t converted;
 	while (r[r_index] != 'R') {
 		while (isspace(r[r_index])) r_index--;
+
 		if ((r[r_index] == 'R' && counter != -1)
-			|| !check_correct(r[r_index])) {
+			//|| !check_correct(r[r_index])) {
+			|| !isdigit(r[r_index])) {
 			print_error(ERR_4);
 			exit(1);
 		}
+		if (r[r_index] == 'R') break;
 
 		converted = (uint32_t)stoul(r[r_index]);
 		coefficients[counter--] = converted;
