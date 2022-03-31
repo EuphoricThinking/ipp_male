@@ -131,14 +131,14 @@ void delete_bitmap(Bitmap* bit_array) {
 	free(bit_array);
 }
 
-bool check_correct(char c) {
-	if (!isdigit(c)) return false;
+bool check_correct(char* number) {
+//	if (!isdigit(c)) return false;
 //	if (r_number << 32 & (((uint64_t)1 << 63) - 1) != 0) return false;
+	while (!isspace(*number)) {}
 	return true;
 }
 
-Bitmap* convert_r_to_bitmap(const char* r, size_t r_length) {
-	uint64_t r_index = 0;
+Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labirynth_length) {
 	uint32_t coefficients[NUM_COEFF];
 	int counter = 0;
 	uint32_t converted;
@@ -148,7 +148,6 @@ Bitmap* convert_r_to_bitmap(const char* r, size_t r_length) {
 		r_length--;
 	}
 
-	char* next_substring;
 	while (counter < NUM_COEFF && r_length > 0) {
 		while (isspace(*r) && r_length > 0) {
 			r++;
@@ -177,6 +176,25 @@ Bitmap* convert_r_to_bitmap(const char* r, size_t r_length) {
 			exit(1);
 		}
 	}
+
+	Bitmap* modulo;
+	if (r_length < labirynth_length) {
+		modulo = create_bitmap(r_length);
+	}
+	else {
+		modulo = create_bitmap(labirynth_length);
+	}
+
+	uint32_t s_i = coefficients[S_POS];
+    uint32_t w_i;
+    for (uint32_t i = 0; i < coefficients[R_POS]; i++) {
+        s_i = (coefficients[A_POS]*s_i + coefficients[B_POS])
+                %coefficients[M_POS];
+        w_i = s_i%labirynth_length;
+        set_bit(modulo, (uint64_t)w_i);
+    }
+
+    return modulo;
 }
 
 

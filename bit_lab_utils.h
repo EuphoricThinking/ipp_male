@@ -32,7 +32,7 @@ typedef struct Labirynth {
 
 extern Bitmap* convert_hex_to_bitmap(const char* hex, size_t hex_length, size_t labirynth_size);
 
-extern Bitmap* convert_r_to_bitmap(const char* r, size_t r_length);
+extern Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labirynth_length);
 
 extern void set_bit(Bitmap* bit_array, uint64_t index);
 
