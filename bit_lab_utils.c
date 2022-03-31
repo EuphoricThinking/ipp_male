@@ -17,6 +17,12 @@
 #define NUM_4_BIT_SUBCELLS 16
 #define HEX_CELL	(uint64_t)4
 
+#define A_POS 0
+#define B_POS 1
+#define M_POS 2
+#define R_POS 3
+#define S_POS 4
+
 uint64_t return_hex_val(char sign) {
 	if (sign == 'A' || sign == 'a') return A_VAL;
 	else if (sign == 'B' || sign == 'b') return B_VAL;
@@ -69,7 +75,7 @@ Bitmap* convert_to_hex_bitmap(const char* hex, size_t hex_length, size_t labiryn
 		shift = 0;
 		bit_quartet = 0;
 		while (bit_quartet < NUM_4_BIT_SUBCELLS) {
-			while (isspace(hex[hex_index]) == 0) hex_index--;
+			while (isspace(hex[hex_index])) hex_index--;
 			if (hex[hex_index] == 'x') break;
 
 			hex_converted = return_hex_val(hex[hex_index--]);
@@ -91,7 +97,7 @@ Bitmap* convert_to_hex_bitmap(const char* hex, size_t hex_length, size_t labiryn
 	if (cell == converted->length) {
 		bool not_finished = true;
 		while (not_finished) {
-			while (isspace(hex[hex_index]) == 0) hex_index--;
+			while (isspace(hex[hex_index])) hex_index--;
 
 			if (hex[hex_index] == 'x') {
 				not_finished = false;
@@ -122,6 +128,40 @@ void delete_bitmap(Bitmap* bit_array) {
 	free(bit_array->array);
 	free(bit_array);
 }
+
+bool check_correct(char c) {
+	if (!isdigit(r_number)) return false;
+//	if (r_number << 32 & (((uint64_t)1 << 63) - 1) != 0) return false;
+	return true;
+}
+
+Bitmap* convert_r_to_bitmap(const char* r, size_t r_length) {
+	uint64_t r_index = r_length - 1;
+	if (r[r_index] == 'R') {
+		print_error(ERR_4);
+		exit(1);
+	}
+
+	uint32_t coefficients[5];
+	int counter = 4;
+	uint32_t converted;
+	while (r[r_index] != 'R') {
+		while (isspace(r[r_index])) r_index--;
+		if ((r[r_index] == 'R' && counter != -1)
+			|| !check_correct(r[r_index])) {
+			print_error(ERR_4);
+			exit(1);
+		}
+
+		converted = (uint32_t)stoul(r[r_index]);
+		coefficients[counter--] = converted;
+		}
+	}
+
+
+
+
+
 
 
 
