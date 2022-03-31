@@ -6,11 +6,25 @@
 #include <ctype.h>
 
 #define BASE 10
+bool has_only_whitespace(char* read, size_t length) {
+    for (size_t i = 0; i < length; i++) {
+        if (!isspace(read[i])) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 bool check_if_correct(char* read, size_t length) {
-        for (int i = 0; i < length; i++) {
-                if (!isdigit(read[i]) || !isspace(read[i])) {
+        for (size_t i = 0; i < length; i++) {
+                if (!isdigit(read[i]) && !isspace(read[i])) {
                     return false;
                 }
+        }
+
+        if (has_only_whitespace(read, length)) {
+            return false;
         }
 
         return true;
@@ -44,7 +58,7 @@ Arr_len* convert_to_size_t(char* read_input, size_t max_length) {
 
     while (next_string != NULL && (*next_string == '\n'
         || *next_string == '\0')) {
-        converted = (size_t)strtoull(to_pass, next_string, BASE);
+        converted = (size_t)strtoull(to_pass, &next_string, BASE);
         if (converted ==
         0) {
             return NULL;
