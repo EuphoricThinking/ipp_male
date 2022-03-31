@@ -26,6 +26,7 @@ Bitmap* create_bitmap(size_t length) {
 //	uint64_t* bit_array = malloc(sizeof(uint64_t)*DIV_64(length));
 	size_t cell_number = DIV_64(length + BIAS);
 	uint64_t* bit_array = malloc(sizeof(uint64_t)*(cell_number));  //roundup
+
 	for (uint64_t i = 0; i < length; i++) {
 		bit_array[i] = (uint64_t)0;
 	}
@@ -40,9 +41,10 @@ Bitmap* create_bitmap(size_t length) {
 Bitmap* convert_to_hex_bitmap(const char* hex, size_t length) {
 	Bitmap* converted = create_bitmap(length);
 
-	uint64_t cell = 0;
-	for (uint64_t letter = length - 1; letter != 0; --letter) {
-
+	uint64_t hex_index = 0;
+	uint64_t hex_converted;
+	for (uint64_t cell = 0; cell < length; cell++) {
+		for (uint64_t bit_quartet
 	}
 }
 
