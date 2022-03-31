@@ -22,7 +22,8 @@
 #define M_POS 2
 #define R_POS 3
 #define S_POS 4
-
+#define NUM_COEFF 5
+#define R_BASE 10
 uint64_t return_hex_val(char sign) {
 	if (sign == 'A' || sign == 'a') return A_VAL;
 	else if (sign == 'B' || sign == 'b') return B_VAL;
@@ -119,10 +120,10 @@ void set_bit(Bitmap* bit_array, uint64_t index) {
 	bit_array->array[DIV_64(index)] |= ((uint64_t)1 << (index - 1));
 }
 
-bool is_empty_cell(Bitmap* bit_array, uint64_t index) {
+bool is_filled_cell(Bitmap* bit_array, uint64_t index) {
 //	if (((bit_array->array[DIV_64(index)] >> MOD_64(index)) & (uint64_t)1) == 0) return false;
 //	return true;
-	return !(((bit_array->array[DIV_64(index)] >> MOD_64(index)) & (uint64_t)1) == 0);
+	return (bit_array->array[DIV_64(index)] >> MOD_64(index)) & (uint64_t)1;
 }
 
 void delete_bitmap(Bitmap* bit_array) {
@@ -137,33 +138,46 @@ bool check_correct(char c) {
 }
 
 Bitmap* convert_r_to_bitmap(const char* r, size_t r_length) {
-	uint64_t r_index = r_length - 1;
-	if (r[r_index] == 'R') {
-		print_error(ERR_4);
-		exit(1);
+	uint64_t r_index = 0;
+	uint32_t coefficients[NUM_COEFF];
+	int counter = 0;
+	uint32_t converted;
+
+	while (*r != 'R' && r_length > 0) {
+		r++;
+		r_length--;
 	}
 
-	uint32_t coefficients[5];
-	int counter = 4;
-	uint32_t converted;
-	while (r[r_index] != 'R') {
-		while (isspace(r[r_index])) r_index--;
+	char* next_substring;
+	while (counter < NUM_COEFF && r_length > 0) {
+		while (isspace(*r) && r_length > 0) {
+			r++;
+			r_length--;
+		}
 
-		if ((r[r_index] == 'R' && counter != -1)
-			//|| !check_correct(r[r_index])) {
-			|| !isdigit(r[r_index])) {
+		if (r_length <= 0 || !isdigit(*r)) { //za mało
 			print_error(ERR_4);
 			exit(1);
 		}
-		if (r[r_index] == 'R') break;
 
-		converted = (uint32_t)stoul(r[r_index]);
-		coefficients[counter--] = converted;
-		}
+		converted = (uint32_t)atol(r);
+		coefficients[counter++] = converted;
+
+		while (isdigit(*r) && r_length > 0) r++;
 	}
 
+	if (counter == NUM_COEFF && r_length > 0) {
+		while (isspace(*r) && r_length > 0) {
+			r++;
+			r_length--;
+		}
 
-
+		if (r_length > 0) { //jakikolwiek niepusty znak | za dużo
+			print_error(ERR_4);
+			exit(1);
+		}
+	}
+}
 
 
 
