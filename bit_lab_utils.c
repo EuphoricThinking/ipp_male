@@ -96,7 +96,7 @@ Bitmap* convert_to_hex_bitmap(const char* hex, size_t hex_length, size_t labiryn
 			not_finished = false;
 		}
 		else if (hex[hex_index] != '0') {
-			print_error(ERR_0);
+			print_error(ERR_4);
 			delete_bitmap(converted);
 			exit(1);
 		}
