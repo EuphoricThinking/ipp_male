@@ -10,7 +10,7 @@
 #define F_VAL (uint64_t)15
 
 #define BIAS 		(uint64_t)63U
-#define NUM_4_BIT_CELLS (uint64_t)16
+#define NUM_4_BIT_SUBCELLS (uint64_t)16
 #define HEX_CELL	(uint64_t)4
 uint64_t return_hex_val(char sign) {
 	if (sign == 'A' || sign == 'a') return A_VAL;
@@ -44,7 +44,12 @@ Bitmap* convert_to_hex_bitmap(const char* hex, size_t length) {
 	uint64_t hex_index = 0;
 	uint64_t hex_converted;
 	for (uint64_t cell = 0; cell < length; cell++) {
-		for (uint64_t bit_quartet
+		uint64_t shift = 0;
+		for (uint64_t bit_quartet = 0; bit_quartet < NUM_4_BIT_SUBCELLS; bit_quartet++) {
+			hex_converted = return_hex_val(hex[hex_index++]);
+			converted->array[cell] |= (hex_converted << shift);
+			shift += 4;
+		}
 	}
 }
 
