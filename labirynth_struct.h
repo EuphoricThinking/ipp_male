@@ -1,11 +1,21 @@
 #ifndef LABIRYNTH_STRUCT_H
 #define LABIRYNTH_STRUCT_H
+
 #include <stddef.h>
+#include <stdint.h>
+
+#define DIV_64(x) (x >> 6)
+#define MOD_64(x) (x & ((1L << 6) - 1))
 
 typedef struct Cube {
 	size_t* coordinates;
 	size_t num_dimension;
 } Cube;
+
+typedef struct Bitmap {
+        unsigned long long size;
+        uint64_t* array;
+} Bitmap;
 
 typedef struct Labirynth {
 	unsigned long long labirynth_size;
@@ -13,15 +23,10 @@ typedef struct Labirynth {
 	size_t* dimension_sizes;
 	size_t* start_coordinates;
 	size_t* end_coordinates;
+
+	int mode;
+	struct Bitmap bit_array;
 } Labirynth;
-
-typedef struct Index_availability {
-	unsigned int is_available: 1;
-} Index_availability;
-
-typedef struct Availability_array {
-	struct Index_availability* available_indexes;
-} Availability_array;
 
 #endif
 
