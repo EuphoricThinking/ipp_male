@@ -53,22 +53,22 @@ Arr_len* convert_to_size_t(char* read_input, size_t max_length) {
     if (!number_array) {return NULL;}
     size_t index = 0;
     char* to_pass = read_input;
-    char* next_string = NULL;
+    char* next_string;
     size_t converted;
 
-    while (next_string != NULL && (*next_string == '\n'
-        || *next_string == '\0')) {
-        converted = (size_t)strtoull(to_pass, &next_string, BASE);
-        if (converted ==
-        0) {
-            return NULL;
-        }
+    converted = (size_t) strtoull(to_pass, &next_string, BASE);
+    while (converted > 0) {
         to_pass = next_string;
         number_array[index++] = converted;
+        converted = (size_t) strtoull(to_pass, &next_string, BASE);
     }
 
     Arr_len* res = create_Arr_len(number_array, index);
     return res;
+}
+
+Arr_len* determine_mode(char* read, size_t read_length) {
+    while
 }
 Labirynth read_input() {
 	char* dimension_sizes = NULL;
