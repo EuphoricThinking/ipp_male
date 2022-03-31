@@ -43,12 +43,16 @@ Bitmap* convert_to_hex_bitmap(const char* hex, size_t length) {
 
 	uint64_t hex_index = 0;
 	uint64_t hex_converted;
-	for (uint64_t cell = 0; cell < length; cell++) {
-		uint64_t shift = 0;
-		for (uint64_t bit_quartet = 0; bit_quartet < NUM_4_BIT_SUBCELLS; bit_quartet++) {
+	uint64_t shift;
+	int bit_quartet;
+	for (uint64_t cell = 0; cell < convertd->length; cell++) {
+		shift = 0;
+		bit_quartet = 0;
+		while (bit_quartet < NUM_4_BIT_SUBCELLS && hex_index < length) {
 			hex_converted = return_hex_val(hex[hex_index++]);
 			converted->array[cell] |= (hex_converted << shift);
 			shift += 4;
+			bit_quartet++;
 		}
 	}
 }
