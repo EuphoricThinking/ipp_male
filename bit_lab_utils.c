@@ -2,21 +2,21 @@
 #include <string.h>
 
 
-#define A_VAL 10
-#define B_VAL 11
-#define C_VAL 12
-#define D_VAL 13
-#define E_VAL 14
-#define F_VAL 15
+#define A_VAL 10ULL
+#define B_VAL 11ULL
+#define C_VAL 12ULL
+#define D_VAL 13ULL
+#define E_VAL 14ULL
+#define F_VAL 15ULL
 
-int return_hex_val(char sign) {
+unsigned long long return_hex_val(char sign) {
 	if (sign == 'A' || sign == 'a') return A_VAL;
 	else if (sign == 'B' || sign == 'b') return B_VAL;
 	else if (sign == 'C' || sign == 'c') return C_VAL;
 	else if (sign == 'D' || sign == 'd') return D_VAL;
 	else if (sign == 'E' || sign == 'e') return E_VAL;
 	else if (sign == 'F' || sign == 'f') return F_VAL;
-	else return sign - '0';
+	else return (unsigned long long)(sign - '0');
 }
 
 Bitmap* create_bitmap(size_t length) {
