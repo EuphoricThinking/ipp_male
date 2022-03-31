@@ -54,9 +54,14 @@ void set_bit(Bitmap* bit_array, uint64_t index) {
 	bit_array->array[DIV_64(index)] |= ((uint64_t)1 << (index - 1));
 }
 
-bool isEmptyCell(Bitmap* bit_array, unsigned long long index) {
+bool is_empty_cell(Bitmap* bit_array, unsigned long long index) {
 	if (((bit_array->array[DIV_64(index)] >> MOD_64(index)) & (uint64_t)1) == 0) return false;
 	return true;
+}
+
+void delete_bitmap(Bitmap* bit_array) {
+	free(bit_array->array);
+	free(bit_array);
 }
 
 

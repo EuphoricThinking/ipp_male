@@ -35,7 +35,9 @@ extern void set_bit(Bitmap* bit_array, uint64_t index);
 
 extern Bitmap* create_bitmap(size_t length);
 
-extern bool isEmptyCell(Bitmap* bit_array, unsigned long long index);
+extern bool is_empty_cell(Bitmap* bit_array, unsigned long long index);
+
+extern void delete_bitmap(Bitmap* bit_array);
 #endif
 
 
