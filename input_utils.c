@@ -30,25 +30,8 @@ bool check_if_correct(char* read, size_t length) {
         return true;
 }
 
-typedef struct Arr_len {
-        size_t* arr;
-        size_t len;
-} Arr_len;
 
-Arr_len* create_Arr_len(size_t* arr, size_t len) {
-    Arr_len* res = malloc(sizeof(Arr_len));
-
-    res->arr = arr;
-    res->len = len;
-    return res;
-}
-
-void delete_Arr_len(Arr_len* pair) {
-        free(pair->arr);
-        free(pair);
-}
-
-Arr_len* convert_to_size_t(char* read_input, size_t max_length) {
+size_t* convert_to_size_t(char* read_input, size_t max_length) {
     size_t* number_array = malloc(sizeof(size_t)*max_length);
     if (!number_array) {return NULL;}
     size_t index = 0;
@@ -63,13 +46,18 @@ Arr_len* convert_to_size_t(char* read_input, size_t max_length) {
         converted = (size_t) strtoull(to_pass, &next_string, BASE);
     }
 
-    Arr_len* res = create_Arr_len(number_array, index);
-    return res;
+    return number_array;
 }
 
-Arr_len* determine_mode(char* read, size_t read_length) {
-    while
+char* determine_mode(char* read, size_t read_length) {
+    while (*read != 'R' && (*read != '0' && *read != 'x') && read_length > 0) {
+        read++;
+        read_length--;
+    }
+
+    if (read_length == 0) return NULL;
 }
+
 Labirynth read_input() {
 	char* dimension_sizes = NULL;
 	size_t read_width;
@@ -100,7 +88,7 @@ Labirynth read_input() {
         print_error(ERR_1);
         exit(1);
     }
-
+    
 	Labirynth l;
 	return l;
 }
