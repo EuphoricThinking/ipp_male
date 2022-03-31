@@ -71,7 +71,8 @@ Labirynth read_input() {
     }
 
     size_t num_dimensions;
-    size_t* dimensions_sizes = convert_to_size_t(workline, read_width, &num_dimensions);
+    size_t* dimensions_sizes = convert_to_size_t(workline,
+                     read_width, &num_dimensions);
     if (dimensions_sizes == NULL) {
         free(workline);
         print_error(ERR_0);
@@ -86,7 +87,8 @@ Labirynth read_input() {
         exit(1);
     }
     size_t read_numbers;
-    size_t* start_coordinates = convert_to_size_t(workline, read_width, &read_numbers);
+    size_t* start_coordinates = convert_to_size_t(workline,
+                          read_width, &read_numbers);
     if (start_coordinates == NULL) {
         free(workline);
         free(dimensions_sizes);
@@ -104,18 +106,21 @@ Labirynth read_input() {
         exit(1);
     }
 
-    size_t* end_coordinates = convert_to_size_t(workline, read_width, &read_numbers);
-    if (end_coordinates == NULL) {
+    size_t* end_coordinates = convert_to_size_t(workline,
+                                    read_width, &read_numbers);
+    if (end_coordinates == NULL || read_numbers != num_dimensions) {
         free(workline);
         free(dimensions_sizes);
         free(start_coordinates);
-        print_error(ERR_0);
+        if (read_numbers != num_dimensions) {
+            print_error(ERR_3);
+        }
+        else {
+            print_error(ERR_0);
+        }
         exit(1);
     }
 
-    if (read_numbers != num_dimensions) {
-
-    }
 	Labirynth l;
 	return l;
 }
