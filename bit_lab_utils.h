@@ -30,7 +30,7 @@ typedef struct Labirynth {
 
 extern Bitmap* convert_hex_to_bitmap(const char* hex, size_t lenght);
 
-extern void set_bit(Bitmap* bit_array);
+extern void set_bit(Bitmap* bit_array, unsigned long long index);
 
 extern Bitmap* create_bitmap(size_t length);
 #endif
