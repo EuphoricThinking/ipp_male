@@ -48,13 +48,12 @@ Bitmap* convert_to_hex_bitmap(const char* hex, size_t length) {
 
 
 
-void set_bit(Bitmap* bit_array, unsigned long long index) {
-	bit_array[DIV_64(index)] |= (1ULL << (index - 1));
+void set_bit(Bitmap* bit_array, uint64_t index) {
+	bit_array->array[DIV_64(index)] |= ((uint64_t)1 << (index - 1));
 }
 
 bool isEmptyCell(Bitmap* bit_array, unsigned long long index) {
-//	if (bitarray[DIV_64(index)] & (1ULL << MOD_64(index))] == 0) return false;
-	if (((bitarray[DIV_64(index)] >> MOD_64(index)) & (uint64_t)1) == 0) return false;
+	if (((bit_array->array[DIV_64(index)] >> MOD_64(index)) & (uint64_t)1) == 0) return false;
 	return true;
 }
 
