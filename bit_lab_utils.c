@@ -41,15 +41,15 @@ Bitmap* create_bitmap(size_t length) {
 Bitmap* convert_to_hex_bitmap(const char* hex, size_t length) {
 	Bitmap* converted = create_bitmap(length);
 
-	uint64_t hex_index = 0;
+	int64_t hex_index = length - 1;
 	uint64_t hex_converted;
 	uint64_t shift;
 	int bit_quartet;
 	for (uint64_t cell = 0; cell < convertd->length; cell++) {
 		shift = 0;
 		bit_quartet = 0;
-		while (bit_quartet < NUM_4_BIT_SUBCELLS && hex_index < length) {
-			hex_converted = return_hex_val(hex[hex_index++]);
+		while (bit_quartet < NUM_4_BIT_SUBCELLS && hex_index >= 0) {
+			hex_converted = return_hex_val(hex[hex_index--]);
 			converted->array[cell] |= (hex_converted << shift);
 			shift += 4;
 			bit_quartet++;
