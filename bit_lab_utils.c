@@ -1,6 +1,7 @@
 #include "bit_lab_utils.h"
 #include <string.h>
 
+
 #define A_VAL 10
 #define B_VAL 11
 #define C_VAL 12
@@ -16,6 +17,16 @@ int return_hex_val(char sign) {
 	else if (sign == 'E' || sign == 'e') return E_VAL;
 	else if (sign == 'F' || sign == 'f') return F_VAL;
 	else return sign - '0';
+}
+
+Bitmap* create_bitmap(size_t length) {
+	uint64_t* bit_array = malloc(sizeof(uint64_t)*DIV_64(length));
+
+	Bitmap* result = malloc(sizeof(Bitmap));
+	result->size = length;
+	result->array = bit_array;
+
+	return result;
 }
 
 Bitmap* convert_to_hex_bitmap(const char* hex, size_t length);
