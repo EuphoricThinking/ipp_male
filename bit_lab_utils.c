@@ -14,8 +14,9 @@
 #define HEX_ERROR 	(uint64_t)17
 
 #define BIAS 		(uint64_t)63U
-#define NUM_4_BIT_SUBCELLS (uint64_t)16
+#define NUM_4_BIT_SUBCELLS 16
 #define HEX_CELL	(uint64_t)4
+
 uint64_t return_hex_val(char sign) {
 	if (sign == 'A' || sign == 'a') return A_VAL;
 	else if (sign == 'B' || sign == 'b') return B_VAL;
@@ -90,15 +91,16 @@ Bitmap* convert_to_hex_bitmap(const char* hex, size_t hex_length, size_t labiryn
 	if (cell == converted->length) {
 		bool not_finished = true;
 		while (not_finished) {
-			while (isspace(hex[hex_index])) hex_index--;
+			while (isspace(hex[hex_index]) == 0) hex_index--;
 
-		if (hex[hex_index] == 'x') {
-			not_finished = false;
-		}
-		else if (hex[hex_index] != '0') {
-			print_error(ERR_4);
-			delete_bitmap(converted);
-			exit(1);
+			if (hex[hex_index] == 'x') {
+				not_finished = false;
+			}
+			else if (hex[hex_index] != '0') {
+				print_error(ERR_4);
+				delete_bitmap(converted);
+				exit(1);
+			}
 		}
 	}
 
@@ -111,7 +113,7 @@ void set_bit(Bitmap* bit_array, uint64_t index) {
 	bit_array->array[DIV_64(index)] |= ((uint64_t)1 << (index - 1));
 }
 
-bool is_empty_cell(Bitmap* bit_array, unsigned long long index) {
+bool is_empty_cell(Bitmap* bit_array, uint64_t index) {
 	if (((bit_array->array[DIV_64(index)] >> MOD_64(index)) & (uint64_t)1) == 0) return false;
 	return true;
 }
