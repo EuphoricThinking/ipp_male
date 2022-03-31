@@ -9,6 +9,8 @@
 #define E_VAL 14ULL
 #define F_VAL 15ULL
 
+#define BIAS 63ULL
+
 unsigned long long return_hex_val(char sign) {
 	if (sign == 'A' || sign == 'a') return A_VAL;
 	else if (sign == 'B' || sign == 'b') return B_VAL;
@@ -20,10 +22,15 @@ unsigned long long return_hex_val(char sign) {
 }
 
 Bitmap* create_bitmap(size_t length) {
-	uint64_t* bit_array = malloc(sizeof(uint64_t)*DIV_64(length));
+//	uint64_t* bit_array = malloc(sizeof(uint64_t)*DIV_64(length));
+	size_t cell_number = DIV_64(length + BIAS);
+	uint64_t bit_array = malloc(sizeof(uint64_t)*(cell_number);  //roundup
+	for (uint64_t i = 0; i < length; i++) {
+		bit_array[i] = (uint64_t)0;
+	}
 
 	Bitmap* result = malloc(sizeof(Bitmap));
-	result->size = length;
+	result->length = cell_number;
 	result->array = bit_array;
 
 	return result;

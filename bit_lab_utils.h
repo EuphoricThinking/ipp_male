@@ -14,7 +14,7 @@ typedef struct Cube {
 } Cube;
 
 typedef struct Bitmap {
-        unsigned long long size;
+        unsigned long long length;
         uint64_t* array;
 } Bitmap;
 
