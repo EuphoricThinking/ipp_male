@@ -29,7 +29,7 @@ typedef struct Labirynth {
 	struct Bitmap bit_array;
 } Labirynth;
 
-extern Bitmap* convert_hex_to_bitmap(const char* hex, size_t lenght);
+extern Bitmap* convert_hex_to_bitmap(const char* hex, size_t length);
 
 extern void set_bit(Bitmap* bit_array, uint64_t index);
 

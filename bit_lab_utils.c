@@ -1,6 +1,7 @@
 #include "bit_lab_utils.h"
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #define A_VAL (uint64_t)10
 #define B_VAL (uint64_t)11
@@ -38,23 +39,40 @@ Bitmap* create_bitmap(size_t length) {
 	return result;
 }
 
-Bitmap* convert_to_hex_bitmap(const char* hex, size_t length) {
-	Bitmap* converted = create_bitmap(length);
+/*
+	Hex index nie będzie ujemne, ponieważ zatrzymamy się na 'x';
+	od końca przechodzi hex_index, od początku przechodzi array
 
-	uint64_t hex_index = 0;
+	Sprawdź, czy liczba nie jest za długa
+*/
+Bitmap* convert_to_hex_bitmap(const char* hex, size_t hex_length, size_t labirynth_size) {
+	Bitmap* converted = create_bitmap(labirynth_size);
+
+	uint64_t hex_index = hex_length - 1;
 	uint64_t hex_converted;
 	uint64_t shift;
 	int bit_quartet;
-	for (uint64_t cell = 0; cell < converted->length; cell++) {
+	uint64_t cell = 0;
+	while (cell < converted->length && hex[hex_index] != 'x') {
 		shift = 0;
 		bit_quartet = 0;
-		while (bit_quartet < NUM_4_BIT_SUBCELLS && hex_index < length) {
-			hex_converted = return_hex_val(hex[hex_index++]);
+		while (bit_quartet < NUM_4_BIT_SUBCELLS && hex[hex_index] != 'x') {
+			while (isspace(hex[hex_index]) == 0) hex_index--;
+			if (hex[hex_index] == 'x') break;
+
+			hex_converted = return_hex_val(hex[hex_index--]);
 			converted->array[cell] |= (hex_converted << shift);
 			shift += 4;
 			bit_quartet++;
 		}
+
+		if (hex[hex_index] != 'x') cell++;
+		else break;
 	}
+
+	if (cell == converted->length) {
+		while (
+	return converted;
 }
 
 
