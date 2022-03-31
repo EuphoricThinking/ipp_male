@@ -28,6 +28,11 @@ typedef struct Labirynth {
 	struct Bitmap bit_array;
 } Labirynth;
 
+extern Bitmap* convert_hex_to_bitmap(const char* hex, size_t lenght);
+
+extern void set_bit(Bitmap* bit_array);
+
+extern Bitmap* create_bitmap(size_t length);
 #endif
 
 
