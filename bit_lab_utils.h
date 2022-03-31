@@ -3,9 +3,10 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 #define DIV_64(x) (x >> 6)
-#define MOD_64(x) (x & ((1L << 6) - 1))
+#define MOD_64(x) (x & (((uint64_t)1 << 6) - 1))
 
 typedef struct Cube {
 	size_t* coordinates;
@@ -33,6 +34,8 @@ extern Bitmap* convert_hex_to_bitmap(const char* hex, size_t lenght);
 extern void set_bit(Bitmap* bit_array, unsigned long long index);
 
 extern Bitmap* create_bitmap(size_t length);
+
+extern bool isEmptyCell(Bitmap* bit_array, unsigned long long index);
 #endif
 
 

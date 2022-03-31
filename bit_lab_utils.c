@@ -38,7 +38,8 @@ void set_bit(Bitmap* bit_array, unsigned long long index) {
 }
 
 bool isEmptyCell(Bitmap* bit_array, unsigned long long index) {
-	if (bitarray[DIV_64(index)] & (1ULL << MOD_64(index))] == 0) return false;
+//	if (bitarray[DIV_64(index)] & (1ULL << MOD_64(index))] == 0) return false;
+	if (((bitarray[DIV_64(index)] >> MOD_64(index)) & (uint64_t)1) == 0) return false;
 	return true;
 }
 
