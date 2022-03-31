@@ -8,7 +8,7 @@ int main() {
 	push(q, 6);
 	push(q, 12);
 	//printf("%lld\n", top(q));
-
+    
 	while (!isEmpty(q)) {
 		unsigned long long res_top = top(q);
 		unsigned long long res_pop = pop(q);

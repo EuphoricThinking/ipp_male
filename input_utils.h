@@ -3,6 +3,6 @@
 #include "labirynth_struct.h"
 #include <stdlib.h>
 
-Labirynth read_and_process_input();
+extern Labirynth read_and_process_input();
 
 #endif
