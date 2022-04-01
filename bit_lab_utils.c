@@ -41,16 +41,17 @@ uint64_t return_hex_val(char sign) {
 Bitmap* create_bitmap(size_t length) {
 //	uint64_t* bit_array = malloc(sizeof(uint64_t)*DIV_64(length));
 	size_t cell_number = DIV_64(length + BIAS); // Roundup - length at least 1
-	uint64_t* bit_array = malloc(sizeof(uint64_t)*(cell_number));  //roundup
+//	uint64_t* bit_array = malloc(sizeof(uint64_t)*(cell_number));  //roundup
+    uint64_t* bit_array = calloc(cell_number, sizeof(uint64_t));
 
     if (!bit_array) {
         print_error(ERR_0);
         exit(1);
     }
 
-	for (uint64_t i = 0; i < length; i++) {
-		bit_array[i] = (uint64_t)0;
-	}
+//	for (uint64_t i = 0; i < length; i++) {
+//		bit_array[i] = (uint64_t)0;
+//	}
 
 	Bitmap* result = malloc(sizeof(Bitmap));
 	result->length = cell_number;

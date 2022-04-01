@@ -72,6 +72,10 @@ size_t* convert_to_size_t_array(char* read_input, size_t max_length, size_t* len
     size_t converted;
 
     while ((converted = (size_t) strtoull(to_pass, &next_string, BASE))) {
+        if (converted > SIZE_MAX) {
+            return NULL;
+        }
+
         to_pass = next_string;
         number_array[index++] = converted;
     }
@@ -270,7 +274,7 @@ Labyrinth* read_and_process_input() {
     else {
 
         Bitmap* filled_from_hex = convert_hex_to_bitmap(shortened,
-                                                        (size_t)read_width, labyrinth_size);
+                                                        strlen(shortened), labyrinth_size); //read_wdth
         if (!filled_from_hex) {
             release_final(workline, dimensions_sizes, start_coordinates, end_coordinates,
                           ERR_4);

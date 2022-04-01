@@ -2,6 +2,7 @@
 #include "queue.h"
 #include "input_utils.h"
 #include "bit_lab_utils.h"
+#include "labirynth.h"
 
 int main() {
 	Queue* q = initQueue();
@@ -20,5 +21,7 @@ int main() {
 
     Labyrinth* loaded = read_and_process_input();
     printf("size: %ld\n", loaded->num_dimensions);
+    delete_labyrinth(loaded);
+
 	return 0;
 }

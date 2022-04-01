@@ -26,6 +26,7 @@ Labyrinth* load_labyrinth(uint64_t size, size_t num_dimensions,
 
 void delete_labyrinth(Labyrinth* to_delete) {
     free(to_delete->dimension_sizes);
+    printf("here\n");
     free(to_delete->start_coordinates);
     free(to_delete->end_coordinates);
     free(to_delete->bit_array);
