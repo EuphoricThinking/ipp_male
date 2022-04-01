@@ -79,6 +79,7 @@ size_t* convert_to_size_t_array(char* read_input, size_t* length_after_processin
     while (*to_pass != '\0' && *to_pass != '\n') {
         converted = strtoull(to_pass, &next_string, BASE);
         if (converted > SIZE_MAX || converted < 1 || errno == ERANGE) {
+            free(number_array);
             return NULL;
         }
 
