@@ -148,7 +148,7 @@ bool check_correct(char* number) {
 }
 
 Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labirynth_length) {
-	uint32_t coefficients[NUM_COEFF];
+	uint32_t coefficients[NUM_COEFF] = {0, 0, 0, 0, 0};
 	int counter = 0;
 	uint32_t converted;
 

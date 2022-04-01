@@ -2,6 +2,7 @@
 #include "input_utils.h"
 #include "err.h"
 #include "labirynth.h"
+#include "bit_lab_utils.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <ctype.h>
@@ -78,7 +79,7 @@ void release_final(char* workline, size_t* dimensions_sizes,
     print_error(err_code);
     exit(1);
 }
-Labirynth read_input() {
+Labirynth* read_input() {
 	char* workline = NULL;
 	size_t read_width;
     ssize_t err;

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "queue.h"
 #include "input_utils.h"
+#include "bit_lab_utils.h"
 
 int main() {
 	Queue* q = initQueue();
