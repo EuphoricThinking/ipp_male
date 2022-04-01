@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <errno.h>
 
 #define BASE 10
 bool has_only_whitespace(char* read, size_t length) {
@@ -58,6 +59,10 @@ size_t* convert_to_size_t_array(char* read_input, size_t max_length, size_t* len
         number_array[index++] = converted;
     }
 
+    if (errno == ERANGE) {
+        return NULL;
+    }
+
     *length_after_processing = index;
 
     return number_array;
@@ -72,7 +77,7 @@ char* determine_mode(char* read, size_t* read_length) {
     if (*read_length == 0) {
         return NULL;
     }
-    
+
     return read;
 }
 
@@ -90,18 +95,20 @@ Labirynth* read_input() {
 	char* workline = NULL;
 	size_t read_width;
     ssize_t err;
-
+    int err_message;
     // Wcytaj wymiary
 	if ((err = getline(&workline, &read_width, stdin)) < 1
         || !check_if_correct(workline, read_width)) {
-            free(workline);
-            if (err < 0) {
-                print_error(ERR_0);
-            }
-            else {
-                print_error(ERR_1);
-            }
-            exit(0);
+//            free(workline);
+//            if (err < 0) {
+//                print_error(ERR_0);
+//            }
+//            else {
+//                print_error(ERR_1);
+//            }
+//            exit(0);
+            err_message = err < 0 ? ERR_0 : ERR_1;
+        release_final(workline, NULL, NULL, NULL, err_message);
     }
 
     size_t num_dimensions;
@@ -109,23 +116,26 @@ Labirynth* read_input() {
                                                        read_width,
                                                        &num_dimensions);
     if (dimensions_sizes == NULL) {
-        free(workline);
-        print_error(ERR_0);
-        exit(1);
+//        free(workline);
+//        print_error(ERR_0);
+//        exit(1);
+        release_final(workline, NULL, NULL, NULL, ERR_0);
     }
 
     // Wczytaj start
     if ((err = getline(&workline, &read_width, stdin)) < 1
         || !check_if_correct(workline, read_width)) {
-        free(workline);
-        free(dimensions_sizes);
-        if (err < 0) {
-            print_error(ERR_0);
-        }
-        else {
-            print_error(ERR_2);
-        }
-        exit(1);
+//        free(workline);
+//        free(dimensions_sizes);
+//        if (err < 0) {
+//            print_error(ERR_0);
+//        }
+//        else {
+//            print_error(ERR_2);
+//        }
+//        exit(1);
+        err_message = err < 0 ? ERR_0 : ERR_2;
+        release_final(workline, dimensions_sizes, NULL, NULL, err_message);
     }
 
     size_t read_numbers;
@@ -133,61 +143,71 @@ Labirynth* read_input() {
                                                         read_width,
                                                         &read_numbers);
     if (start_coordinates == NULL) {
-        free(workline);
-        free(dimensions_sizes);
-        print_error(ERR_0);
-        exit(1);
+//        free(workline);
+//        free(dimensions_sizes);
+//        print_error(ERR_0);
+//        exit(1);
+        release_final(workline, dimensions_sizes, NULL, NULL, ERR_0);
     }
 
     // Wczytaj koniec
     if ((err = getline(&workline, &read_width, stdin)) < 1
         || !check_if_correct(workline, read_width)
         || read_numbers != num_dimensions) {
-        free(workline);
-        free(dimensions_sizes);
-        free(start_coordinates);
-        if (err < 0) {
-            print_error(ERR_0);
-        }
-        else {
-            print_error(ERR_3);
-        }
-        exit(1);
+//        free(workline);
+//        free(dimensions_sizes);
+//        free(start_coordinates);
+//        if (err < 0) {
+//            print_error(ERR_0);
+//        }
+//        else {
+//            print_error(ERR_3);
+//        }
+//        exit(1);
+        err_message = err < 0 ? ERR_0 : ERR_3;
+        release_final(workline, dimensions_sizes, start_coordinates, NULL,
+                      err_message);
     }
 
     size_t* end_coordinates = convert_to_size_t_array(workline,
                                                       read_width, &read_numbers);
     if (end_coordinates == NULL || read_numbers != num_dimensions) {
-        free(workline);
-        free(dimensions_sizes);
-        free(start_coordinates);
-        if (read_numbers != num_dimensions) {
-            print_error(ERR_3);
-        }
-        else {
-            print_error(ERR_0);
-        }
-        exit(1);
+//        free(workline);
+//        free(dimensions_sizes);
+//        free(start_coordinates);
+//        if (read_numbers != num_dimensions) {
+//            print_error(ERR_3);
+//        }
+//        else {
+//            print_error(ERR_0);
+//        }
+//        exit(1);
+        err_message = read_numbers != num_dimensions ? ERR_3 : ERR_0;
+        release_final(workline, dimensions_sizes, start_coordinates,
+                      end_coordinates, err_message);
     }
 
     // Wczytaj liczbę
-    if (getline(&workline, &read_width, stdin) < 1) {
-        free(workline);
-        free(dimensions_sizes);
-        free(start_coordinates);
-        free(end_coordinates);
-        print_error(ERR_0);
-        exit(1);
+    if ((err = getline(&workline, &read_width, stdin)) < 1) {
+//        free(workline);
+//        free(dimensions_sizes);
+//        free(start_coordinates);
+//        free(end_coordinates);
+//        print_error(ERR_0);
+//        exit(1);
+        err_message = err < 0 ? ERR_0 : ERR_4;
+        release_final(workline, dimensions_sizes, start_coordinates,
+                      end_coordinates, err_message);
     }
 
     // Sprawdzenie ostatniej linii
     char* test_last_line;
     size_t test_read;
     if ((err = getline(&test_last_line, &test_read, stdin)) != 0) {
-        int error_to_print = (err == -1 ? ERR_0 : ERR_5);
+        err_message = (err == -1 ? ERR_0 : ERR_5);
         free(test_last_line);
         release_final(workline, dimensions_sizes, start_coordinates,
-                      end_coordinates, error_to_print);
+                      end_coordinates, err_message);
     }
 
     // Skrócenie do pierwszych znaków określających liczbę
