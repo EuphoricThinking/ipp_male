@@ -69,14 +69,24 @@ size_t* convert_to_size_t_array(char* read_input, size_t max_length, size_t* len
 }
 
 char* determine_mode(char* read, size_t* read_length) {
-    while (*read != 'R' && (*read != '0' && *(read + 1) != 'x') && *read_length > 0) {
+//    while (*read != 'R' && (*read != '0' && *(read + 1) != 'x') && *read_length > 0) {
+//        read++;
+//        (*read_length)--;
+//    }
+    while (isspace(*read) && read_length > 0) {
         read++;
         (*read_length)--;
     }
 
-    if (*read_length == 0) {
+    if (*read_length == 0
+        || ((*read_length > 1 && (*read != '0' && *(read + 1) != 'x'))
+        && *read != 'R' )) {
         return NULL;
     }
+
+//    if (*read_length == 0) {
+//        return NULL;
+//    }
 
     return read;
 }
