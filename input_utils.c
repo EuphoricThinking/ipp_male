@@ -62,8 +62,10 @@ uint64_t get_labyrinth_size(size_t* dimensions, size_t length) {
     return result;
 }
 
-size_t* convert_to_size_t_array(char* read_input, size_t max_length, size_t* length_after_processing) {
-    size_t* number_array = malloc(sizeof(size_t)*max_length);
+size_t* convert_to_size_t_array(char* read_input, size_t* length_after_processing) {
+    size_t* number_array = malloc(sizeof(size_t));
+    size_t allocated_size = sizeof(size_t);
+    size_t current = 0;
 
     if (!number_array) {
         return NULL;
@@ -73,7 +75,7 @@ size_t* convert_to_size_t_array(char* read_input, size_t max_length, size_t* len
     char* to_pass = read_input;
     char* next_string;
     size_t converted;
-
+    size_t* err;
     while ((converted = (size_t) strtoull(to_pass, &next_string, BASE))) {
         if (converted > SIZE_MAX) {
             return NULL;
@@ -81,6 +83,19 @@ size_t* convert_to_size_t_array(char* read_input, size_t max_length, size_t* len
 
         to_pass = next_string;
         number_array[index++] = converted;
+        current += sizeof(size_t);
+
+        if (current == allocated_size) {
+            allocated_size = 2*current;
+            err = realloc(number_array, allocated_size);
+            if (!err) {
+                print_error(ERR_0);
+                exit(1);
+            }
+            else {
+                number_array = err;
+            }
+        }
     }
 
     if (errno == ERANGE) {
@@ -130,13 +145,13 @@ void solo() {
 
 Labyrinth* read_and_process_input() {
 	char* workline = NULL;
-	size_t read_width;
+	size_t getline_buffer;
     ssize_t err;
     int err_message;
     // Wcytaj wymiary
-	if ((err = getline(&workline, &read_width, stdin)) < 1
+	if ((err = getline(&workline, &getline_buffer, stdin)) < 1
         || !check_if_correct(workline)) {
-            printf("%ld\n", read_width);
+            printf("%ld\n", getline_buffer);
             printf("%d\n", check_if_correct(workline));
 //            free(workline);
 //            if (err < 0) {
@@ -154,7 +169,6 @@ Labyrinth* read_and_process_input() {
 
     size_t num_dimensions;
     size_t* dimensions_sizes = convert_to_size_t_array(workline,
-                                                       read_width,
                                                        &num_dimensions);
     solo();
     if (dimensions_sizes == NULL) {
@@ -165,7 +179,7 @@ Labyrinth* read_and_process_input() {
     }
     solo();
     // Wczytaj start
-    if ((err = getline(&workline, &read_width, stdin)) < 1
+    if ((err = getline(&workline, &getline_buffer, stdin)) < 1
         || !check_if_correct(workline)) {
 //        free(workline);
 //        free(dimensions_sizes);
@@ -182,7 +196,6 @@ Labyrinth* read_and_process_input() {
 
     size_t read_numbers;
     size_t* start_coordinates = convert_to_size_t_array(workline,
-                                                        read_width,
                                                         &read_numbers);
     if (start_coordinates == NULL) {
 //        free(workline);
@@ -193,7 +206,7 @@ Labyrinth* read_and_process_input() {
     }
 
     // Wczytaj koniec
-    if ((err = getline(&workline, &read_width, stdin)) < 1
+    if ((err = getline(&workline, &getline_buffer, stdin)) < 1
         || !check_if_correct(workline)
         || read_numbers != num_dimensions) {
 //        free(workline);
@@ -212,7 +225,7 @@ Labyrinth* read_and_process_input() {
     }
 
     size_t* end_coordinates = convert_to_size_t_array(workline,
-                                                      read_width, &read_numbers);
+                                                       &read_numbers);
     if (end_coordinates == NULL || read_numbers != num_dimensions) {
 //        free(workline);
 //        free(dimensions_sizes);
@@ -230,7 +243,7 @@ Labyrinth* read_and_process_input() {
     }
 
     // Wczytaj liczbę
-    if ((err = getline(&workline, &read_width, stdin)) < 1) {
+    if ((err = getline(&workline, &getline_buffer, stdin)) < 1) {
 //        free(workline);
 //        free(dimensions_sizes);
 //        free(start_coordinates);
@@ -254,7 +267,7 @@ Labyrinth* read_and_process_input() {
     free(test_last_line);
     solo();
     // Skrócenie do pierwszych znaków określających liczbę
-    char* shortened = determine_mode(workline, &read_width);
+    char* shortened = determine_mode(workline, &getline_buffer);
 
     if (!shortened) {
         release_final(workline, dimensions_sizes, start_coordinates,
