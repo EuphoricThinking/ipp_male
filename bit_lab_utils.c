@@ -81,6 +81,7 @@ Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length, uint64_t labyrinth_s
     bool read_at_least_one = false;
 
 	Bitmap* converted = create_bitmap(labyrinth_size);
+    uint64_t current_result = 0;
 
 	while (cell < converted->length) { //&& hex[hex_index] != 'x') {
 		shift = 0;
@@ -97,7 +98,16 @@ Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length, uint64_t labyrinth_s
                 return NULL;
 			}
 
-			converted->array[cell] |= (hex_converted << shift);
+            uint64_t shifted_by_4 = (hex_converted << shift);
+//			converted->array[cell] |= (hex_converted << shift);
+            current_result += hex_converted;
+
+            if (current_result > labyrinth_size) {
+                delete_bitmap(converted);
+                return NULL;
+            }
+
+            converted->array[cell] |= shifted_by_4;
 			shift += 4;
 			bit_quartet++;
 
