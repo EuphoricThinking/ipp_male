@@ -71,21 +71,26 @@ size_t* convert_to_size_t_array(char* read_input, size_t max_length, size_t* len
 
     size_t index = 0;
     char* to_pass = read_input;
-    char* next_string;
+    char* next_string = read_input;
     size_t converted;
 
-    while ((converted = (size_t) strtoull(to_pass, &next_string, BASE))) {
-        if (converted > SIZE_MAX) {
+    while (*to_pass != '\n' && *to_pass != '\0') {
+        converted = strtoull(to_pass, &next_string, BASE);
+        if (converted > SIZE_MAX || converted < 1 || errno == ERANGE) {
             return NULL;
         }
 
         to_pass = next_string;
-        number_array[index++] = converted;
+        number_array[index++] = (size_t)converted;
+
+        while (*to_pass != '\0' && *to_pass != '\n') {
+            to_pass++;
+        }
     }
 
-    if (errno == ERANGE) {
-        return NULL;
-    }
+//    if (errno == ERANGE) {
+//        return NULL;
+//    }
 
     *length_after_processing = index;
 
