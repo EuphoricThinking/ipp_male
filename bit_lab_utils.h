@@ -19,13 +19,13 @@ typedef struct Bitmap {
 } Bitmap;
 
 typedef struct Labirynth {
-	uint64_t labirynth_size;
+	uint64_t size;
 	size_t num_dimensions;
 	size_t* dimension_sizes;
 	size_t* start_coordinates;
 	size_t* end_coordinates;
 
-	int mode;
+	bool R_mode;
 	struct Bitmap* bit_array;
 	struct Bitmap* modulo_array;
 } Labirynth;

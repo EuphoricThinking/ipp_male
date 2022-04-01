@@ -1,6 +1,7 @@
 #define _POSIX_C_SOURCE 200809L
 #include "input_utils.h"
 #include "err.h"
+#include "labirynth.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <ctype.h>
@@ -30,6 +31,14 @@ bool check_if_correct(char* read, size_t length) {
         return true;
 }
 
+uint64_t get_labirynth_size(size_t* dimensions, size_t length) {
+    uint64_t result = dimensions[0];
+    for (size_t i = 1; i < length; i++) {
+        result *= dimensions[i];
+    }
+
+    return result;
+}
 
 size_t* convert_to_size_t(char* read_input, size_t max_length, size_t* length_after_processing) {
     size_t* number_array = malloc(sizeof(size_t)*max_length);
@@ -46,7 +55,7 @@ size_t* convert_to_size_t(char* read_input, size_t max_length, size_t* length_af
         converted = (size_t) strtoull(to_pass, &next_string, BASE);
     }
 
-    *length_after_processing = index;\
+    *length_after_processing = index;
     return number_array;
 }
 
@@ -57,12 +66,22 @@ char* determine_mode(char* read, size_t read_length) {
     }
 
     if (read_length == 0) return NULL;
+    return read;
 }
 
+void release_final(char* workline, size_t* dimensions_sizes,
+           size_t* start_coordinates, size_t* end_coordinates, int err_code) {
+    free(workline);
+    free(dimensions_sizes);
+    free(start_coordinates);
+    free(end_coordinates);
+    print_error(err_code);
+    exit(1);
+}
 Labirynth read_input() {
 	char* workline = NULL;
 	size_t read_width;
-    size_t err;
+    ssize_t err;
 
 	if ((err = getline(&workline, &read_width, stdin)) < 1
         || !check_if_correct(workline, read_width)) {
@@ -152,7 +171,23 @@ Labirynth read_input() {
         exit(1);
     }
 
+    uint64_t labirynth_size = get_labirynth_size(dimensions_sizes, num_dimensions);
 
+    Labirynth* result;
+    if (*shortened == 'R') {
+        Bitmap* modulo = convert_r_to_bitmap(shortened, read_width, labirynth_size);
+        if (!modulo) {
+            release_final(workline, dimensions_sizes, start_coordinates,
+                          end_coordinates, ERR_4);
+        }
+        Bitmap* to_be_filled = create_bitmap(labirynth_size);
+        result = load_labirynth(labirynth_size, num_dimensions, dimensions_sizes,
+                                start_coordinates, end_coordinates, true,
+                                to_be_filled, modulo);
+    }
+    else {
+        Bitmap* filled_from_hex = convert_hex_to_bitmap(shortened, str)
+    }
 	Labirynth l;
 	return l;
 }

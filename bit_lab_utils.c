@@ -175,6 +175,11 @@ Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labirynth_length) {
 		while (isdigit(*r) && r_length > 0) r++;
 	}
 
+    if (coefficients[M_POS] == 0) {
+        print_error(ERR_4);
+        return NULL;
+    }
+
 	if (counter == NUM_COEFF && r_length > 0) {
 		while (isspace(*r) && r_length > 0) {
 			r++;
