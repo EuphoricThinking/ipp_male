@@ -5,11 +5,11 @@ CFLAGS	= -Wall -Wextra -Wno-implicit-fallthrough -std=c17 -O2
 
 all: main
 
-main: main.o queue.o input_utils.o err.o bit_lab_utils.o labirynth.o
+main: main.o queue.o err.o bit_lab_utils.o labirynth.o input_utils.o
 
 queue.o: queue.c queue.h
 
-main.o: main.c queue.h input_utils.h
+main.o: main.c queue.h input_utils.h bit_lab_utils.h
 
 err.o: err.c err.h
 
