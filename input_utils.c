@@ -33,7 +33,7 @@ bool check_if_correct(char* read, size_t length) {
         return true;
 }
 
-uint64_t get_labirynth_size(size_t* dimensions, size_t length) {
+uint64_t get_labyrinth_size(size_t* dimensions, size_t length) {
     uint64_t result = dimensions[0];
     for (size_t i = 1; i < length; i++) {
         result *= (uint64_t)dimensions[i];
@@ -100,7 +100,7 @@ void release_final(char* workline, size_t* dimensions_sizes,
     exit(1);
 }
 
-Labirynth* read_input() {
+Labyrinth* read_input() {
 	char* workline = NULL;
 	size_t read_width;
     ssize_t err;
@@ -227,29 +227,29 @@ Labirynth* read_input() {
                       end_coordinates, ERR_4);
     }
 
-    uint64_t labirynth_size = get_labirynth_size(dimensions_sizes, num_dimensions);
+    uint64_t labyrinth_size = get_labyrinth_size(dimensions_sizes, num_dimensions);
 
-    Labirynth* result;
+    Labyrinth* result;
     if (*shortened == 'R') {
-        Bitmap* modulo = convert_r_to_bitmap(shortened, read_width, labirynth_size);
+        Bitmap* modulo = convert_r_to_bitmap(shortened, read_width, labyrinth_size);
         if (!modulo) { // Allocation errors are handled in bit.h
             release_final(workline, dimensions_sizes, start_coordinates,
                           end_coordinates, ERR_4);
         }
-        Bitmap* to_be_filled = create_bitmap(labirynth_size);
-        result = load_labirynth(labirynth_size, num_dimensions, dimensions_sizes,
+        Bitmap* to_be_filled = create_bitmap(labyrinth_size);
+        result = load_labyrinth(labyrinth_size, num_dimensions, dimensions_sizes,
                                 start_coordinates, end_coordinates, true,
                                 to_be_filled, modulo);
     }
     else {
 
         Bitmap* filled_from_hex = convert_hex_to_bitmap(shortened,
-                                                        (size_t)read_width, labirynth_size);
+                                                        (size_t)read_width, labyrinth_size);
         if (!filled_from_hex) {
             release_final(workline, dimensions_sizes, start_coordinates, end_coordinates,
                           ERR_4);
         }
-        result = load_labirynth(labirynth_size, num_dimensions, dimensions_sizes,
+        result = load_labyrinth(labyrinth_size, num_dimensions, dimensions_sizes,
                                 start_coordinates, end_coordinates, false,
                                 filled_from_hex, NULL);
     }

@@ -3,6 +3,6 @@
 #include "bit_lab_utils.h"
 #include <stdlib.h>
 
-extern Labirynth* read_and_process_input();
+extern Labyrinth* read_and_process_input();
 
 #endif

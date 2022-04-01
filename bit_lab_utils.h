@@ -18,7 +18,7 @@ typedef struct Bitmap {
         uint64_t* array;
 } Bitmap;
 
-typedef struct Labirynth {
+typedef struct Labyrinth {
 	uint64_t size;
 	size_t num_dimensions;
 	size_t* dimension_sizes;
@@ -28,11 +28,11 @@ typedef struct Labirynth {
 	bool R_mode;
 	struct Bitmap* bit_array;
 	struct Bitmap* modulo_array;
-} Labirynth;
+} Labyrinth;
 
-extern Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labirynth_length);
+extern Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labyrinth_length);
 
-extern Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length, uint64_t labirynth_size);
+extern Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length, uint64_t labyrinth_size);
 
 extern void set_bit(Bitmap* bit_array, uint64_t index);
 

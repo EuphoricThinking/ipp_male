@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include "err.h"
 
-Labirynth* load_labirynth(uint64_t size, size_t num_dimensions,
+Labyrinth* load_labyrinth(uint64_t size, size_t num_dimensions,
 	size_t* dimensions_sizes, size_t* start_coordinates,
 	size_t* end_coordinates, bool R_mode, Bitmap* bit_array,
 	Bitmap* modulo) {
-	Labirynth* loaded = malloc(sizeof(Labirynth));
+	Labyrinth* loaded = malloc(sizeof(Labyrinth));
     if (!loaded) {
         print_error(ERR_0);
         exit(1);
