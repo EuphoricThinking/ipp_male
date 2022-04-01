@@ -162,21 +162,25 @@ bool check_correct(char* number) {
 
 bool is_uint32(char* beginning, uint64_t* converted, char* end) {
     *converted = strtoll(beginning, &end, R_BASE);
-    if (*converted < 0) {
+//    if (*converted < 0) {
+//        return false;
+//    }
+//
+//    if (*converted >> UINT32_SHIFT & (int64_t)(-1)) {
+//        return false;
+//    }
+    if (*converted < 0 || *converted > UINT32_MAX) {
         return false;
     }
-
-    if (*converted >> UINT32_SHIFT & (int64_t)(-1)) {
-        return false;
+    else {
+        return true;
     }
-
-    return true;
 }
 
 Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labirynth_length) {
 	uint32_t coefficients[NUM_COEFF] = {0, 0, 0, 0, 0};
 	int counter = 0;
-	uint32_t converted;
+	uint64_t converted;
 
     // should be shortened in the beginning
 //	while (*r != 'R' && r_length > 0) {
@@ -202,19 +206,19 @@ Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labirynth_length) {
 		}
 
 		//converted = (uint32_t)atol(r);
-        correct_uint32_range = is_uint32(r, spare_string, &converted);
+        correct_uint32_range = is_uint32(r, &converted, spare_string);
 
         if (!correct_uint32_range) {
             return NULL;
         }
 
-        coefficients[counter++] = converted;
+        coefficients[counter++] = (uint32_t)converted;
         r = spare_string;
 
-		while (isdigit(*r) && r_length > 0) r++;
+		//while (isdigit(*r) && r_length > 0) r++;
 	}
 
-    if (coefficients[M_POS] == 0) {
+    if (coefficients[M_POS] == 0 || counter < NUM_COEFF) {
 //        print_error(ERR_4);
         return NULL;
     }
@@ -233,8 +237,8 @@ Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labirynth_length) {
 	}
 
 	Bitmap* modulo;
-	if (r_length < labirynth_length) {
-		modulo = create_bitmap(r_length);
+	if (coefficients[M_POS] < labirynth_length) {
+		modulo = create_bitmap(coefficients[M_POS]);
 	}
 	else {
 		modulo = create_bitmap(labirynth_length);
