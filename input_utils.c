@@ -62,11 +62,17 @@ char* determine_mode(char* read, size_t read_length) {
 Labirynth read_input() {
 	char* workline = NULL;
 	size_t read_width;
+    size_t err;
 
-	if (getline(&workline, &read_width, stdin) < 1
+	if ((err = getline(&workline, &read_width, stdin)) < 1
         || !check_if_correct(workline, read_width)) {
             free(workline);
-            print_error(ERR_1);
+            if (err < 0) {
+                print_error(ERR_0);
+            }
+            else {
+                print_error(ERR_1);
+            }
             exit(0);
     }
 
@@ -79,11 +85,16 @@ Labirynth read_input() {
         exit(1);
     }
 
-    if (getline(&workline, &read_width, stdin) < 1
+    if ((err = getline(&workline, &read_width, stdin)) < 1
         || !check_if_correct(workline, read_width)) {
         free(workline);
         free(dimensions_sizes);
-        print_error(ERR_1);
+        if (err < 1) {
+            print_error(ERR_0);
+        }
+        else {
+            print_error(ERR_1);
+        }
         exit(1);
     }
     size_t read_numbers;
@@ -96,7 +107,7 @@ Labirynth read_input() {
         exit(1);
     }
 
-    if (getline(&workline, &read_width, stdin) < 1
+    if ((err = getline(&workline, &read_width, stdin)) < 1
         || !check_if_correct(workline, read_width)
         || read_numbers != num_dimensions) {
         free(workline);
@@ -126,7 +137,7 @@ Labirynth read_input() {
         free(dimensions_sizes);
         free(start_coordinates);
         free(end_coordinates);
-        print_error(ERR_3);
+        print_error(ERR_0);
         exit(1);
     }
 
