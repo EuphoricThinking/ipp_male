@@ -248,6 +248,7 @@ Labyrinth* read_and_process_input() {
         release_final(workline, dimensions_sizes, start_coordinates,
                       end_coordinates, err_message);
     }
+    free(test_last_line);
     solo();
     // Skrócenie do pierwszych znaków określających liczbę
     char* shortened = determine_mode(workline, &read_width);

@@ -29,7 +29,7 @@ void delete_labyrinth(Labyrinth* to_delete) {
     printf("here\n");
     free(to_delete->start_coordinates);
     free(to_delete->end_coordinates);
-    free(to_delete->bit_array);
+    delete_bitmap(to_delete->bit_array);
     free(to_delete->modulo_array);
 
     free(to_delete);
