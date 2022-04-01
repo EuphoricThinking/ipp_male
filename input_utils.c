@@ -121,6 +121,27 @@ Labirynth read_input() {
         exit(1);
     }
 
+    if (getline(&workline, &read_width, stdin) < 1) {
+        free(workline);
+        free(dimensions_sizes);
+        free(start_coordinates);
+        free(end_coordinates);
+        print_error(ERR_3);
+        exit(1);
+    }
+
+    char* shortened = determine_mode(workline, read_width);
+
+    if (!shortened) {
+        free(workline);
+        free(dimensions_sizes);
+        free(start_coordinates);
+        free(end_coordinates);
+        print_error(ERR_4);
+        exit(1);
+    }
+
+
 	Labirynth l;
 	return l;
 }

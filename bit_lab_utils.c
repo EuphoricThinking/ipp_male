@@ -24,6 +24,7 @@
 #define S_POS 4
 #define NUM_COEFF 5
 #define R_BASE 10
+
 uint64_t return_hex_val(char sign) {
 	if (sign == 'A' || sign == 'a') return A_VAL;
 	else if (sign == 'B' || sign == 'b') return B_VAL;
@@ -40,6 +41,11 @@ Bitmap* create_bitmap(size_t length) {
 //	uint64_t* bit_array = malloc(sizeof(uint64_t)*DIV_64(length));
 	size_t cell_number = DIV_64(length + BIAS);
 	uint64_t* bit_array = malloc(sizeof(uint64_t)*(cell_number));  //roundup
+
+    if (!bit_array) {
+        print_error(ERR_0);
+        exit(1);
+    }
 
 	for (uint64_t i = 0; i < length; i++) {
 		bit_array[i] = (uint64_t)0;
@@ -62,7 +68,8 @@ Bitmap* convert_to_hex_bitmap(const char* hex, size_t hex_length, size_t labiryn
 	uint64_t hex_index = hex_length - 1;
 	if (hex[hex_index] == 'x') {
 		print_error(ERR_4);
-		exit(1);
+		//exit(1);
+        return NULL;
 	}
 
 	uint64_t hex_converted;
@@ -83,7 +90,8 @@ Bitmap* convert_to_hex_bitmap(const char* hex, size_t hex_length, size_t labiryn
 			if (hex_converted == HEX_ERROR) {
 				print_error(ERR_4);
 				delete_bitmap(converted);
-				exit(1);
+				//exit(1);
+                return NULL;
 			}
 
 			converted->array[cell] |= (hex_converted << shift);
@@ -106,7 +114,8 @@ Bitmap* convert_to_hex_bitmap(const char* hex, size_t hex_length, size_t labiryn
 			else if (hex[hex_index] != '0') {
 				print_error(ERR_4);
 				delete_bitmap(converted);
-				exit(1);
+				//exit(1);
+                return NULL;
 			}
 		}
 	}
@@ -156,7 +165,8 @@ Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labirynth_length) {
 
 		if (r_length <= 0 || !isdigit(*r)) { //za mało
 			print_error(ERR_4);
-			exit(1);
+			//exit(1);
+            return NULL;
 		}
 
 		converted = (uint32_t)atol(r);
@@ -173,7 +183,8 @@ Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labirynth_length) {
 
 		if (r_length > 0) { //jakikolwiek niepusty znak | za dużo
 			print_error(ERR_4);
-			exit(1);
+			//exit(1);
+            return NULL;
 		}
 	}
 
