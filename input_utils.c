@@ -41,32 +41,38 @@ uint64_t get_labirynth_size(size_t* dimensions, size_t length) {
     return result;
 }
 
-size_t* convert_to_size_t(char* read_input, size_t max_length, size_t* length_after_processing) {
+size_t* convert_to_size_t_array(char* read_input, size_t max_length, size_t* length_after_processing) {
     size_t* number_array = malloc(sizeof(size_t)*max_length);
-    if (!number_array) {return NULL;}
+
+    if (!number_array) {
+        return NULL;
+    }
+
     size_t index = 0;
     char* to_pass = read_input;
     char* next_string;
     size_t converted;
 
-    converted = (size_t) strtoull(to_pass, &next_string, BASE);
-    while (converted > 0) {
+    while ((converted = (size_t) strtoull(to_pass, &next_string, BASE))) {
         to_pass = next_string;
         number_array[index++] = converted;
-        converted = (size_t) strtoull(to_pass, &next_string, BASE);
     }
 
     *length_after_processing = index;
+
     return number_array;
 }
 
 char* determine_mode(char* read, size_t* read_length) {
-    while (*read != 'R' && (*read != '0' && *read != 'x') && *read_length > 0) {
+    while (*read != 'R' && (*read != '0' && *(read + 1) != 'x') && *read_length > 0) {
         read++;
         (*read_length)--;
     }
 
-    if (*read_length == 0) return NULL;
+    if (*read_length == 0) {
+        return NULL;
+    }
+    
     return read;
 }
 
@@ -99,8 +105,9 @@ Labirynth* read_input() {
     }
 
     size_t num_dimensions;
-    size_t* dimensions_sizes = convert_to_size_t(workline,
-                     read_width, &num_dimensions);
+    size_t* dimensions_sizes = convert_to_size_t_array(workline,
+                                                       read_width,
+                                                       &num_dimensions);
     if (dimensions_sizes == NULL) {
         free(workline);
         print_error(ERR_0);
@@ -122,8 +129,9 @@ Labirynth* read_input() {
     }
 
     size_t read_numbers;
-    size_t* start_coordinates = convert_to_size_t(workline,
-                          read_width, &read_numbers);
+    size_t* start_coordinates = convert_to_size_t_array(workline,
+                                                        read_width,
+                                                        &read_numbers);
     if (start_coordinates == NULL) {
         free(workline);
         free(dimensions_sizes);
@@ -147,8 +155,8 @@ Labirynth* read_input() {
         exit(1);
     }
 
-    size_t* end_coordinates = convert_to_size_t(workline,
-                                    read_width, &read_numbers);
+    size_t* end_coordinates = convert_to_size_t_array(workline,
+                                                      read_width, &read_numbers);
     if (end_coordinates == NULL || read_numbers != num_dimensions) {
         free(workline);
         free(dimensions_sizes);
@@ -205,7 +213,7 @@ Labirynth* read_input() {
                                 to_be_filled, modulo);
     }
     else {
-        
+
         Bitmap* filled_from_hex = convert_hex_to_bitmap(shortened,
                                                         (size_t)read_width, labirynth_size);
         if (!filled_from_hex) {
