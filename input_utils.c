@@ -224,11 +224,11 @@ Labyrinth* read_and_process_input() {
 //            print_error(ERR_3);
 //        }
 //        exit(1);
-//        err_message = err < 0 ? ERR_0 : ERR_3;
-//        release_final(workline, dimensions_sizes, start_coordinates, NULL,
-//                      err_message);
+        err_message = err < 0 ? ERR_0 : ERR_3;
         release_final(workline, dimensions_sizes, start_coordinates, NULL,
-                      ERR_3);
+                      err_message);
+//        release_final(workline, dimensions_sizes, start_coordinates, NULL,
+//                      ERR_3);
     }
 
     size_t* end_coordinates = convert_to_size_t_array(workline,
@@ -244,9 +244,11 @@ Labyrinth* read_and_process_input() {
 //            print_error(ERR_0);
 //        }
 //        exit(1);
-        err_message = read_numbers != num_dimensions ? ERR_3 : ERR_0;
+//        err_message = read_numbers != num_dimensions ? ERR_3 : ERR_0;
+//        release_final(workline, dimensions_sizes, start_coordinates,
+//                      end_coordinates, err_message);
         release_final(workline, dimensions_sizes, start_coordinates,
-                      end_coordinates, err_message);
+                      end_coordinates, ERR_3);
     }
 
     // Wczytaj liczbę
