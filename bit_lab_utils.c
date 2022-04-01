@@ -229,8 +229,13 @@ Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labyrinth_length) {
 	}
     printf("inside\n");
 
+    for (int i = 0; i < NUM_COEFF; i++) {
+        printf("%d ", coefficients[i]);
+    }
+    printf("\n");
     if (coefficients[M_POS] == 0 || counter < NUM_COEFF) {
 //        print_error(ERR_4);
+        printf("hererror\n");
         return NULL;
     }
 
@@ -239,7 +244,7 @@ Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labyrinth_length) {
 			r++;
 			r_length--;
 		}
-
+        printf("len %ld\n", r_length);
 		if (r_length > 0) { //jakikolwiek niepusty znak | za dużo
 //			print_error(ERR_4);
 			//exit(1);
@@ -247,6 +252,7 @@ Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labyrinth_length) {
 		}
 	}
 
+    printf("after counter checking\n");
 	Bitmap* modulo;
 	if (coefficients[M_POS] < labyrinth_length) {
 		modulo = create_bitmap(coefficients[M_POS]);
