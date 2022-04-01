@@ -54,6 +54,9 @@ uint64_t get_labyrinth_size(size_t* dimensions, size_t length) {
     uint64_t result = dimensions[0];
     for (size_t i = 1; i < length; i++) {
         result *= (uint64_t)dimensions[i];
+        if (result > SIZE_MAX) {
+            return -1;
+        }
     }
 
     return result;
@@ -259,6 +262,10 @@ Labyrinth* read_and_process_input() {
     }
 
     uint64_t labyrinth_size = get_labyrinth_size(dimensions_sizes, num_dimensions);
+    if (labyrinth_size < 1) {
+        release_final(workline, dimensions_sizes, start_coordinates,
+                      end_coordinates, ERR_0);
+    }
 
     Labyrinth* result;
     if (*shortened == 'R') {
