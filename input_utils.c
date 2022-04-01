@@ -9,24 +9,40 @@
 #include <errno.h>
 
 #define BASE 10
-bool has_only_whitespace(char* read, size_t length) {
-    for (size_t i = 0; i < length; i++) {
-        if (!isspace(read[i])) {
+bool has_only_whitespace(char* read) {
+//    for (size_t i = 0; i < length; i++) {
+//        if (!isspace(read[i])) {
+//            return false;
+//        }
+//    }
+    size_t index = 0;
+    while (read[index] != '\n') {
+        if (!isspace(read[index])) {
             return false;
         }
+
+        index++;
     }
 
     return true;
 }
 
-bool check_if_correct(char* read, size_t length) {
-        for (size_t i = 0; i < length; i++) {
-                if (!isdigit(read[i]) && !isspace(read[i])) {
+bool check_if_correct(char* read) {
+//        for (size_t i = 0; i < length; i++) {
+//                if (!isdigit(read[i]) && !isspace(read[i])) {
+//                    return false;
+//                }
+//        }
+        size_t index = 0;
+        while (read[index] != '\n') {
+            if (!isdigit(read[index]) && !isspace(read[index])) {
                     return false;
-                }
+            }
+
+            index++;
         }
 
-        if (has_only_whitespace(read, length)) {
+        if (has_only_whitespace(read)) {
             return false;
         }
 
@@ -100,6 +116,10 @@ void release_final(char* workline, size_t* dimensions_sizes,
     exit(1);
 }
 
+void solo() {
+    printf("HERE\n");
+}
+
 Labyrinth* read_and_process_input() {
 	char* workline = NULL;
 	size_t read_width;
@@ -107,7 +127,9 @@ Labyrinth* read_and_process_input() {
     int err_message;
     // Wcytaj wymiary
 	if ((err = getline(&workline, &read_width, stdin)) < 1
-        || !check_if_correct(workline, read_width)) {
+        || !check_if_correct(workline)) {
+            printf("%ld\n", read_width);
+            printf("%d\n", check_if_correct(workline));
 //            free(workline);
 //            if (err < 0) {
 //                print_error(ERR_0);
@@ -119,6 +141,8 @@ Labyrinth* read_and_process_input() {
             err_message = err < 0 ? ERR_0 : ERR_1;
         release_final(workline, NULL, NULL, NULL, err_message);
     }
+
+    solo();
 
     size_t num_dimensions;
     size_t* dimensions_sizes = convert_to_size_t_array(workline,
@@ -133,7 +157,7 @@ Labyrinth* read_and_process_input() {
 
     // Wczytaj start
     if ((err = getline(&workline, &read_width, stdin)) < 1
-        || !check_if_correct(workline, read_width)) {
+        || !check_if_correct(workline)) {
 //        free(workline);
 //        free(dimensions_sizes);
 //        if (err < 0) {
@@ -161,7 +185,7 @@ Labyrinth* read_and_process_input() {
 
     // Wczytaj koniec
     if ((err = getline(&workline, &read_width, stdin)) < 1
-        || !check_if_correct(workline, read_width)
+        || !check_if_correct(workline)
         || read_numbers != num_dimensions) {
 //        free(workline);
 //        free(dimensions_sizes);
