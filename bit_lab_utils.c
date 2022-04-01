@@ -180,7 +180,7 @@ bool is_uint32(char* beginning, uint64_t* converted, char** end) {
     }
 }
 
-Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labyrinth_length) {
+Bitmap* convert_r_to_bitmap(char* r, size_t labyrinth_length) {
 	uint32_t coefficients[NUM_COEFF] = {0, 0, 0, 0, 0};
 	int counter = 0;
 	uint64_t converted;
@@ -192,22 +192,21 @@ Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labyrinth_length) {
 //	}
 
     // Move pass the 'R' sign
-    printf("%s %ld\n", r, r_length);
+    printf("%s\n", r);
+    printf("%s|\n", r);
     r++;
-    r_length--;
     bool correct_uint32_range;
     char* spare_string = NULL;
     printf("inside\n");
-    printf("%s %ld\n", r, r_length);
-	while (counter < NUM_COEFF && r_length > 0) {
+    printf("%s\n", r);
+	while (counter < NUM_COEFF && *r != '\0') {
 
-		while (isspace(*r) && r_length > 0) {
+		while (isspace(*r) && *r != '\0') {
             printf("HR %c ", *r);
 			r++;
-			r_length--;
 		}
         printf("%d\n", counter);
-		if (r_length == 0 || !isdigit(*r)) { //za mało
+		if (*r == '\0' || !isdigit(*r)) { //za mało
 //			print_error(ERR_4);
 			//exit(1);
             return NULL;
@@ -238,14 +237,13 @@ Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labyrinth_length) {
         printf("hererror\n");
         return NULL;
     }
-
-	if (counter == NUM_COEFF && r_length > 0) {
-		while (isspace(*r) && r_length > 0) {
+    printf("%s|\n", r);
+	if (counter == NUM_COEFF && *r != '\0') {
+		while (isspace(*r) && *r != '\0') {
 			r++;
-			r_length--;
 		}
-        printf("len %ld\n", r_length);
-		if (r_length > 0) { //jakikolwiek niepusty znak | za dużo
+
+		if (*r != '\0') { //jakikolwiek niepusty znak | za dużo
 //			print_error(ERR_4);
 			//exit(1);
             return NULL;

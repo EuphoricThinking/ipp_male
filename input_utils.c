@@ -17,7 +17,7 @@ bool has_only_whitespace(char* read) {
 //        }
 //    }
     size_t index = 0;
-    while (read[index] != '\n') {
+    while (read[index] != '\n' && read[index] != '\0' ) {
         if (!isspace(read[index])) {
             return false;
         }
@@ -35,7 +35,7 @@ bool check_if_correct(char* read) {
 //                }
 //        }
         size_t index = 0;
-        while (read[index] != '\n') {
+        while (read[index] != '\n' && read[index] != '\0') {
             if (!isdigit(read[index]) && !isspace(read[index])) {
                     return false;
             }
@@ -260,7 +260,7 @@ Labyrinth* read_and_process_input() {
 
     Labyrinth* result;
     if (*shortened == 'R') {
-        Bitmap* modulo = convert_r_to_bitmap(shortened, strlen(shortened), labyrinth_size); //read_width
+        Bitmap* modulo = convert_r_to_bitmap(shortened, labyrinth_size); //read_width
         solo();
         if (!modulo) { // Allocation errors are handled in bit.h
             release_final(workline, dimensions_sizes, start_coordinates,

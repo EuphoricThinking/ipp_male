@@ -30,7 +30,7 @@ typedef struct Labyrinth {
 	struct Bitmap* modulo_array;
 } Labyrinth;
 
-extern Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labyrinth_length);
+extern Bitmap* convert_r_to_bitmap(char* r, size_t labyrinth_length);
 
 extern Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length, uint64_t labyrinth_size);
 
