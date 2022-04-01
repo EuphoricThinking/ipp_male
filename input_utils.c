@@ -55,7 +55,7 @@ uint64_t get_labyrinth_size(size_t* dimensions, size_t length) {
     for (size_t i = 1; i < length; i++) {
         result *= (uint64_t)dimensions[i];
     }
-
+    printf("dim: %lu\n", result);
     return result;
 }
 
@@ -147,20 +147,18 @@ Labyrinth* read_and_process_input() {
         release_final(workline, NULL, NULL, NULL, err_message);
     }
 
-    solo();
-
     size_t num_dimensions;
     size_t* dimensions_sizes = convert_to_size_t_array(workline,
                                                        read_width,
                                                        &num_dimensions);
-    solo();
+
     if (dimensions_sizes == NULL) {
 //        free(workline);
 //        print_error(ERR_0);
 //        exit(1);
         release_final(workline, NULL, NULL, NULL, ERR_0);
     }
-    solo();
+
     // Wczytaj start
     if ((err = getline(&workline, &read_width, stdin)) < 1
         || !check_if_correct(workline)) {
@@ -238,7 +236,7 @@ Labyrinth* read_and_process_input() {
         release_final(workline, dimensions_sizes, start_coordinates,
                       end_coordinates, err_message);
     }
-    solo();
+
     // Sprawdzenie ostatniej linii
     char* test_last_line = NULL;
     size_t test_read;
@@ -252,7 +250,7 @@ Labyrinth* read_and_process_input() {
     solo();
     // Skrócenie do pierwszych znaków określających liczbę
     char* shortened = determine_mode(workline, &read_width);
-
+    solo();
     if (!shortened) {
         release_final(workline, dimensions_sizes, start_coordinates,
                       end_coordinates, ERR_4);
@@ -263,6 +261,7 @@ Labyrinth* read_and_process_input() {
     Labyrinth* result;
     if (*shortened == 'R') {
         Bitmap* modulo = convert_r_to_bitmap(shortened, strlen(shortened), labyrinth_size); //read_width
+        solo();
         if (!modulo) { // Allocation errors are handled in bit.h
             release_final(workline, dimensions_sizes, start_coordinates,
                           end_coordinates, ERR_4);

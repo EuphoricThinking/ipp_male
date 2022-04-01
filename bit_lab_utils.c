@@ -161,8 +161,8 @@ bool check_correct(char* number) {
 	return true;
 }
 
-bool is_uint32(char* beginning, uint64_t* converted, char* end) {
-    int64_t test_converted = strtoll(beginning, &end, R_BASE);
+bool is_uint32(char* beginning, uint64_t* converted, char** end) {
+    int64_t test_converted = strtoll(beginning, end, R_BASE);
 //    if (*converted < 0) {
 //        return false;
 //    }
@@ -192,16 +192,21 @@ Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labyrinth_length) {
 //	}
 
     // Move pass the 'R' sign
+    printf("%s %ld\n", r, r_length);
     r++;
     r_length--;
     bool correct_uint32_range;
     char* spare_string = NULL;
+    printf("inside\n");
+    printf("%s %ld\n", r, r_length);
 	while (counter < NUM_COEFF && r_length > 0) {
+
 		while (isspace(*r) && r_length > 0) {
+            printf("HR %c ", *r);
 			r++;
 			r_length--;
 		}
-
+        printf("%d\n", counter);
 		if (r_length == 0 || !isdigit(*r)) { //za mało
 //			print_error(ERR_4);
 			//exit(1);
@@ -209,17 +214,20 @@ Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labyrinth_length) {
 		}
 
 		//converted = (uint32_t)atol(r);
-        correct_uint32_range = is_uint32(r, &converted, spare_string);
+        correct_uint32_range = is_uint32(r, &converted, &spare_string);
 
         if (!correct_uint32_range) {
             return NULL;
         }
 
+        printf("ori: %s\nspare: %s\n", r, spare_string);
         coefficients[counter++] = (uint32_t)converted;
         r = spare_string;
+        printf("%d new %s\n", correct_uint32_range, r);
 
 		//while (isdigit(*r) && r_length > 0) r++;
 	}
+    printf("inside\n");
 
     if (coefficients[M_POS] == 0 || counter < NUM_COEFF) {
 //        print_error(ERR_4);
