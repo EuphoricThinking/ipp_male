@@ -24,6 +24,7 @@
 #define S_POS 4
 #define NUM_COEFF 5
 #define R_BASE 10
+#define UINT32_SHIFT 32
 
 uint64_t return_hex_val(char sign) {
 	if (sign == 'A' || sign == 'a') return A_VAL;
@@ -159,30 +160,56 @@ bool check_correct(char* number) {
 	return true;
 }
 
+bool is_uint32(char* beginning, uint64_t* converted, char* end) {
+    *converted = strtoll(beginning, &end, R_BASE);
+    if (*converted < 0) {
+        return false;
+    }
+
+    if (*converted >> UINT32_SHIFT & (int64_t)(-1)) {
+        return false;
+    }
+
+    return true;
+}
+
 Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labirynth_length) {
 	uint32_t coefficients[NUM_COEFF] = {0, 0, 0, 0, 0};
 	int counter = 0;
 	uint32_t converted;
 
-	while (*r != 'R' && r_length > 0) {
-		r++;
-		r_length--;
-	}
+    // should be shortened in the beginning
+//	while (*r != 'R' && r_length > 0) {
+//		r++;
+//		r_length--;
+//	}
 
+    // Move pass the 'R' sign
+    r++;
+    r_length--;
+    bool correct_uint32_range;
+    char* spare_string;
 	while (counter < NUM_COEFF && r_length > 0) {
 		while (isspace(*r) && r_length > 0) {
 			r++;
 			r_length--;
 		}
 
-		if (r_length <= 0 || !isdigit(*r)) { //za mało
-			print_error(ERR_4);
+		if (r_length == 0 || !isdigit(*r)) { //za mało
+//			print_error(ERR_4);
 			//exit(1);
             return NULL;
 		}
 
-		converted = (uint32_t)atol(r);
-		coefficients[counter++] = converted;
+		//converted = (uint32_t)atol(r);
+        correct_uint32_range = is_uint32(r, spare_string, &converted);
+
+        if (!correct_uint32_range) {
+            return NULL;
+        }
+
+        coefficients[counter++] = converted;
+        r = spare_string;
 
 		while (isdigit(*r) && r_length > 0) r++;
 	}
