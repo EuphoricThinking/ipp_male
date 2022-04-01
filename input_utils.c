@@ -52,8 +52,13 @@ bool check_if_correct(char* read) {
 
 uint64_t get_labyrinth_size(size_t* dimensions, size_t length) {
     uint64_t result = dimensions[0];
+    printf("bef dim: %lu | %lu\n", result, length);
     for (size_t i = 1; i < length; i++) {
         result *= (uint64_t)dimensions[i];
+
+        if (result > SIZE_MAX) {
+            return -1;
+        }
     }
     printf("dim: %lu\n", result);
     return result;
@@ -256,8 +261,13 @@ Labyrinth* read_and_process_input() {
                       end_coordinates, ERR_4);
     }
 
+    printf("ff1");
     uint64_t labyrinth_size = get_labyrinth_size(dimensions_sizes, num_dimensions);
-
+    printf("ff2");
+    if (labyrinth_size < 1) {
+        release_final(workline, dimensions_sizes, start_coordinates, end_coordinates, ERR_0);
+    }
+    
     Labyrinth* result;
     if (*shortened == 'R') {
         Bitmap* modulo = convert_r_to_bitmap(shortened, labyrinth_size); //read_width
