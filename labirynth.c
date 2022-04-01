@@ -34,3 +34,30 @@ void delete_labyrinth(Labyrinth* to_delete) {
 
     free(to_delete);
 }
+
+uint64_t find_index(uint64_t* coordinates, uint64_t* dimension_sizes,
+                    uint64_t length) {
+    uint64_t index = coordinates[0] - 1;
+    uint64_t multiplier = 1;
+
+    for (uint64_t i = 1; i < length; i++) {
+        multiplier *= dimension_sizes[i - 1];
+        index += (coordinates[i] - 1)*multiplier;
+    }
+
+    return index;
+}
+
+void find_coordinates(uint64_t* coordinates, uint64_t* dimension_sizes,
+                      uint64_t length, uint64_t index) {
+    uint64_t rest_to_divide = index;
+    uint64_t remainder;
+
+    for (uint64_t i = 0; i < length - 1; i++) {
+        remainder = rest_to_divide%dimension_sizes[i];
+        rest_to_divide /= dimension_sizes[i];
+        coordinates[i] = remainder + 1;
+    }
+
+    coordinates[length - 1] = rest_to_divide;
+}
