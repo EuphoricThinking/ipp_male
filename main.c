@@ -20,7 +20,7 @@ int main() {
 	deleteQueue(q);
 
     Labyrinth* loaded = read_and_process_input();
-    printf("size: %ld\n", loaded->bit_array->length);
+    printf("size: %ld\n", loaded->size);
     delete_labyrinth(loaded);
 
 	return 0;

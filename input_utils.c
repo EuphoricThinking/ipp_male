@@ -52,6 +52,7 @@ bool check_if_correct(char* read) {
 
 uint64_t get_labyrinth_size(size_t* dimensions, size_t length) {
     uint64_t result = dimensions[0];
+    printf("dim: %lu\n", dimensions[0]);
     for (size_t i = 1; i < length; i++) {
         result *= (uint64_t)dimensions[i];
         if (result > SIZE_MAX) {
