@@ -161,8 +161,8 @@ bool check_correct(char* number) {
 	return true;
 }
 
-bool is_uint32(char* beginning, uint64_t* converted, char* end) {
-    int64_t test_converted = strtoll(beginning, &end, R_BASE);
+bool is_uint32(char* beginning, uint64_t* converted, char** end) {
+    int64_t test_converted = strtoll(beginning, end, R_BASE);
 //    if (*converted < 0) {
 //        return false;
 //    }
@@ -180,7 +180,7 @@ bool is_uint32(char* beginning, uint64_t* converted, char* end) {
     }
 }
 
-Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labyrinth_length) {
+Bitmap* convert_r_to_bitmap(char* r, size_t labyrinth_length) {
 	uint32_t coefficients[NUM_COEFF] = {0, 0, 0, 0, 0};
 	int counter = 0;
 	uint64_t converted;
@@ -193,25 +193,24 @@ Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labyrinth_length) {
 
     // Move pass the 'R' sign
     r++;
-    r_length--;
     bool correct_uint32_range;
     char* spare_string = NULL;
-	while (counter < NUM_COEFF && r_length > 0) {
-		while (isspace(*r) && r_length > 0) {
+	while (counter < NUM_COEFF && *r != '\0') {
+		while (isspace(*r) && *r != '\0') {
 			r++;
-			r_length--;
 		}
 
-		if (r_length == 0 || !isdigit(*r)) { //za mało
+		if (*r == '\0' || !isdigit(*r)) { //za mało
 //			print_error(ERR_4);
 			//exit(1);
             return NULL;
 		}
 
 		//converted = (uint32_t)atol(r);
-        correct_uint32_range = is_uint32(r, &converted, spare_string);
+        correct_uint32_range = is_uint32(r, &converted, &spare_string);
 
         if (!correct_uint32_range) {
+            printf("herror\n");
             return NULL;
         }
 
@@ -220,25 +219,25 @@ Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labyrinth_length) {
 
 		//while (isdigit(*r) && r_length > 0) r++;
 	}
-
+    printf("up2\n");
     if (coefficients[M_POS] == 0 || counter < NUM_COEFF) {
 //        print_error(ERR_4);
         return NULL;
     }
 
-	if (counter == NUM_COEFF && r_length > 0) {
-		while (isspace(*r) && r_length > 0) {
+    printf("up\n");
+	if (counter == NUM_COEFF && *r != '\0') {
+		while (isspace(*r) && *r != '\0') {
 			r++;
-			r_length--;
 		}
 
-		if (r_length > 0) { //jakikolwiek niepusty znak | za dużo
+		if (*r != '\0') { //jakikolwiek niepusty znak | za dużo
 //			print_error(ERR_4);
 			//exit(1);
             return NULL;
 		}
 	}
-
+    printf("this\n");
 	Bitmap* modulo;
 	if (coefficients[M_POS] < labyrinth_length) {
 		modulo = create_bitmap(coefficients[M_POS]);

@@ -262,7 +262,7 @@ Labyrinth* read_and_process_input() {
 
     Labyrinth* result;
     if (*shortened == 'R') {
-        Bitmap* modulo = convert_r_to_bitmap(shortened, strlen(shortened), labyrinth_size); //read_width
+        Bitmap* modulo = convert_r_to_bitmap(shortened, labyrinth_size); //read_width
         if (!modulo) { // Allocation errors are handled in bit.h
             release_final(workline, dimensions_sizes, start_coordinates,
                           end_coordinates, ERR_4);
