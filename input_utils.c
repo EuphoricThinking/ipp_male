@@ -76,13 +76,14 @@ size_t* convert_to_size_t_array(char* read_input, size_t* length_after_processin
     char* next_string;
     size_t converted;
     size_t* err;
-    while ((converted = (size_t) strtoull(to_pass, &next_string, BASE))) {
-        if (converted > SIZE_MAX) {
+    while (*to_pass != '\0' && *to_pass != '\n') {
+        converted = strtoull(to_pass, &next_string, BASE);
+        if (converted > SIZE_MAX || converted < 1 || errno == ERANGE) {
             return NULL;
         }
 
         to_pass = next_string;
-        number_array[index++] = converted;
+        number_array[index++] = (size_t) converted;
         current += sizeof(size_t);
 
         if (current == allocated_size) {
@@ -95,6 +96,10 @@ size_t* convert_to_size_t_array(char* read_input, size_t* length_after_processin
             else {
                 number_array = err;
             }
+        }
+
+        while (isspace(*to_pass) && *to_pass != '\0') {
+            to_pass++;
         }
     }
 
@@ -174,7 +179,7 @@ Labyrinth* read_and_process_input() {
 //        free(workline);
 //        print_error(ERR_0);
 //        exit(1);
-        release_final(workline, NULL, NULL, NULL, ERR_0);
+        release_final(workline, NULL, NULL, NULL, ERR_1);
     }
     solo();
     // Wczytaj start
@@ -201,7 +206,7 @@ Labyrinth* read_and_process_input() {
 //        free(dimensions_sizes);
 //        print_error(ERR_0);
 //        exit(1);
-        release_final(workline, dimensions_sizes, NULL, NULL, ERR_0);
+        release_final(workline, dimensions_sizes, NULL, NULL, ERR_2);
     }
 
     // Wczytaj koniec
@@ -218,9 +223,11 @@ Labyrinth* read_and_process_input() {
 //            print_error(ERR_3);
 //        }
 //        exit(1);
-        err_message = err < 0 ? ERR_0 : ERR_3;
+//        err_message = err < 0 ? ERR_0 : ERR_3;
+//        release_final(workline, dimensions_sizes, start_coordinates, NULL,
+//                      err_message);
         release_final(workline, dimensions_sizes, start_coordinates, NULL,
-                      err_message);
+                      ERR_3);
     }
 
     size_t* end_coordinates = convert_to_size_t_array(workline,
