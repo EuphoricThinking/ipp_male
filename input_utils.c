@@ -184,6 +184,12 @@ Labyrinth* read_and_process_input() {
         release_final(workline, NULL, NULL, NULL, ERR_1);
     }
     solo();
+
+    uint64_t labyrinth_size = get_labyrinth_size(dimensions_sizes, num_dimensions);
+    if (labyrinth_size < 1) {
+        release_final(workline, dimensions_sizes, NULL,
+                      NULL, ERR_0);
+    }
     // Wczytaj start
     if ((err = getline(&workline, &getline_buffer, stdin)) < 1
         || !check_if_correct(workline)) {
@@ -282,12 +288,6 @@ Labyrinth* read_and_process_input() {
     if (!shortened) {
         release_final(workline, dimensions_sizes, start_coordinates,
                       end_coordinates, ERR_4);
-    }
-
-    uint64_t labyrinth_size = get_labyrinth_size(dimensions_sizes, num_dimensions);
-    if (labyrinth_size < 1) {
-        release_final(workline, dimensions_sizes, start_coordinates,
-                      end_coordinates, ERR_0);
     }
 
     Labyrinth* result;
