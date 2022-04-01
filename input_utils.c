@@ -186,12 +186,8 @@ Labirynth* read_input() {
     char* shortened = determine_mode(workline, &read_width);
 
     if (!shortened) {
-        free(workline);
-        free(dimensions_sizes);
-        free(start_coordinates);
-        free(end_coordinates);
-        print_error(ERR_4);
-        exit(1);
+        release_final(workline, dimensions_sizes, start_coordinates,
+                      end_coordinates, ERR_4);
     }
 
     uint64_t labirynth_size = get_labirynth_size(dimensions_sizes, num_dimensions);
@@ -209,7 +205,7 @@ Labirynth* read_input() {
                                 to_be_filled, modulo);
     }
     else {
- //       Bitmap* filled_from_hex;
+        
         Bitmap* filled_from_hex = convert_hex_to_bitmap(shortened,
                                                         (size_t)read_width, labirynth_size);
         if (!filled_from_hex) {
