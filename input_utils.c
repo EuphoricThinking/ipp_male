@@ -187,7 +187,8 @@ Labirynth* read_input() {
                                 to_be_filled, modulo);
     }
     else {
-        Bitmap* filled_from_hex = convert_hex_to_bitmap(shortened, read_width, labirynth_size);
+        Bitmap* filled_from_hex = convert_hex_to_bitmap(shortened,
+                                                        (size_t)read_width, labirynth_size);
         if (!filled_from_hex) {
             release_final(workline, dimensions_sizes, start_coordinates, end_coordinates,
                           ERR_4);
