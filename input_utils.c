@@ -59,13 +59,13 @@ size_t* convert_to_size_t(char* read_input, size_t max_length, size_t* length_af
     return number_array;
 }
 
-char* determine_mode(char* read, size_t read_length) {
-    while (*read != 'R' && (*read != '0' && *read != 'x') && read_length > 0) {
+char* determine_mode(char* read, size_t* read_length) {
+    while (*read != 'R' && (*read != '0' && *read != 'x') && *read_length > 0) {
         read++;
-        read_length--;
+        (*read_length)--;
     }
 
-    if (read_length == 0) return NULL;
+    if (*read_length == 0) return NULL;
     return read;
 }
 
@@ -160,7 +160,7 @@ Labirynth read_input() {
         exit(1);
     }
 
-    char* shortened = determine_mode(workline, read_width);
+    char* shortened = determine_mode(workline, &read_width);
 
     if (!shortened) {
         free(workline);
@@ -186,8 +186,15 @@ Labirynth read_input() {
                                 to_be_filled, modulo);
     }
     else {
-        Bitmap* filled_from_hex = convert_hex_to_bitmap(shortened, str)
+        Bitmap* filled_from_hex = convert_hex_to_bitmap(shortened, read_width, labirynth_size);
+        if (!filled_from_hex) {
+            release_final(workline, dimensions_sizes, start_coordinates, end_coordinates,
+                          ERR_4);
+        }
+        result = load_labirynth(labirynth_size, num_dimensions, dimensions_sizes,
+                                start_coordinates, end_coordinates, false,
+                                filled_from_hex, NULL);
     }
-	Labirynth l;
-	return l;
+
+	return result;
 }
