@@ -79,11 +79,13 @@ void release_final(char* workline, size_t* dimensions_sizes,
     print_error(err_code);
     exit(1);
 }
+
 Labirynth* read_input() {
 	char* workline = NULL;
 	size_t read_width;
     ssize_t err;
 
+    // Wcytaj wymiary
 	if ((err = getline(&workline, &read_width, stdin)) < 1
         || !check_if_correct(workline, read_width)) {
             free(workline);
@@ -105,18 +107,20 @@ Labirynth* read_input() {
         exit(1);
     }
 
+    // Wczytaj start
     if ((err = getline(&workline, &read_width, stdin)) < 1
         || !check_if_correct(workline, read_width)) {
         free(workline);
         free(dimensions_sizes);
-        if (err < 1) {
+        if (err < 0) {
             print_error(ERR_0);
         }
         else {
-            print_error(ERR_1);
+            print_error(ERR_2);
         }
         exit(1);
     }
+
     size_t read_numbers;
     size_t* start_coordinates = convert_to_size_t(workline,
                           read_width, &read_numbers);
@@ -127,13 +131,19 @@ Labirynth* read_input() {
         exit(1);
     }
 
+    // Wczytaj koniec
     if ((err = getline(&workline, &read_width, stdin)) < 1
         || !check_if_correct(workline, read_width)
         || read_numbers != num_dimensions) {
         free(workline);
         free(dimensions_sizes);
         free(start_coordinates);
-        print_error(ERR_2);
+        if (err < 0) {
+            print_error(ERR_0);
+        }
+        else {
+            print_error(ERR_3);
+        }
         exit(1);
     }
 
@@ -152,6 +162,7 @@ Labirynth* read_input() {
         exit(1);
     }
 
+    // Wczytaj liczbę
     if (getline(&workline, &read_width, stdin) < 1) {
         free(workline);
         free(dimensions_sizes);
@@ -161,6 +172,17 @@ Labirynth* read_input() {
         exit(1);
     }
 
+    // Sprawdzenie ostatniej linii
+    char* test_last_line;
+    size_t test_read;
+    if ((err = getline(&test_last_line, &test_read, stdin)) != 0) {
+        int error_to_print = (err == -1 ? ERR_0 : ERR_5);
+        free(test_last_line);
+        release_final(workline, dimensions_sizes, start_coordinates,
+                      end_coordinates, error_to_print);
+    }
+
+    // Skrócenie do pierwszych znaków określających liczbę
     char* shortened = determine_mode(workline, &read_width);
 
     if (!shortened) {
