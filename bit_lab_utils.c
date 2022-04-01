@@ -161,7 +161,7 @@ bool check_correct(char* number) {
 }
 
 bool is_uint32(char* beginning, uint64_t* converted, char* end) {
-    *converted = strtoll(beginning, &end, R_BASE);
+    int64_t test_converted = strtoll(beginning, &end, R_BASE);
 //    if (*converted < 0) {
 //        return false;
 //    }
@@ -169,10 +169,12 @@ bool is_uint32(char* beginning, uint64_t* converted, char* end) {
 //    if (*converted >> UINT32_SHIFT & (int64_t)(-1)) {
 //        return false;
 //    }
-    if (*converted < 0 || *converted > UINT32_MAX) {
+    if (test_converted < 0 || test_converted > UINT32_MAX) {
         return false;
     }
     else {
+        *converted = (uint64_t)test_converted;
+
         return true;
     }
 }
@@ -192,7 +194,7 @@ Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labyrinth_length) {
     r++;
     r_length--;
     bool correct_uint32_range;
-    char* spare_string;
+    char* spare_string = NULL;
 	while (counter < NUM_COEFF && r_length > 0) {
 		while (isspace(*r) && r_length > 0) {
 			r++;
