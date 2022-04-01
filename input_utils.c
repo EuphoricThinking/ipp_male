@@ -223,7 +223,7 @@ Labirynth* read_input() {
     Labirynth* result;
     if (*shortened == 'R') {
         Bitmap* modulo = convert_r_to_bitmap(shortened, read_width, labirynth_size);
-        if (!modulo) {
+        if (!modulo) { // Allocation errors are handled in bit.h
             release_final(workline, dimensions_sizes, start_coordinates,
                           end_coordinates, ERR_4);
         }

@@ -39,7 +39,7 @@ uint64_t return_hex_val(char sign) {
 
 Bitmap* create_bitmap(size_t length) {
 //	uint64_t* bit_array = malloc(sizeof(uint64_t)*DIV_64(length));
-	size_t cell_number = DIV_64(length + BIAS);
+	size_t cell_number = DIV_64(length + BIAS); // Roundup - length at least 1
 	uint64_t* bit_array = malloc(sizeof(uint64_t)*(cell_number));  //roundup
 
     if (!bit_array) {
@@ -67,7 +67,7 @@ Bitmap* create_bitmap(size_t length) {
 Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length, uint64_t labirynth_size) {
 	uint64_t hex_index = hex_length - 1;
 	if (hex[hex_index] == 'x') {
-		print_error(ERR_4);
+//		print_error(ERR_4);
 		//exit(1);
         return NULL;
 	}
@@ -79,7 +79,7 @@ Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length, uint64_t labirynth_s
 
 	Bitmap* converted = create_bitmap(labirynth_size);
 
-	while (cell < converted->length && hex[hex_index] != 'x') {
+	while (cell < converted->length) { //&& hex[hex_index] != 'x') {
 		shift = 0;
 		bit_quartet = 0;
 		while (bit_quartet < NUM_4_BIT_SUBCELLS) {
@@ -88,7 +88,7 @@ Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length, uint64_t labirynth_s
 
 			hex_converted = return_hex_val(hex[hex_index--]);
 			if (hex_converted == HEX_ERROR) {
-				print_error(ERR_4);
+//				print_error(ERR_4);
 				delete_bitmap(converted);
 				//exit(1);
                 return NULL;
@@ -112,7 +112,7 @@ Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length, uint64_t labirynth_s
 				not_finished = false;
 			}
 			else if (hex[hex_index] != '0') {
-				print_error(ERR_4);
+//				print_error(ERR_4);
 				delete_bitmap(converted);
 				//exit(1);
                 return NULL;
@@ -176,7 +176,7 @@ Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labirynth_length) {
 	}
 
     if (coefficients[M_POS] == 0) {
-        print_error(ERR_4);
+//        print_error(ERR_4);
         return NULL;
     }
 
@@ -187,7 +187,7 @@ Bitmap* convert_r_to_bitmap(char* r, size_t r_length, size_t labirynth_length) {
 		}
 
 		if (r_length > 0) { //jakikolwiek niepusty znak | za dużo
-			print_error(ERR_4);
+//			print_error(ERR_4);
 			//exit(1);
             return NULL;
 		}
