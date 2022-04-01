@@ -78,7 +78,7 @@ char* determine_mode(char* read, size_t* read_length) {
         (*read_length)--;
     }
 
-    if (*read_length < 2 || *read != '0' || *read != 'R'
+    if (*read_length < 2 || (*read != '0' && *read != 'R')
         || (*read == '0' && *(read + 1) != 'x')) {
         return NULL;
     }

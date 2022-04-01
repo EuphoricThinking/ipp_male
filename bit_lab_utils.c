@@ -76,6 +76,7 @@ Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length, uint64_t labirynth_s
 	uint64_t shift;
 	int bit_quartet;
 	uint64_t cell = 0;
+    bool read_at_least_one = false;
 
 	Bitmap* converted = create_bitmap(labirynth_size);
 
@@ -97,12 +98,23 @@ Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length, uint64_t labirynth_s
 			converted->array[cell] |= (hex_converted << shift);
 			shift += 4;
 			bit_quartet++;
+
+            if (!read_at_least_one) {
+                read_at_least_one = true;
+            }
 		}
 
 		if (hex[hex_index] != 'x') cell++;
 		else break;
 	}
 
+    // Nie wczytaliśmy żadnej liczby
+    if (!read_at_least_one) {
+        delete_bitmap(converted);
+        return NULL;
+    }
+
+    // Wypełnilismy wszystkie komórki
 	if (cell == converted->length) {
 		bool not_finished = true;
 		while (not_finished) {
