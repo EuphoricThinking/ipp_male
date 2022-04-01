@@ -254,5 +254,7 @@ Labyrinth* read_input() {
                                 filled_from_hex, NULL);
     }
 
+    free(workline);
+
 	return result;
 }

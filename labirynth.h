@@ -7,5 +7,6 @@ extern Labyrinth* load_labyrinth(uint64_t size, size_t num_dimensions,
                                  size_t* end_coordinates, bool R_mode, Bitmap* bit_array,
                                  Bitmap* modulo);
 
-extern void delete_labyrinth();
+extern void delete_labyrinth(Labyrinth* to_delete);
+
 #endif

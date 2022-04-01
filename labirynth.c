@@ -23,3 +23,13 @@ Labyrinth* load_labyrinth(uint64_t size, size_t num_dimensions,
 
     return loaded;
 }
+
+void delete_labyrinth(Labyrinth* to_delete) {
+    free(to_delete->dimension_sizes);
+    free(to_delete->start_coordinates);
+    free(to_delete->end_coordinates);
+    free(to_delete->bit_array);
+    free(to_delete->modulo_array);
+
+    free(to_delete);
+}
