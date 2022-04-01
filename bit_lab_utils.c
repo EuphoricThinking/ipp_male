@@ -64,7 +64,7 @@ Bitmap* create_bitmap(size_t length) {
 
 	Sprawdź, czy liczba nie jest za długa
 */
-Bitmap* convert_to_hex_bitmap(char* hex, size_t hex_length, uint64_t labirynth_size) {
+Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length, uint64_t labirynth_size) {
 	uint64_t hex_index = hex_length - 1;
 	if (hex[hex_index] == 'x') {
 		print_error(ERR_4);

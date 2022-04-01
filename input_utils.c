@@ -35,7 +35,7 @@ bool check_if_correct(char* read, size_t length) {
 uint64_t get_labirynth_size(size_t* dimensions, size_t length) {
     uint64_t result = dimensions[0];
     for (size_t i = 1; i < length; i++) {
-        result *= dimensions[i];
+        result *= (uint64_t)dimensions[i];
     }
 
     return result;
@@ -187,6 +187,7 @@ Labirynth* read_input() {
                                 to_be_filled, modulo);
     }
     else {
+ //       Bitmap* filled_from_hex;
         Bitmap* filled_from_hex = convert_hex_to_bitmap(shortened,
                                                         (size_t)read_width, labirynth_size);
         if (!filled_from_hex) {
