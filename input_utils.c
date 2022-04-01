@@ -100,7 +100,7 @@ void release_final(char* workline, size_t* dimensions_sizes,
     exit(1);
 }
 
-Labyrinth* read_input() {
+Labyrinth* read_and_process_input() {
 	char* workline = NULL;
 	size_t read_width;
     ssize_t err;

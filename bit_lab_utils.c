@@ -13,7 +13,7 @@
 #define F_VAL 		(uint64_t)15
 #define HEX_ERROR 	(uint64_t)17
 
-#define BIAS 		(uint64_t)63U
+#define BIAS 		(uint64_t)63
 #define NUM_4_BIT_SUBCELLS 16
 #define HEX_CELL	(uint64_t)4
 

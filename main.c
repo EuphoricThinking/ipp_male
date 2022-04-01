@@ -17,5 +17,8 @@ int main() {
 	}
 
 	deleteQueue(q);
+
+    Labyrinth* loaded = read_and_process_input();
+    printf("size: %ld\n", loaded->num_dimensions);
 	return 0;
 }
