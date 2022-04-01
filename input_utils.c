@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include <errno.h>
+#include <string.h>
 
 #define BASE 10
 bool has_only_whitespace(char* read) {
@@ -148,13 +149,14 @@ Labyrinth* read_and_process_input() {
     size_t* dimensions_sizes = convert_to_size_t_array(workline,
                                                        read_width,
                                                        &num_dimensions);
+    solo();
     if (dimensions_sizes == NULL) {
 //        free(workline);
 //        print_error(ERR_0);
 //        exit(1);
         release_final(workline, NULL, NULL, NULL, ERR_0);
     }
-
+    solo();
     // Wczytaj start
     if ((err = getline(&workline, &read_width, stdin)) < 1
         || !check_if_correct(workline)) {
@@ -232,17 +234,17 @@ Labyrinth* read_and_process_input() {
         release_final(workline, dimensions_sizes, start_coordinates,
                       end_coordinates, err_message);
     }
-
+    solo();
     // Sprawdzenie ostatniej linii
-    char* test_last_line;
+    char* test_last_line = NULL;
     size_t test_read;
-    if ((err = getline(&test_last_line, &test_read, stdin)) != 0) {
+    if ((err = getline(&test_last_line, &test_read, stdin)) > 0) {
         err_message = (err == -1 ? ERR_0 : ERR_5);
         free(test_last_line);
         release_final(workline, dimensions_sizes, start_coordinates,
                       end_coordinates, err_message);
     }
-
+    solo();
     // Skrócenie do pierwszych znaków określających liczbę
     char* shortened = determine_mode(workline, &read_width);
 
@@ -255,7 +257,7 @@ Labyrinth* read_and_process_input() {
 
     Labyrinth* result;
     if (*shortened == 'R') {
-        Bitmap* modulo = convert_r_to_bitmap(shortened, read_width, labyrinth_size);
+        Bitmap* modulo = convert_r_to_bitmap(shortened, strlen(shortened), labyrinth_size); //read_width
         if (!modulo) { // Allocation errors are handled in bit.h
             release_final(workline, dimensions_sizes, start_coordinates,
                           end_coordinates, ERR_4);
