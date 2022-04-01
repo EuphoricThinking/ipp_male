@@ -107,17 +107,16 @@ size_t* convert_to_size_t_array(char* read_input, size_t* length_after_processin
     return number_array;
 }
 
-char* determine_mode(char* read, size_t* read_length) {
+char* determine_mode(char* read) {
 //    while (*read != 'R' && (*read != '0' && *(read + 1) != 'x') && *read_length > 0) {
 //        read++;
 //        (*read_length)--;
 //    }
-    while (isspace(*read) && *read_length > 0) {
+    while (isspace(*read) && *read != '\0') {
         read++;
-        (*read_length)--;
     }
 
-    if (*read_length < 2 || (*read != '0' && *read != 'R')
+    if (*read == '\0' || (*read != '0' && *read != 'R')
         || (*read == '0' && *(read + 1) != 'x')) {
         return NULL;
     }
@@ -267,7 +266,7 @@ Labyrinth* read_and_process_input() {
     free(test_last_line);
     solo();
     // Skrócenie do pierwszych znaków określających liczbę
-    char* shortened = determine_mode(workline, &getline_buffer);
+    char* shortened = determine_mode(workline);
 
     if (!shortened) {
         release_final(workline, dimensions_sizes, start_coordinates,
