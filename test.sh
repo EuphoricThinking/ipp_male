@@ -12,24 +12,18 @@ function wrong_result {
 	printf "${RED}WRONG\n${NOCOL}"
 }
 
-function test_args {
-	if [ "$#" -ne 2 ]; then
-		echo "Too few arguments: ./test.sh program "
+echo "$#"
+echo "$1"
+if [ "$#" -ne 2 ]; then
+	echo "Too few arguments: ./test.sh program directory"
 
-		exit 1;
-	fi
-}
+	exit 1;
+fi
 
-function test_makefile {
-	if ! make; then
-		"${RED}Błąd kompilacji, linkowania lub brak pliku: \"
-			"makefile{$NOCOL}"
-	else
-		correct_result
-	fi
-}
 
-correct_result
-wrong_result
-test_args
-test_makefile
+for test in $2/*.in; do
+	prefix=${test%.in}
+	echo -n "$prefix "
+	echo ${test}
+done
+
