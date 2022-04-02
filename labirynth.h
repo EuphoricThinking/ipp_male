@@ -10,7 +10,7 @@ extern Labyrinth* load_labyrinth(uint64_t size, size_t num_dimensions,
 
 extern void delete_labyrinth(Labyrinth* to_delete);
 
-extern uint64_t run_BFS(Labyrinth* loaded);
+extern void run_BFS(Labyrinth* loaded);
 
 extern void print_result_BFS(uint64_t result);
 

@@ -7,6 +7,7 @@ List* init_node(uint64_t val, uint64_t depth) {
 
 	l->next = NULL;
 	l->val = val;
+    l->depth = depth;
 
 	return l;
 }

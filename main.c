@@ -21,8 +21,7 @@ int main() {
 
     Labyrinth* loaded = read_and_process_input();
     printf("size: %ld\n", loaded->size);
-    uint64_t result = run_BFS(loaded);
-    print_result_BFS(result);
+    run_BFS(loaded);
 //    delete_labyrinth(loaded);
 
 	return 0;

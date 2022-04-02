@@ -3,7 +3,7 @@
 #include "err.h"
 #include "queue.h"
 
-#define NO_WAY "NO WAY"
+#define NO_WAY "NO WAY\n"
 
 Labyrinth* load_labyrinth(uint64_t size, size_t num_dimensions,
 	size_t* dimensions_sizes, size_t* start_coordinates,
@@ -106,7 +106,7 @@ void push_neighbours(size_t* coordinates, Labyrinth* data, Queue* neighbours,
 
 size_t* copy_coordinates(size_t* coordinates, size_t length) {
     size_t* copied = malloc(length*sizeof(size_t));
-    
+
     for (size_t i = 0; i < length; i++) {
         copied[i] = coordinates[i];
     }
@@ -124,7 +124,7 @@ void final_release(Queue* neighbours, Labyrinth* loaded,
     free(temp_coordinates);
 }
 
-uint64_t run_BFS(Labyrinth* data) {
+void run_BFS(Labyrinth* data) {
     uint64_t start_index = find_index(data->start_coordinates,
                                           data->dimension_sizes,
                                           data->num_dimensions);
@@ -138,8 +138,7 @@ uint64_t run_BFS(Labyrinth* data) {
 
     if (start_index == end_index) {
         delete_labyrinth(data);
-
-        return 0;
+        printf("%d\n", 0);
     }
 
     Queue* neighbours = init_queue();
@@ -157,7 +156,9 @@ uint64_t run_BFS(Labyrinth* data) {
             final_release(neighbours, data, coordinates_to_overwrite,
                           current_neighbour);
 
-            return road_length;
+            printf("%lu\n", road_length);
+
+            return;
         }
 
 //        find_coordinates(coordinates_to_overwrite, data->dimension_sizes,
@@ -171,7 +172,7 @@ uint64_t run_BFS(Labyrinth* data) {
 
     final_release(neighbours, data, coordinates_to_overwrite, NULL);
 
-    return -1;
+    printf(NO_WAY);
 }
 
 void print_result_BFS(uint64_t result) {
