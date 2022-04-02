@@ -19,9 +19,19 @@ int main() {
 //
 //	deleteQueue(q);
 
-    Labyrinth* loaded = read_and_process_input();
-    printf("size: %ld\n", loaded->size);
-    run_BFS(loaded);
+//    Labyrinth* loaded = read_and_process_input();
+//    printf("size: %ld\n", loaded->size);
+//    run_BFS(loaded);
+
+    Queue* q = init_queue();
+    push(q, 2, 4);
+    List* node = pop(q);
+    delete_node(node);
+    push(q, 5, 6);
+    node = pop(q);
+    delete_node(node);
+    delete_queue(q);
+
 //    delete_labyrinth(loaded);
 
 	return 0;
