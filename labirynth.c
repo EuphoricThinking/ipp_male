@@ -83,9 +83,9 @@ bool push_neighbours(size_t* coordinates, Labyrinth* data, Queue* neighbours,
     uint64_t neighbour_index;
 
     for (uint64_t index = 0; index < data->num_dimensions; index++) {
-        if (index > 0) {
-            coordinates[index - 1] = original;
-        }
+//        if (index > 0) {
+//            coordinates[index - 1] = original;
+//        }
         original = coordinates[index];
 
         for (int diff = -1; diff <= 1; diff += 2) {
@@ -97,6 +97,55 @@ bool push_neighbours(size_t* coordinates, Labyrinth* data, Queue* neighbours,
                 make_unavailable(data, neighbour_index);                    // PRZEMYŚL, CZY NIE ZA DUŻO
             }
         }
+
+        coordinates[index] = original;
     }
-    
+}
+
+size_t* copy_cooridnates(size_t* cooridnates, size_t length) {
+    size_t* copied = malloc(length*sizeof(size_t));
+
+    for (size_t i = 0; i < length; i++) {
+        copied[i] = cooridnates[i];
+    }
+
+    return copied;
+}
+
+void final_release(Queue* neighbours, Labyrinth* loaded,
+                   size_t* temp_coordinates, List* current_cell) {
+    deleteQueue()
+}
+uint64_t run_BFS(Labyrinth* data) {
+    uint64_t start_index = find_index(data->start_coordinates,
+                                          data->dimension_sizes,
+                                          data->num_dimensions);
+    uint64_t end_index = find_index(data->end_coordinates, data->dimension_sizes,
+                                    data->num_dimensions);
+    if (is_not_available(data, start_index) || is_not_available(data, end_index)) {
+        print_error(ERR_4);
+        delete_labyrinth(data);
+        exit(1);
+    }
+
+    if (start_index == end_index) {
+        delete_labyrinth(data);
+
+        return 0;
+    }
+
+    Queue* neighbours = initQueue();
+    size_t* coordinates_to_overwrite = copy_cooridnates(data->start_coordinates,
+                                                        data->num_dimensions);
+    push_neighbours(coordinates_to_overwrite, data, neighbours, 1);
+    List* current_neighbour;
+    while (!isEmpty(neighbours)) {
+        current_neighbour = pop(neighbours);
+
+        if (current_neighbour->val == end_index) {
+
+        }
+        find_coordinates(coordinates_to_overwrite, data->dimension_sizes,
+                         data->num_dimensions, current_neighbour->val);
+    }
 }
