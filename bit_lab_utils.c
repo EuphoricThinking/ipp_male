@@ -68,6 +68,11 @@ Bitmap* create_bitmap(size_t length) {
 */
 Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length, uint64_t labyrinth_size) {
 	uint64_t hex_index = hex_length - 1;
+
+    while (isspace(hex[hex_index]) && hex[hex_index] != 'x') {
+        hex_index--;
+    }
+
 	if (hex[hex_index] == 'x') {
 //		print_error(ERR_4);
 		//exit(1);
@@ -87,7 +92,7 @@ Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length, uint64_t labyrinth_s
 		shift = 0;
 		bit_quartet = 0;
 		while (bit_quartet < NUM_4_BIT_SUBCELLS) {
-			while (isspace(hex[hex_index])) hex_index--;
+//			while (isspace(hex[hex_index])) hex_index--;
 			if (hex[hex_index] == 'x') break;
 
 			hex_converted = return_hex_val(hex[hex_index--]);
