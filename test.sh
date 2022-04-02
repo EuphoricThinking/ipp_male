@@ -2,6 +2,7 @@
 
 GREEN="\033[0;32m"
 RED="\033[0;31m"
+BLUE="\033[0;34m"
 NOCOL="\033[0m"
 
 function correct_result {
@@ -33,15 +34,21 @@ for test in $2/*.in; do
 
 	if [ "$DIFF_OUT" != "" ] || [ "$DIFF_ERR" != "" ]; then
 		wrong_result
-		printf "Expected out\n"
-		cat ${test%.in}.out
-		printf "\nGiven:\n"
-		cat ${stdout_temp}
-		printf "\nExpected err:\n"
-		cat ${test%.in}.err
-		printf "\nGiven:\n"
-                cat ${stderr_temp}
-		printf "\n***END***\n\n"
+		if [ "$DIFF_OUT" != "" ]; then
+			printf "${RED}Expected out:${NOCOL}\n"
+			cat ${test%.in}.out
+			printf "${RED}Got:${NOCOL}\n"
+			cat ${stdout_temp}
+		fi
+
+		if [ "$DIFF_ERR" != "" ]; then
+			printf "${RED}Expected err:${NOCOL}\n"
+			cat ${test%.in}.err
+			printf "${RED}Got:${NOCOL}\n"
+                	cat ${stderr_temp}
+		fi
+
+		printf "${BLUE}***END*OF*REPORT***${NOCOL}\n\n"
 	else
 		correct_result
 	fi
