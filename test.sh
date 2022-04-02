@@ -56,3 +56,23 @@ for test in $2/*.in; do
 done
 
 rm $2/*temp*
+
+printf "\nValgrind\n"
+
+for test in $2/*.in; do
+        prefix=${test%.in}
+        stderr_temp="${test%.in}_temp.err"
+        stdout_temp="${test%.in}_temp.out"
+        echo -n "$prefix "
+#       echo ${test}
+        VAL=$(valgrind --error-exitcode=123 --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all "./$1" < ${test} 2> "${test%.in}_temp.val")
+
+	if [ $? -eq 0 ]; then
+		correct_result
+	else
+		echo "${RED}Valgrind error:${NOCOL}"
+		echo "$VAL"
+	fi
+
+done
+
