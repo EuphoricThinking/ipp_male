@@ -151,6 +151,17 @@ void solo() {
     printf("HERE\n");
 }
 
+bool is_not_bigger_than_dimension(size_t* dimensions, size_t num_dimensions,
+                                    size_t* to_check) {
+    for (size_t i = 0; i < num_dimensions; i++) {
+        if (dimensions[i] < to_check[i]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 Labyrinth* read_and_process_input() {
 	char* workline = NULL;
 	size_t getline_buffer;
