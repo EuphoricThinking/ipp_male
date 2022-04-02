@@ -65,8 +65,8 @@ for test in $2/*.in; do
         stdout_temp="${test%.in}_temp.out"
         echo -n "$prefix "
 #       echo ${test}
-        VAL=$(valgrind --error-exitcode=123 --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all "./$1" < ${test} 2> "${test%.in}_temp.val")
-
+#        VAL=$(valgrind --error-exitcode=123 --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all "./$1" < ${test} 2> "${test%.in}_temp.val")
+	valgrind --error-exitcode=123 --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all "./$1" < ${test}
 	if [ $? -eq 0 ]; then
 		correct_result
 	else

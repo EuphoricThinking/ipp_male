@@ -194,7 +194,7 @@ void run_BFS(Labyrinth* data) {
 
     while (!is_empty(neighbours)) {
         current_neighbour = pop(neighbours);
- //       printf("CUR %lu\n", current_neighbour->val);
+//        printf("CUR %lu\n", current_neighbour->val);
 
         if (current_neighbour->val == end_index) {
             road_length = current_neighbour->depth;

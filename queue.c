@@ -20,9 +20,17 @@ void delete_node(List* l) {
 
 void delete_nodes_all(List* l) {
 	if (l) {
-		delete_nodes_all(l->next);
-		delete_node(l);
-	}
+        List *child = l->next;
+        List *current = l;
+
+        while (current) {
+            delete_node(current);
+            current = child;
+            if (child) {
+                child = current->next;
+            }
+        }
+    }
 }
 
 Queue* init_queue() {
