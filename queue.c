@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 
-List* initNode(unsigned long long val) {
+List* initNode(uint64_t val, uint64_t depth) {
 	List* l = malloc(sizeof(List));
 
 	l->next = NULL;
@@ -26,34 +26,35 @@ void deleteNodesAll(List* l) {
 Queue* initQueue() {
 	Queue* q = malloc(sizeof(Queue));
 
-	q->first = initNode(0);
+	q->first = initNode(0, 0);
 	q->last = q->first;
 	q->num_elements = 0;
 
 	return q;
 }
 
-void push(Queue* q, unsigned long long to_insert) {
+void push(Queue* q, uint64_t to_insert_val, uint64_t depth) {
 	if (q->num_elements == 0) {
-		q->last->val = to_insert;
+		q->last->val = to_insert_val;
+        q->last->depth = depth;
 		q->num_elements++;
 	}
 	else {
-		List* to_append = initNode(to_insert);
+		List* to_append = initNode(to_insert_val, depth);
 		q->last->next = to_append;
 		q->last = to_append;
 		q->num_elements++;
 	}
 }
 
-unsigned long long top(Queue* q) {
-	return q->first->val;
+List* top(Queue* q) {
+	return q->first;
 }
 
-unsigned long long pop(Queue* q) {
-	int to_return = q->first->val;
+List* pop(Queue* q) {
+	List* to_return = q->first;
 	List* second = q->first->next;
-	deleteNode(q->first);
+//	deleteNode(q->first);
 	q->first = second;
 	q->num_elements--;
 

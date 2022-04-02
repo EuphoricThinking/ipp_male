@@ -73,8 +73,12 @@ bool is_not_available(Labyrinth* data, uint64_t index) {
     }
 }
 
+void make_unavailable(Labyrinth* data, uint64_t index) {
+    set_bit(data->bit_array, index);
+}
+
 bool push_neighbours(size_t* coordinates, Labyrinth* data, Queue* neighbours,
-                     uint64_t depth) {
+                     uint64_t current_depth) {
     size_t original;
     uint64_t neighbour_index;
 
@@ -89,8 +93,10 @@ bool push_neighbours(size_t* coordinates, Labyrinth* data, Queue* neighbours,
             neighbour_index = find_index(coordinates, data->dimension_sizes,
                                          data->num_dimensions);
             if (!is_not_available(data, neighbour_index)) {
-
+                push(neighbours, neighbour_index, current_depth + 1);
+                make_unavailable(data, neighbour_index);                    // PRZEMYŚL, CZY NIE ZA DUŻO
             }
         }
     }
+    
 }
