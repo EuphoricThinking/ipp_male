@@ -28,12 +28,23 @@ for test in $2/*.in; do
 	echo -n "$prefix "
 #	echo ${test}
 	"./$1" < ${test} > ${stdout_temp} 2> ${stderr_temp}
-	DIFF=$(diff ${test%.in}.out ${stdout_temp})
+	DIFF_OUT=$(diff ${test%.in}.out ${stdout_temp})
+	DIFF_ERR=$(diff ${test%.in}.err ${stderr_temp})
 
-	if [ "$DIFF" != "" ]; then
+	if [ "$DIFF_OUT" != "" ] || [ "$DIFF_ERR" != "" ]; then
 		wrong_result
+		printf "Expected out\n"
+		cat ${test%.in}.out
+		printf "\nGiven:\n"
+		cat ${stdout_temp}
+		printf "\nExpected err:\n"
+		cat ${test%.in}.err
+		printf "\nGiven:\n"
+                cat ${stderr_temp}
+		printf "\n***END***\n\n"
 	else
 		correct_result
 	fi
+
 done
 
