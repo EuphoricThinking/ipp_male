@@ -268,12 +268,15 @@ Bitmap* convert_r_to_bitmap(char* r, size_t labyrinth_length) {
 //	else {
 //		modulo = create_bitmap(labyrinth_length);
 //	}
-    if (coefficients[M_POS] < labyrinth_length) {
+
+    modulo = create_bitmap(labyrinth_length);
+
+ /*   if (coefficients[M_POS] < labyrinth_length) {
 		modulo = create_bitmap(labyrinth_length);
 	}
 	else {
 		modulo = create_bitmap(coefficients[M_POS]);
-	}
+	} */
 
 
 	uint32_t s_i = coefficients[S_POS];
