@@ -112,7 +112,7 @@ void push_neighbours(size_t* coordinates, Labyrinth* data, Queue* neighbours,
                                      neighbour_index);                    // PRZEMYŚL, CZY NIE ZA DUŻO
                     if (is_not_available(data, neighbour_index)) {
                         printf("NOT INSIDE\n");
-                        return;
+ //                       return;
                     }
                 }
             }
@@ -178,11 +178,11 @@ void run_BFS(Labyrinth* data) {
     size_t* coordinates_to_overwrite = copy_coordinates(data->start_coordinates,
                                                         data->num_dimensions);
     push_neighbours(coordinates_to_overwrite, data, neighbours, 1);
-    make_unavailable(data, start_index);
-    if (is_not_available(data, start_index)) {
-        printf("NOT AVAILABLE\n");
-        return;
-    }
+//    make_unavailable(data, start_index);
+//    if (is_not_available(data, start_index)) {
+//        printf("NOT AVAILABLE\n");
+//        return;
+//    }
     List* current_neighbour;
     uint64_t road_length;
 
