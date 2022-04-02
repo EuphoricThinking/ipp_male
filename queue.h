@@ -22,11 +22,11 @@ extern List* top(Queue* q);
 
 extern List* pop(Queue* q);
 
-extern void deleteQueue(Queue* q);
+extern void delete_queue(Queue* q);
 
-extern Queue* initQueue();
+extern Queue* init_queue();
 
-extern void deleteNode(List* node);
+extern void delete_node(List* node);
 
-extern bool isEmpty(Queue* q);
+extern bool is_empty(Queue* q);
 #endif /* QUEUE_H */
