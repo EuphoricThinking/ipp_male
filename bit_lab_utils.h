@@ -7,6 +7,7 @@
 
 #define DIV_64(x) ((x) >> 6)
 #define MOD_64(x) ((x) & (((uint64_t)1 << 6) - 1))
+#define MOD_32(x) ((x) & (((uint64_t)1 << 5) - 1))
 
 typedef struct Cube {
 	size_t* coordinates;
@@ -38,7 +39,7 @@ extern void set_bit(Bitmap* bit_array, uint64_t index);
 
 extern Bitmap* create_bitmap(size_t length);
 
-extern bool is_empty_cell(Bitmap* bit_array, uint64_t index);
+extern bool is_filled_cell(Bitmap* bit_array, uint64_t index);
 
 extern void delete_bitmap(Bitmap* bit_array);
 #endif
