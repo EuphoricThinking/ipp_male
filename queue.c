@@ -38,7 +38,7 @@ Queue* init_queue() {
 }
 
 void push(Queue* q, uint64_t to_insert_val, uint64_t depth) {
-    printf("entered\n");
+//    printf("entered\n");
 	if (q->num_elements == 0) {
 //		q->last->val = to_insert_val;
 //        q->last->depth = depth;
