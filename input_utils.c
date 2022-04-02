@@ -151,15 +151,15 @@ void solo() {
     printf("HERE\n");
 }
 
-bool is_not_bigger_than_dimension(size_t* dimensions, size_t num_dimensions,
+bool is_bigger_than_dimension(size_t* dimensions, size_t num_dimensions,
                                     size_t* to_check) {
     for (size_t i = 0; i < num_dimensions; i++) {
         if (dimensions[i] < to_check[i]) {
-            return false;
+            return true;
         }
     }
 
-    return true;
+    return false;
 }
 
 Labyrinth* read_and_process_input() {
@@ -225,7 +225,10 @@ Labyrinth* read_and_process_input() {
     size_t read_numbers;
     size_t* start_coordinates = convert_to_size_t_array(workline,
                                                         &read_numbers);
-    if (start_coordinates == NULL) {
+    if (start_coordinates == NULL || read_numbers != num_dimensions
+        || is_bigger_than_dimension(dimensions_sizes, num_dimensions,
+                                        start_coordinates)) {
+
 //        free(workline);
 //        free(dimensions_sizes);
 //        print_error(ERR_0);
@@ -235,8 +238,7 @@ Labyrinth* read_and_process_input() {
 
     // Wczytaj koniec
     if ((err = getline(&workline, &getline_buffer, stdin)) < 1
-        || !check_if_correct(workline)
-        || read_numbers != num_dimensions) {
+        || !check_if_correct(workline)) {
 //        free(workline);
 //        free(dimensions_sizes);
 //        free(start_coordinates);
@@ -256,7 +258,9 @@ Labyrinth* read_and_process_input() {
 
     size_t* end_coordinates = convert_to_size_t_array(workline,
                                                        &read_numbers);
-    if (end_coordinates == NULL || read_numbers != num_dimensions) {
+    if (end_coordinates == NULL || read_numbers != num_dimensions
+        || is_bigger_than_dimension(dimensions_sizes, num_dimensions,
+                                        end_coordinates)) {
 //        free(workline);
 //        free(dimensions_sizes);
 //        free(start_coordinates);
