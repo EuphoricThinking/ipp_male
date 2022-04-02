@@ -22,5 +22,3 @@ labyrinth.o: labyrinth.c labyrinth.h bit_lab_utils.h err.h
 clean:
 	rm -f *.o labyrinth
 
-run:
-	./labyrinth < ./example_tests/error00.in

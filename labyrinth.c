@@ -29,7 +29,6 @@ Labyrinth* load_labyrinth(uint64_t size, size_t num_dimensions,
 
 void delete_labyrinth(Labyrinth* to_delete) {
     free(to_delete->dimension_sizes);
-//    printf("here\n");
     free(to_delete->start_coordinates);
     free(to_delete->end_coordinates);
     delete_bitmap(to_delete->bit_array);
@@ -44,7 +43,6 @@ uint64_t find_index(size_t* coordinates, size_t* dimension_sizes,
     uint64_t multiplier = 1;
 
     for (uint64_t i = 1; i < length; i++) {
-//        printf("B | index: %lu, mult: %lu\n", index, multiplier);
         multiplier *= (uint64_t)dimension_sizes[i - 1];
         index += ((uint64_t)coordinates[i] - (uint64_t)1)*multiplier;
     }
@@ -67,7 +65,6 @@ void find_coordinates(size_t* coordinates, size_t* dimension_sizes,
 }
 
 bool is_not_available(Labyrinth* data, uint64_t index) {
-//    index--;  //TODO ADDED
     if (data->R_mode) {
         return is_filled_cell(data->modulo_array, MOD_2_32(index))
             || is_filled_cell(data->bit_array, index);
@@ -78,7 +75,6 @@ bool is_not_available(Labyrinth* data, uint64_t index) {
 }
 
 void make_unavailable(Labyrinth* data, uint64_t index) {
-//    printf("to unav: %lu\n", index);
     set_bit(data->bit_array, index);
 }
 
@@ -86,42 +82,27 @@ void push_neighbours(size_t* coordinates, Labyrinth* data, Queue* neighbours,
                      uint64_t current_depth) {
     size_t original;
     uint64_t neighbour_index;
-//    uint64_t origindex = find_index(coordinates, data->dimension_sizes,
-//                                    data->num_dimensions);
-//    for (uint64_t i = 0; i < data->num_dimensions; i++) {
-//        printf("%lu ", coordinates[i]);
-//    }
-//    printf("\n");
-//    printf("OUT\n\n");
+
     for (uint64_t index = 0; index < data->num_dimensions; index++) {
-//        if (index > 0) {
-//            coordinates[index - 1] = original;
-//        }
+
         original = coordinates[index];
 
         for (int diff = -1; diff <= 1; diff += 2) {
             coordinates[index] = original + diff;
-//            printf("coordinate: %lu, original: %lu\n", coordinates[index], original);
+
             if (coordinates[index]  > 0 && coordinates[index] <= data->dimension_sizes[index]) {
                 neighbour_index = find_index(coordinates, data->dimension_sizes,
                                              data->num_dimensions);
-//                printf("found %lu\n", neighbour_index);
+
                 if (!is_not_available(data, neighbour_index)) {
- //                   printf("%lu d: %lu | pushed: %lu\n", origindex, current_depth, neighbour_index);
                     push(neighbours, neighbour_index, current_depth + 1);
-                    make_unavailable(data,
-                                     neighbour_index);                    // PRZEMYŚL, CZY NIE ZA DUŻO
-//                    if (is_not_available(data, neighbour_index)) {
-//                        printf("NOT INSIDE\n");
-// //                       return;
-//                    }
+                    make_unavailable(data,neighbour_index);                    // PRZEMYŚL, CZY NIE ZA DUŻO
                 }
             }
         }
 
         coordinates[index] = original;
     }
-//    printf("\n");
 }
 
 size_t* copy_coordinates(size_t* coordinates, size_t length) {
@@ -151,11 +132,6 @@ void exit_error(Labyrinth* loaded, int error_code) {
     exit(1);
 }
 void run_BFS(Labyrinth* data) {
-//    printf("lab\n");
-//    for (uint64_t i = 0; i < data->modulo_array->length; i++) {
-//        printf("%lu ", data->modulo_array->array[i]);
-//    }
-//    printf("\n");
     uint64_t start_index = find_index(data->start_coordinates,
                                           data->dimension_sizes,
                                           data->num_dimensions);
@@ -165,9 +141,7 @@ void run_BFS(Labyrinth* data) {
 
     uint64_t end_index = find_index(data->end_coordinates, data->dimension_sizes,
                                     data->num_dimensions);
-//    printf("%lu\n", end_index);
-//    for (size_t t = 0; t < data->num_dimensions; t++) printf("H %ld ", data->end_coordinates[t]);
-//    printf("\n");
+
     if (is_not_available(data, end_index)) {
         exit_error(data, ERR_3);
     }
@@ -184,17 +158,11 @@ void run_BFS(Labyrinth* data) {
                                                         data->num_dimensions);
     push_neighbours(coordinates_to_overwrite, data, neighbours, 0);
     make_unavailable(data, start_index);
-//    if (is_not_available(data, start_index)) {
-//        printf("NOT AVAILABLE\n");
-//        return;
-//    }
-//    if (is_not_available(data, 62)) printf("NIEDOSTĘPNY\n");
     List* current_neighbour;
     uint64_t road_length;
 
     while (!is_empty(neighbours)) {
         current_neighbour = pop(neighbours);
-//        printf("CUR %lu\n", current_neighbour->val);
 
         if (current_neighbour->val == end_index) {
             road_length = current_neighbour->depth;
@@ -206,8 +174,6 @@ void run_BFS(Labyrinth* data) {
             return;
         }
 
-//        find_coordinates(coordinates_to_overwrite, data->dimension_sizes,
-//                         data->num_dimensions, current_neighbour->val);
         find_coordinates(coordinates_to_overwrite, data->dimension_sizes,
                          data->num_dimensions, current_neighbour->val);
         push_neighbours(coordinates_to_overwrite, data, neighbours,

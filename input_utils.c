@@ -11,12 +11,6 @@
 
 #define BASE 10
 bool has_only_whitespace(char* read) {
-//    for (size_t i = 0; i < length; i++) {
-//        if (!isspace(read[i])) {
-//            return false;
-//        }
-//    }
-
     size_t index = 0;
     while (read[index] != '\n' && read[index] != EOF && read[index] != '\0') {
         if (!isspace(read[index])) {
@@ -30,15 +24,9 @@ bool has_only_whitespace(char* read) {
 }
 
 bool check_if_correct(char* read) {
-//        for (size_t i = 0; i < length; i++) {
-//                if (!isdigit(read[i]) && !isspace(read[i])) {
-//                    return false;
-//                }
-//        }
         size_t index = 0;
         while (read[index] != '\n' && read[index] != EOF && read[index] != '\0') {
             if (!isdigit(read[index]) && !isspace(read[index])) {
-//                printf("%c THIS\n", read[index]);
                     return false;
             }
 
@@ -54,7 +42,6 @@ bool check_if_correct(char* read) {
 
 uint64_t get_labyrinth_size(size_t* dimensions, size_t length) {
     uint64_t result = dimensions[0];
-//    printf("dim: %lu\n", dimensions[0]);
     for (size_t i = 1; i < length; i++) {
         result *= (uint64_t)dimensions[i];
         if (result > SIZE_MAX) {
@@ -117,10 +104,6 @@ size_t* convert_to_size_t_array(char* read_input, size_t* length_after_processin
 }
 
 char* determine_mode(char* read) {
-//    while (*read != 'R' && (*read != '0' && *(read + 1) != 'x') && *read_length > 0) {
-//        read++;
-//        (*read_length)--;
-//    }
     while (isspace(*read) && *read != '\0' && *read != '\n' && *read != EOF) {
         read++;
     }
@@ -128,10 +111,6 @@ char* determine_mode(char* read) {
     if ((*read != '0' && *read != 'R') || (*read == '0' && *(read + 1) != 'x')) {
         return NULL;
     }
-
-//    if (*read_length == 0) {
-//        return NULL;
-//    }
 
     return read;
 }
@@ -144,10 +123,6 @@ void release_final(char* workline, size_t* dimensions_sizes,
     free(end_coordinates);
     print_error(err_code);
     exit(1);
-}
-
-void solo() {
-    printf("HERE\n");
 }
 
 bool is_bigger_than_dimension(size_t* dimensions, size_t num_dimensions,
@@ -164,40 +139,21 @@ bool is_bigger_than_dimension(size_t* dimensions, size_t num_dimensions,
 Labyrinth* read_and_process_input() {
 	char* workline = NULL;
 	size_t getline_buffer;
-    ssize_t err;
-//    int err_message;
+
     // Wcytaj wymiary
-	if ((err = getline(&workline, &getline_buffer, stdin)) < 1
+	if (getline(&workline, &getline_buffer, stdin) < 1
         || !check_if_correct(workline)) {
-//        if (!check_if_correct(workline)) printf("ME");
-//            printf("%ld\n", getline_buffer);
-//            printf("%d\n", check_if_correct(workline));
-//            free(workline);
-//            if (err < 0) {
-//                print_error(ERR_0);
-//            }
-//            else {
-//                print_error(ERR_1);
-//            }
-//            exit(0);
-//            err_message = err < 0 ? ERR_0 : ERR_1;
-//        release_final(workline, NULL, NULL, NULL, err_message);
+
         release_final(workline, NULL, NULL, NULL, ERR_1);
     }
-
-//    solo();
 
     size_t num_dimensions;
     size_t* dimensions_sizes = convert_to_size_t_array(workline,
                                                        &num_dimensions);
-//    solo();
+
     if (dimensions_sizes == NULL) {
-//        free(workline);
-//        print_error(ERR_0);
-//        exit(1);
         release_final(workline, NULL, NULL, NULL, ERR_1);
     }
-//    solo();
 
     uint64_t labyrinth_size = get_labyrinth_size(dimensions_sizes, num_dimensions);
     if (labyrinth_size < 1) {
@@ -205,19 +161,8 @@ Labyrinth* read_and_process_input() {
                       NULL, ERR_0);
     }
     // Wczytaj start
-    if ((err = getline(&workline, &getline_buffer, stdin)) < 1
+    if (getline(&workline, &getline_buffer, stdin) < 1
         || !check_if_correct(workline)) {
-//        free(workline);
-//        free(dimensions_sizes);
-//        if (err < 0) {
-//            print_error(ERR_0);
-//        }
-//        else {
-//            print_error(ERR_2);
-//        }
-//        exit(1);
-//        err_message = err < 0 ? ERR_0 : ERR_2;
-//        release_final(workline, dimensions_sizes, NULL, NULL, err_message);
         release_final(workline, dimensions_sizes, NULL, NULL, ERR_2);
     }
 
@@ -227,72 +172,31 @@ Labyrinth* read_and_process_input() {
     if (start_coordinates == NULL || read_numbers != num_dimensions
         || is_bigger_than_dimension(dimensions_sizes, num_dimensions,
                                         start_coordinates)) {
-
-//        free(workline);
-//        free(dimensions_sizes);
-//        print_error(ERR_0);
-//        exit(1);
         release_final(workline, dimensions_sizes, NULL, NULL, ERR_2);
     }
 
     // Wczytaj koniec
-    if ((err = getline(&workline, &getline_buffer, stdin)) < 1
+    if (getline(&workline, &getline_buffer, stdin) < 1
         || !check_if_correct(workline)) {
-//        free(workline);
-//        free(dimensions_sizes);
-//        free(start_coordinates);
-//        if (err < 0) {
-//            print_error(ERR_0);
-//        }
-//        else {
-//            print_error(ERR_3);
-//        }
-//        exit(1);
-//        err_message = err < 0 ? ERR_0 : ERR_3;
-//        release_final(workline, dimensions_sizes, start_coordinates, NULL,
-//                      err_message);
         release_final(workline, dimensions_sizes, start_coordinates, NULL,
                       ERR_3);
     }
 
     size_t* end_coordinates = convert_to_size_t_array(workline,
-                                                       &read_numbers);
+                                                      &read_numbers);
     if (end_coordinates == NULL || read_numbers != num_dimensions
         || is_bigger_than_dimension(dimensions_sizes, num_dimensions,
                                         end_coordinates)) {
-        if (read_numbers != num_dimensions) printf("HAHAHA\n");
-//        free(workline);
-//        free(dimensions_sizes);
-//        free(start_coordinates);
-//        if (read_numbers != num_dimensions) {
-//            print_error(ERR_3);
-//        }
-//        else {
-//            print_error(ERR_0);
-//        }
-//        exit(1);
-//        err_message = read_numbers != num_dimensions ? ERR_3 : ERR_0;
-//        release_final(workline, dimensions_sizes, start_coordinates,
-//                      end_coordinates, err_message);
         release_final(workline, dimensions_sizes, start_coordinates,
                       end_coordinates, ERR_3);
     }
+
     // Wczytaj liczbę
-    if ((err = getline(&workline, &getline_buffer, stdin)) < 1) {
-//        free(workline);
-//        free(dimensions_sizes);
-//        free(start_coordinates);
-//        free(end_coordinates);
-//        print_error(ERR_0);
-//        exit(1);
-//        err_message = err < 0 ? ERR_0 : ERR_4;
-//        release_final(workline, dimensions_sizes, start_coordinates,
-//                      end_coordinates, err_message);
+    if (getline(&workline, &getline_buffer, stdin) < 1) {
         release_final(workline, dimensions_sizes, start_coordinates,
                       end_coordinates, ERR_4);
     }
- //   solo();
-//    solo();
+
     // Skrócenie do pierwszych znaków określających liczbę
     char* shortened = determine_mode(workline);
 
@@ -308,13 +212,7 @@ Labyrinth* read_and_process_input() {
             release_final(workline, dimensions_sizes, start_coordinates,
                           end_coordinates, ERR_4);
         }
- //       solo();
-//        for (uint64_t i = 0; i < modulo->length; i++) {
-//            printf("%lu ", modulo->array[i]);
-//        }
-//        printf("\n");
-  //      size_t l = modulo->length;
- //       printf("size %lu \n", 8*l);
+
         Bitmap* to_be_filled = create_bitmap(labyrinth_size);
         result = load_labyrinth(labyrinth_size, num_dimensions, dimensions_sizes,
                                 start_coordinates, end_coordinates, true,
@@ -322,7 +220,7 @@ Labyrinth* read_and_process_input() {
     }
     else {
         Bitmap* filled_from_hex = convert_hex_to_bitmap(shortened,
-                                                        strlen(shortened), labyrinth_size); //read_wdth
+                                                        strlen(shortened), labyrinth_size);
         if (!filled_from_hex) {
             release_final(workline, dimensions_sizes, start_coordinates, end_coordinates,
                           ERR_4);
@@ -335,14 +233,8 @@ Labyrinth* read_and_process_input() {
     // Sprawdzenie ostatniej linii
     char* test_last_line = NULL;
     size_t test_read;
-    if ((err = getline(&test_last_line, &test_read, stdin)) > 0) {
-//        err_message = (err == -1 ? ERR_0 : ERR_5);
-//        free(test_last_line);
-//        release_final(workline, dimensions_sizes, start_coordinates,
-//                      end_coordinates, err_message);
+    if (getline(&test_last_line, &test_read, stdin) > 0) {
         free(test_last_line);
-//        release_final(workline, dimensions_sizes, start_coordinates,
-//                      end_coordinates, ERR_5);
         free(workline);
         delete_labyrinth(result);
         print_error(ERR_5);
@@ -352,6 +244,6 @@ Labyrinth* read_and_process_input() {
 
     free(test_last_line);
     free(workline);
-//    solo();
+
 	return result;
 }

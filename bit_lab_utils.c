@@ -39,19 +39,13 @@ uint64_t return_hex_val(char sign) {
 }
 
 Bitmap* create_bitmap(size_t length) {
-//	uint64_t* bit_array = malloc(sizeof(uint64_t)*DIV_64(length));
 	size_t cell_number = DIV_64(length + BIAS); // Roundup - length at least 1
-//	uint64_t* bit_array = malloc(sizeof(uint64_t)*(cell_number));  //roundup
     uint64_t* bit_array = calloc(cell_number + 1, sizeof(uint64_t));
 
     if (!bit_array) {
         print_error(ERR_0);
         exit(1);
     }
-
-//	for (uint64_t i = 0; i < length; i++) {
-//		bit_array[i] = (uint64_t)0;
-//	}
 
 	Bitmap* result = malloc(sizeof(Bitmap));
 	result->length = cell_number;
@@ -66,7 +60,8 @@ Bitmap* create_bitmap(size_t length) {
 
 	Sprawdź, czy liczba nie jest za długa
 */
-Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length, uint64_t labyrinth_size) {
+Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length,
+                              uint64_t labyrinth_size) {
 	uint64_t hex_index = hex_length - 1;
 
     while (isspace(hex[hex_index]) && hex[hex_index] != 'x') {
@@ -74,8 +69,6 @@ Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length, uint64_t labyrinth_s
     }
 
 	if (hex[hex_index] == 'x') {
-//		print_error(ERR_4);
-		//exit(1);
         return NULL;
 	}
 
@@ -88,29 +81,21 @@ Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length, uint64_t labyrinth_s
 	Bitmap* converted = create_bitmap(labyrinth_size);
     uint64_t modulo = MOD_64(labyrinth_size);
 
-	while (cell < converted->length) { //&& hex[hex_index] != 'x') {
+	while (cell < converted->length) {
 		shift = 0;
 		bit_quartet = 0;
 		while (bit_quartet < NUM_4_BIT_SUBCELLS) {
-//			while (isspace(hex[hex_index])) hex_index--;
 			if (hex[hex_index] == 'x') break;
 
 			hex_converted = return_hex_val(hex[hex_index--]);
 			if (hex_converted == HEX_ERROR) {
-//				print_error(ERR_4);
 				delete_bitmap(converted);
-				//exit(1);
+
                 return NULL;
 			}
 
             uint64_t shifted_by_4 = (hex_converted << shift);
-//			converted->array[cell] |= (hex_converted << shift);
-//            current_result += hex_converted;
-//
-//            if (current_result > labyrinth_size) {
-//                delete_bitmap(converted);
-//                return NULL;
-//            }
+
             if (cell == converted->length - 1 && modulo != 0) {
                 if ((shifted_by_4 >> modulo) != 0) {
                     delete_bitmap(converted);
@@ -147,9 +132,8 @@ Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length, uint64_t labyrinth_s
 				not_finished = false;
 			}
 			else if (hex[hex_index] != '0') {
-//				print_error(ERR_4);
 				delete_bitmap(converted);
-				//exit(1);
+
                 return NULL;
 			}
 		}
@@ -165,9 +149,6 @@ void set_bit(Bitmap* bit_array, uint64_t index) {
 }
 
 bool is_filled_cell(Bitmap* bit_array, uint64_t index) {
-//	if (((bit_array->array[DIV_64(index)] >> MOD_64(index)) & (uint64_t)1) == 0) return false;
-//	return true;
-//    printf("index: %lu, modulo shifted: %lu\n", index, MOD_64(index));
 	return (bit_array->array[DIV_64(index)] >> MOD_64(index)) & (uint64_t)1;
 }
 
@@ -176,22 +157,8 @@ void delete_bitmap(Bitmap* bit_array) {
 	free(bit_array);
 }
 
-bool check_correct(char* number) {
-//	if (!isdigit(c)) return false;
-//	if (r_number << 32 & (((uint64_t)1 << 63) - 1) != 0) return false;
-	while (!isspace(*number)) {}
-	return true;
-}
-
 bool is_uint32(char* beginning, uint64_t* converted, char** end) {
     int64_t test_converted = strtoll(beginning, end, R_BASE);
-//    if (*converted < 0) {
-//        return false;
-//    }
-//
-//    if (*converted >> UINT32_SHIFT & (int64_t)(-1)) {
-//        return false;
-//    }
     if (test_converted < 0 || test_converted > UINT32_MAX) {
         return false;
     }
@@ -207,12 +174,6 @@ Bitmap* convert_r_to_bitmap(char* r, size_t labyrinth_length) {
 	int counter = 0;
 	uint64_t converted;
 
-    // should be shortened in the beginning
-//	while (*r != 'R' && r_length > 0) {
-//		r++;
-//		r_length--;
-//	}
-
     // Move pass the 'R' sign
     r++;
     bool correct_uint32_range;
@@ -222,45 +183,35 @@ Bitmap* convert_r_to_bitmap(char* r, size_t labyrinth_length) {
 			r++;
 		}
 
-		if  (!isdigit(*r)) { //(*r == '\0' || !isdigit(*r) || *r == '\n' || *r == EOF) { //za mało
-//			print_error(ERR_4);
-			//exit(1);
+		if  (!isdigit(*r)) {
             return NULL;
 		}
 
-		//converted = (uint32_t)atol(r);
         correct_uint32_range = is_uint32(r, &converted, &spare_string);
 
         if (!correct_uint32_range) {
- //           printf("herror\n");
             return NULL;
         }
 
         coefficients[counter++] = (uint32_t)converted;
         r = spare_string;
-
-		//while (isdigit(*r) && r_length > 0) r++;
 	}
- //   printf("up2\n");
+
     if (coefficients[M_POS] == 0 || counter < NUM_COEFF) {
-//        print_error(ERR_4);
+
         return NULL;
     }
 
-//    printf("counter %d\n", counter);
-	if (counter == NUM_COEFF) { //&& *r != '\0') {
-//        printf("HERE\n");
+	if (counter == NUM_COEFF) {
 		while (isspace(*r) && *r != '\0' && *r != '\n' && *r != EOF) {
 			r++;
 		}
 
 		if (*r != '\0' && *r != '\n' && *r != EOF) { //jakikolwiek niepusty znak | za dużo
-//			print_error(ERR_4);
-			//exit(1);
             return NULL;
 		}
 	}
-//    printf("this\n");
+
 	Bitmap* modulo;
 //	if (coefficients[M_POS] < labyrinth_length) {
 //		modulo = create_bitmap(coefficients[M_POS]);
@@ -282,26 +233,13 @@ Bitmap* convert_r_to_bitmap(char* r, size_t labyrinth_length) {
 	uint32_t s_i = coefficients[S_POS];
     uint32_t w_i;
 
-//    for (uint64_t i = 0; i < NUM_COEFF; i++) {
-//        printf("%du ", coefficients[i]);
-//    }
-//    printf("\n");
-
     for (uint32_t i = 0; i < coefficients[R_POS]; i++) {
-//        printf("calc: a %d | b %d | s %d | res: a*si %d | %d | mod %d\n",
-//               coefficients[A_POS], coefficients[B_POS], coefficients[S_POS], coefficients[A_POS]*s_i, coefficients[A_POS]*s_i + coefficients[B_POS],
-//               (coefficients[A_POS]*s_i + coefficients[B_POS])%coefficients[M_POS]);
-//        printf("sizemax %ud\n", UINT32_MAX);
-//        s_i = (coefficients[A_POS]*s_i + coefficients[B_POS])
-//                %coefficients[M_POS];
-        s_i = (((coefficients[A_POS]%coefficients[M_POS])*(s_i%coefficients[M_POS]))
-                % coefficients[M_POS] + coefficients[B_POS]%coefficients[M_POS])
-                % coefficients[M_POS];
-//        printf("si %d\n", s_i);
+        s_i = (((coefficients[A_POS]%coefficients[M_POS])*
+                (s_i%coefficients[M_POS])) % coefficients[M_POS] +
+                coefficients[B_POS]%coefficients[M_POS]) % coefficients[M_POS];
+
         w_i = s_i%labyrinth_length;
-//        printf("set mod: %u\n", w_i);
         set_bit(modulo, (uint64_t)w_i);
-//        set_bit(modulo, (unsigned int)w_i);
     }
 
     return modulo;

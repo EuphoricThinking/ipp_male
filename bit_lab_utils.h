@@ -9,11 +9,6 @@
 #define MOD_64(x) ((x) & (((uint64_t)1 << 6) - 1))
 #define MOD_2_32(x) ((x) & (((uint64_t)1 << 32) - 1))
 
-typedef struct Cube {
-	size_t* coordinates;
-	size_t num_dimension;
-} Cube;
-
 typedef struct Bitmap {
         uint64_t length;
         uint64_t* array;

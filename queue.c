@@ -1,7 +1,6 @@
 #include "queue.h"
 #include <stdlib.h>
 #include <stddef.h>
-#include <stdio.h>
 
 List* init_node(uint64_t val, uint64_t depth) {
 	List* l = malloc(sizeof(List));
@@ -35,9 +34,6 @@ void delete_nodes_all(List* l) {
 
 Queue* init_queue() {
 	Queue* q = malloc(sizeof(Queue));
-
-//	q->first = init_node(0, 0);
-//	q->last = q->first;
     q->first = NULL;
     q->last = NULL;
 	q->num_elements = 0;
@@ -46,13 +42,7 @@ Queue* init_queue() {
 }
 
 void push(Queue* q, uint64_t to_insert_val, uint64_t depth) {
-//    printf("entered\n");
 	if (q->num_elements == 0) {
-//		q->last->val = to_insert_val;
-//        q->last->depth = depth;
-//		q->num_elements++;
-//        q->first->val = to_insert_val;
-//        q->first->depth = depth;
         q->first = init_node(to_insert_val, depth);
         q->last = q->first;
         q->num_elements++;
@@ -78,7 +68,6 @@ List* pop(Queue* q) {
     if (q->num_elements > 0) {
     List *to_return = q->first;
     List *second = q->first->next;
-//	deleteNode(q->first);
     q->first = second;
     q->num_elements--;
 
