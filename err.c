@@ -2,4 +2,5 @@
 
 void print_error(const int error_label) {
 	fprintf(stderr, "ERROR %d\n", error_label - 1);
+//    printf("ERROR %d\n", error_label - 1);
 }

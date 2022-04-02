@@ -260,6 +260,7 @@ Labyrinth* read_and_process_input() {
     if (end_coordinates == NULL || read_numbers != num_dimensions
         || is_bigger_than_dimension(dimensions_sizes, num_dimensions,
                                         end_coordinates)) {
+        if (read_numbers != num_dimensions) printf("HAHAHA\n");
 //        free(workline);
 //        free(dimensions_sizes);
 //        free(start_coordinates);
@@ -276,7 +277,6 @@ Labyrinth* read_and_process_input() {
         release_final(workline, dimensions_sizes, start_coordinates,
                       end_coordinates, ERR_3);
     }
-
     // Wczytaj liczbę
     if ((err = getline(&workline, &getline_buffer, stdin)) < 1) {
 //        free(workline);
@@ -351,6 +351,6 @@ Labyrinth* read_and_process_input() {
 
     free(test_last_line);
     free(workline);
-
+//    solo();
 	return result;
 }

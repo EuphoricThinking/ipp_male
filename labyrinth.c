@@ -165,6 +165,9 @@ void run_BFS(Labyrinth* data) {
 
     uint64_t end_index = find_index(data->end_coordinates, data->dimension_sizes,
                                     data->num_dimensions);
+    printf("%lu\n", end_index);
+    for (size_t t = 0; t < data->num_dimensions; t++) printf("H %ld ", data->end_coordinates[t]);
+    printf("\n");
     if (is_not_available(data, end_index)) {
         exit_error(data, ERR_3);
     }
@@ -191,7 +194,7 @@ void run_BFS(Labyrinth* data) {
 
     while (!is_empty(neighbours)) {
         current_neighbour = pop(neighbours);
-//        printf("CUR %lu\n", current_neighbour->val);
+        printf("CUR %lu\n", current_neighbour->val);
 
         if (current_neighbour->val == end_index) {
             road_length = current_neighbour->depth;
