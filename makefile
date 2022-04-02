@@ -1,11 +1,11 @@
 CC	= gcc
-CFLAGS	= -Wall -Wextra -Wno-implicit-fallthrough -std=c17 -O2 -g
+CFLAGS	= -Wall -Wextra -Wno-implicit-fallthrough -std=c17 -O2
 
 .PHONY: all clean
 
-all: main
+all: labyrinth
 
-main: main.o err.o input_utils.o bit_lab_utils.o labyrinth.o queue.o
+labyrinth: main.o err.o input_utils.o bit_lab_utils.o labyrinth.o queue.o
 
 queue.o: queue.c queue.h
 
@@ -20,7 +20,7 @@ bit_lab_utils.o: bit_lab_utils.c bit_lab_utils.h
 labyrinth.o: labyrinth.c labyrinth.h bit_lab_utils.h err.h
 
 clean:
-	rm -f *.o main
+	rm -f *.o labyrinth
 
 run:
-	./main < ./example_tests/error00.in
+	./labyrinth < ./example_tests/error00.in
