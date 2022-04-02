@@ -132,6 +132,11 @@ void exit_error(Labyrinth* loaded, int error_code) {
     exit(1);
 }
 void run_BFS(Labyrinth* data) {
+    printf("lab\n");
+    for (uint64_t i = 0; i < data->bit_array->length; i++) {
+        printf("%lu ", data->bit_array->array[i]);
+    }
+    printf("\n");
     uint64_t start_index = find_index(data->start_coordinates,
                                           data->dimension_sizes,
                                           data->num_dimensions);
