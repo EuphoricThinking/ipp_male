@@ -20,7 +20,7 @@ int main() {
 //	deleteQueue(q);
 
     Labyrinth* loaded = read_and_process_input();
-    printf("size: %ld\n", loaded->size);
+//    printf("size: %ld\n", loaded->size);
     run_BFS(loaded);
 
 //    Queue* q = init_queue();

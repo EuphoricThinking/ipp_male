@@ -52,7 +52,7 @@ bool check_if_correct(char* read) {
 
 uint64_t get_labyrinth_size(size_t* dimensions, size_t length) {
     uint64_t result = dimensions[0];
-    printf("dim: %lu\n", dimensions[0]);
+//    printf("dim: %lu\n", dimensions[0]);
     for (size_t i = 1; i < length; i++) {
         result *= (uint64_t)dimensions[i];
         if (result > SIZE_MAX) {
@@ -157,8 +157,8 @@ Labyrinth* read_and_process_input() {
     // Wcytaj wymiary
 	if ((err = getline(&workline, &getline_buffer, stdin)) < 1
         || !check_if_correct(workline)) {
-            printf("%ld\n", getline_buffer);
-            printf("%d\n", check_if_correct(workline));
+//            printf("%ld\n", getline_buffer);
+//            printf("%d\n", check_if_correct(workline));
 //            free(workline);
 //            if (err < 0) {
 //                print_error(ERR_0);
@@ -171,19 +171,19 @@ Labyrinth* read_and_process_input() {
         release_final(workline, NULL, NULL, NULL, err_message);
     }
 
-    solo();
+//    solo();
 
     size_t num_dimensions;
     size_t* dimensions_sizes = convert_to_size_t_array(workline,
                                                        &num_dimensions);
-    solo();
+//    solo();
     if (dimensions_sizes == NULL) {
 //        free(workline);
 //        print_error(ERR_0);
 //        exit(1);
         release_final(workline, NULL, NULL, NULL, ERR_1);
     }
-    solo();
+//    solo();
 
     uint64_t labyrinth_size = get_labyrinth_size(dimensions_sizes, num_dimensions);
     if (labyrinth_size < 1) {
@@ -270,7 +270,7 @@ Labyrinth* read_and_process_input() {
         release_final(workline, dimensions_sizes, start_coordinates,
                       end_coordinates, err_message);
     }
-    solo();
+ //   solo();
     // Sprawdzenie ostatniej linii
     char* test_last_line = NULL;
     size_t test_read;
@@ -281,7 +281,7 @@ Labyrinth* read_and_process_input() {
                       end_coordinates, err_message);
     }
     free(test_last_line);
-    solo();
+//    solo();
     // Skrócenie do pierwszych znaków określających liczbę
     char* shortened = determine_mode(workline);
 
@@ -298,10 +298,10 @@ Labyrinth* read_and_process_input() {
                           end_coordinates, ERR_4);
         }
 
-        for (uint64_t i = 0; i < modulo->length; i++) {
-            printf("%lu ", modulo->array[i]);
-        }
-        printf("\n");
+//        for (uint64_t i = 0; i < modulo->length; i++) {
+//            printf("%lu ", modulo->array[i]);
+//        }
+//        printf("\n");
 
         Bitmap* to_be_filled = create_bitmap(labyrinth_size);
         result = load_labyrinth(labyrinth_size, num_dimensions, dimensions_sizes,
