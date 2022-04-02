@@ -26,8 +26,14 @@ for test in $2/*.in; do
 	stderr_temp="${test%.in}_temp.err"
 	stdout_temp="${test%.in}_temp.out"
 	echo -n "$prefix "
-	echo ${test}
+#	echo ${test}
 	"./$1" < ${test} > ${stdout_temp} 2> ${stderr_temp}
-#	diff ${test%.in}.out ${stdout_temp}
+	DIFF=$(diff ${test%.in}.out ${stdout_temp})
+
+	if [ "$DIFF" != "" ]; then
+		wrong_result
+	else
+		correct_result
+	fi
 done
 
