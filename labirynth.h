@@ -12,6 +12,4 @@ extern void delete_labyrinth(Labyrinth* to_delete);
 
 extern void run_BFS(Labyrinth* loaded);
 
-extern void print_result_BFS(uint64_t result);
-
 #endif

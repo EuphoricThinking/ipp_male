@@ -174,12 +174,3 @@ void run_BFS(Labyrinth* data) {
 
     printf(NO_WAY);
 }
-
-void print_result_BFS(uint64_t result) {
-    if (result == -1) {
-        printf("%s\n", NO_WAY);
-    }
-    else {
-        printf("%lu\n", result);
-    }
-}
