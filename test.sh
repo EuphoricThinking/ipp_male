@@ -76,3 +76,4 @@ for test in $2/*.in; do
 
 done
 
+rm $2/*temp*
