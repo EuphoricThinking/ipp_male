@@ -25,5 +25,6 @@ for test in $2/*.in; do
 	prefix=${test%.in}
 	echo -n "$prefix "
 	echo ${test}
+	"./$1" < ${test}
 done
 
