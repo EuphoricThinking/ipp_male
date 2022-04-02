@@ -212,12 +212,12 @@ Bitmap* convert_r_to_bitmap(char* r, size_t labyrinth_length) {
     r++;
     bool correct_uint32_range;
     char* spare_string = NULL;
-	while (counter < NUM_COEFF && *r != '\0') {
-		while (isspace(*r) && *r != '\0') {
+	while (counter < NUM_COEFF && *r != '\0' && *r != '\n' && *r != EOF) {
+		while (isspace(*r) && *r != '\0' && *r != '\n' && *r != EOF) {
 			r++;
 		}
 
-		if (*r == '\0' || !isdigit(*r)) { //za mało
+		if (*r == '\0' || !isdigit(*r) || *r == '\n' || *r == EOF) { //za mało
 //			print_error(ERR_4);
 			//exit(1);
             return NULL;
