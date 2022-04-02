@@ -139,6 +139,8 @@ void run_BFS(Labyrinth* data) {
     if (start_index == end_index) {
         delete_labyrinth(data);
         printf("%d\n", 0);
+
+        return;
     }
 
     Queue* neighbours = init_queue();
