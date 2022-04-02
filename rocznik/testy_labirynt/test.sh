@@ -13,8 +13,6 @@ function wrong_result {
 	printf "${RED}WRONG\n${NOCOL}"
 }
 
-echo "$#"
-echo "$1"
 if [ "$#" -ne 2 ]; then
 	echo "Too few arguments: ./test.sh program directory"
 
@@ -27,7 +25,6 @@ for test in $2/*.in; do
 	stderr_temp="${test%.in}_temp.err"
 	stdout_temp="${test%.in}_temp.out"
 	echo -n "$prefix "
-#	echo ${test}
 	"./$1" < ${test} > ${stdout_temp} 2> ${stderr_temp}
 	DIFF_OUT=$(diff ${test%.in}.out ${stdout_temp})
 	DIFF_ERR=$(diff ${test%.in}.err ${stderr_temp})
@@ -57,21 +54,23 @@ done
 
 rm $2/*temp*
 
-printf "\nValgrind\n"
+printf "${BLUE}\nValgrind\n${NOCOL}"
 
 for test in $2/*.in; do
         prefix=${test%.in}
-        stderr_temp="${test%.in}_temp.err"
-        stdout_temp="${test%.in}_temp.out"
+#        stderr_temp="${test%.in}_temp.err"
+#        stdout_temp="${test%.in}_temp.out"
+	val_temp="${test%.in}_temp.val"
         echo -n "$prefix "
 #       echo ${test}
-        VAL=$(valgrind --error-exitcode=123 --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all "./$1" < ${test} 2> "${test%.in}_temp.val")
-
+        VAL=$(valgrind --error-exitcode=123 --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all "./$1" < ${test} 2> ${val_temp})  #"${test%.in}_temp.val")
+#	valgrind --error-exitcode=123 --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all "./$1" < ${test}
+	grep -q "ERROR SUMMARY: 0 errors" ${val_temp}
 	if [ $? -eq 0 ]; then
 		correct_result
 	else
 		echo "${RED}Valgrind error:${NOCOL}"
-		echo "$VAL"
+		cat ${val_temp}
 	fi
 
 done

@@ -66,8 +66,15 @@ void find_coordinates(size_t* coordinates, size_t* dimension_sizes,
 
 bool is_not_available(Labyrinth* data, uint64_t index) {
     if (data->R_mode) {
-        return is_filled_cell(data->modulo_array, MOD_2_32(index))
-            || is_filled_cell(data->bit_array, index);
+        bool standard = is_filled_cell(data->bit_array, index);
+        bool additional = false;
+        if (MOD_2_32(index) < (data->modulo_array->length)*(size_t)64) {
+            additional = is_filled_cell(data->modulo_array, MOD_2_32(index));
+        }
+
+        return standard || additional;
+//        return is_filled_cell(data->modulo_array, MOD_2_32(index))
+//            || is_filled_cell(data->bit_array, index);
     }
     else {
         return is_filled_cell(data->bit_array, index);
