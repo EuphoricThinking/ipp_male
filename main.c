@@ -2,7 +2,7 @@
 #include "queue.h"
 #include "input_utils.h"
 #include "bit_lab_utils.h"
-#include "labirynth.h"
+#include "labyrinth.h"
 
 int main() {
 //	Queue* q = initQueue();

@@ -1,4 +1,4 @@
-#include "labirynth.h"
+#include "labyrinth.h"
 #include <stdlib.h>
 #include "err.h"
 #include "queue.h"

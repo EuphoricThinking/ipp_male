@@ -1,7 +1,7 @@
 #define _POSIX_C_SOURCE 200809L
 #include "input_utils.h"
 #include "err.h"
-#include "labirynth.h"
+#include "labyrinth.h"
 #include "bit_lab_utils.h"
 #include <stdio.h>
 #include <stdbool.h>

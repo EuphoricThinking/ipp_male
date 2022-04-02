@@ -1,5 +1,5 @@
-#ifndef LABIRYNTH_H
-#define LABIRYNTH_H
+#ifndef LABYRINTH_H
+#define LABYRINTH_H
 #include "bit_lab_utils.h"
 #include <stdint.h>
 

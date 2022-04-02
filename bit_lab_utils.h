@@ -1,5 +1,5 @@
-#ifndef LABIRYNTH_STRUCT_H
-#define LABIRYNTH_STRUCT_H
+#ifndef BIT_LAB_UTILS_H
+#define BIT_LAB_UTILS_H
 
 #include <stddef.h>
 #include <stdint.h>
