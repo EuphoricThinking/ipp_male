@@ -14,12 +14,22 @@ function wrong_result {
 
 function test_args {
 	if [ "$#" -ne 2 ]; then
-		echo "Too few arguments"
+		echo "Too few arguments: ./test.sh program "
 
-		return 1;
+		exit 1;
+	fi
+}
+
+function test_makefile {
+	if ! make; then
+		"${RED}Błąd kompilacji, linkowania lub brak pliku: \"
+			"makefile{$NOCOL}"
+	else
+		correct_result
 	fi
 }
 
 correct_result
 wrong_result
 test_args
+test_makefile
