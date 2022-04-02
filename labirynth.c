@@ -69,7 +69,7 @@ void find_coordinates(size_t* coordinates, size_t* dimension_sizes,
 bool is_not_available(Labyrinth* data, uint64_t index) {
 //    index--;  //TODO ADDED
     if (data->R_mode) {
-        return is_filled_cell(data->modulo_array, MOD_32(index))
+        return is_filled_cell(data->modulo_array, MOD_2_32(index))
             || is_filled_cell(data->bit_array, index);
     }
     else {
@@ -152,10 +152,10 @@ void exit_error(Labyrinth* loaded, int error_code) {
 }
 void run_BFS(Labyrinth* data) {
     printf("lab\n");
-//    for (uint64_t i = 0; i < data->modulo_array->length; i++) {
-//        printf("%lu ", data->modulo_array->array[i]);
-//    }
-//    printf("\n");
+    for (uint64_t i = 0; i < data->modulo_array->length; i++) {
+        printf("%lu ", data->modulo_array->array[i]);
+    }
+    printf("\n");
     uint64_t start_index = find_index(data->start_coordinates,
                                           data->dimension_sizes,
                                           data->num_dimensions);
@@ -185,6 +185,7 @@ void run_BFS(Labyrinth* data) {
 //        printf("NOT AVAILABLE\n");
 //        return;
 //    }
+    if (is_not_available(data, 62)) printf("NIEDOSTĘPNY\n");
     List* current_neighbour;
     uint64_t road_length;
 

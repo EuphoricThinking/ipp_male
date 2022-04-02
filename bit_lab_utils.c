@@ -266,16 +266,24 @@ Bitmap* convert_r_to_bitmap(char* r, size_t labyrinth_length) {
 	uint32_t s_i = coefficients[S_POS];
     uint32_t w_i;
 
-//    for (uint64_t i = 0; i < modulo->length; i++) {
-//        printf("%lu ", modulo->array[i]);
-//    }
-//    printf("\n");
+    for (uint64_t i = 0; i < NUM_COEFF; i++) {
+        printf("%du ", coefficients[i]);
+    }
+    printf("\n");
 
     for (uint32_t i = 0; i < coefficients[R_POS]; i++) {
-        s_i = (coefficients[A_POS]*s_i + coefficients[B_POS])
-                %coefficients[M_POS];
+        printf("calc: a %d | b %d | s %d | res: a*si %d | %d | mod %d\n",
+               coefficients[A_POS], coefficients[B_POS], coefficients[S_POS], coefficients[A_POS]*s_i, coefficients[A_POS]*s_i + coefficients[B_POS],
+               (coefficients[A_POS]*s_i + coefficients[B_POS])%coefficients[M_POS]);
+        printf("sizemax %ud\n", UINT32_MAX);
+//        s_i = (coefficients[A_POS]*s_i + coefficients[B_POS])
+//                %coefficients[M_POS];
+        s_i = (((coefficients[A_POS]%coefficients[M_POS])*(s_i%coefficients[M_POS]))
+                % coefficients[M_POS] + coefficients[B_POS]%coefficients[M_POS])
+                % coefficients[M_POS];
+        printf("si %d\n", s_i);
         w_i = s_i%labyrinth_length;
-//        printf("set mod: %u\n", w_i);
+        printf("set mod: %u\n", w_i);
         set_bit(modulo, (uint64_t)w_i);
     }
 
