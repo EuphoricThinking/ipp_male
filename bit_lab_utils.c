@@ -219,6 +219,9 @@ Bitmap* convert_r_to_bitmap(char* r, size_t labyrinth_length) {
 		}
 	}
 
+    // Since we perform modulo operation on w_i with both M or n_1*...*n_k,
+    // the possible range of the w_i cannot be greater than the smaller
+    // of M and n_1*...*n_k
 	Bitmap* modulo;
 	if (coefficients[M_POS] < labyrinth_length) {
 		modulo = create_bitmap(coefficients[M_POS]);
@@ -227,19 +230,11 @@ Bitmap* convert_r_to_bitmap(char* r, size_t labyrinth_length) {
 		modulo = create_bitmap(labyrinth_length);
 	}
 
-//    modulo = create_bitmap(labyrinth_length);
-
- /*   if (coefficients[M_POS] < labyrinth_length) {
-		modulo = create_bitmap(labyrinth_length);
-	}
-	else {
-		modulo = create_bitmap(coefficients[M_POS]);
-	} */
-
 
 	uint32_t s_i = coefficients[S_POS];
     uint32_t w_i;
 
+    // Modulo arithmetic performed for overflow prevention
     for (uint32_t i = 0; i < coefficients[R_POS]; i++) {
         s_i = (((coefficients[A_POS]%coefficients[M_POS])*
                 (s_i%coefficients[M_POS])) % coefficients[M_POS] +

@@ -37,6 +37,8 @@ void delete_labyrinth(Labyrinth* to_delete) {
     free(to_delete);
 }
 
+// Calculate the index in the bit sequence describing the labyrinth
+// using the rewritable coordinate array.
 uint64_t find_index(size_t* coordinates, size_t* dimension_sizes,
                     uint64_t length) {
     uint64_t index = coordinates[0] - 1;
@@ -50,6 +52,8 @@ uint64_t find_index(size_t* coordinates, size_t* dimension_sizes,
     return index;
 }
 
+// Calculate the coordinates according to the operations performed
+// on the index.
 void find_coordinates(size_t* coordinates, size_t* dimension_sizes,
                       uint64_t length, uint64_t index) {
     uint64_t rest_to_divide = index;
@@ -66,15 +70,18 @@ void find_coordinates(size_t* coordinates, size_t* dimension_sizes,
 
 bool is_not_available(Labyrinth* data, uint64_t index) {
     if (data->R_mode) {
+        // For storing the visited.
         bool standard = is_filled_cell(data->bit_array, index);
         bool additional = false;
+
+        // If the modulo exceeds the possible values, it cannot be a wall,
+        // since default value for modulo is false (available)
         if (MOD_2_32(index) < (data->modulo_array->length)*(size_t)64) {
-            additional = is_filled_cell(data->modulo_array, MOD_2_32(index));
+            additional = is_filled_cell(data->modulo_array,
+                                        MOD_2_32(index));
         }
 
         return standard || additional;
-//        return is_filled_cell(data->modulo_array, MOD_2_32(index))
-//            || is_filled_cell(data->bit_array, index);
     }
     else {
         return is_filled_cell(data->bit_array, index);
@@ -97,8 +104,10 @@ void push_neighbours(size_t* coordinates, Labyrinth* data, Queue* neighbours,
         for (int diff = -1; diff <= 1; diff += 2) {
             coordinates[index] = original + diff;
 
-            if (coordinates[index]  > 0 && coordinates[index] <= data->dimension_sizes[index]) {
-                neighbour_index = find_index(coordinates, data->dimension_sizes,
+            if (coordinates[index]  > 0
+                && coordinates[index] <= data->dimension_sizes[index]) {
+                neighbour_index = find_index(coordinates,
+                                        data->dimension_sizes,
                                              data->num_dimensions);
 
                 if (!is_not_available(data, neighbour_index)) {
@@ -138,6 +147,7 @@ void exit_error(Labyrinth* loaded, int error_code) {
 
     exit(1);
 }
+
 void run_BFS(Labyrinth* data) {
     uint64_t start_index = find_index(data->start_coordinates,
                                           data->dimension_sizes,
