@@ -301,20 +301,6 @@ Labyrinth* read_and_process_input() {
                       end_coordinates, ERR_4);
     }
 
-    // Sprawdzenie ostatniej linii
-    char* test_last_line = NULL;
-    size_t test_read;
-    if ((err = getline(&test_last_line, &test_read, stdin)) > 0) {
-//        err_message = (err == -1 ? ERR_0 : ERR_5);
-//        free(test_last_line);
-//        release_final(workline, dimensions_sizes, start_coordinates,
-//                      end_coordinates, err_message);
-        free(test_last_line);
-        release_final(workline, dimensions_sizes, start_coordinates,
-                      end_coordinates, ERR_5);
-    }
-    free(test_last_line);
-
     Labyrinth* result;
     if (*shortened == 'R') {
         Bitmap* modulo = convert_r_to_bitmap(shortened, labyrinth_size); //read_width
@@ -345,6 +331,25 @@ Labyrinth* read_and_process_input() {
                                 filled_from_hex, NULL);
     }
 
+    // Sprawdzenie ostatniej linii
+    char* test_last_line = NULL;
+    size_t test_read;
+    if ((err = getline(&test_last_line, &test_read, stdin)) > 0) {
+//        err_message = (err == -1 ? ERR_0 : ERR_5);
+//        free(test_last_line);
+//        release_final(workline, dimensions_sizes, start_coordinates,
+//                      end_coordinates, err_message);
+        free(test_last_line);
+//        release_final(workline, dimensions_sizes, start_coordinates,
+//                      end_coordinates, ERR_5);
+        free(workline);
+        delete_labyrinth(result);
+        print_error(ERR_5);
+
+        exit(1);
+    }
+
+    free(test_last_line);
     free(workline);
 
 	return result;
