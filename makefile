@@ -23,4 +23,4 @@ clean:
 	rm -f *.o main
 
 run:
-	./main < ./example_tests/example5.in
+	./main < ./example_tests/example4.in

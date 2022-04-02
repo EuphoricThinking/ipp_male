@@ -162,7 +162,7 @@ void set_bit(Bitmap* bit_array, uint64_t index) {
 bool is_filled_cell(Bitmap* bit_array, uint64_t index) {
 //	if (((bit_array->array[DIV_64(index)] >> MOD_64(index)) & (uint64_t)1) == 0) return false;
 //	return true;
-    printf("index: %lu, modulo shifted: %lu\n", index, MOD_64(index));
+//    printf("index: %lu, modulo shifted: %lu\n", index, MOD_64(index));
 	return (bit_array->array[DIV_64(index)] >> MOD_64(index)) & (uint64_t)1;
 }
 
@@ -266,16 +266,16 @@ Bitmap* convert_r_to_bitmap(char* r, size_t labyrinth_length) {
 	uint32_t s_i = coefficients[S_POS];
     uint32_t w_i;
 
-    for (uint64_t i = 0; i < modulo->length; i++) {
-        printf("%lu ", modulo->array[i]);
-    }
-    printf("\n");
+//    for (uint64_t i = 0; i < modulo->length; i++) {
+//        printf("%lu ", modulo->array[i]);
+//    }
+//    printf("\n");
 
     for (uint32_t i = 0; i < coefficients[R_POS]; i++) {
         s_i = (coefficients[A_POS]*s_i + coefficients[B_POS])
                 %coefficients[M_POS];
         w_i = s_i%labyrinth_length;
-        printf("set mod: %u\n", w_i);
+//        printf("set mod: %u\n", w_i);
         set_bit(modulo, (uint64_t)w_i);
     }
 
