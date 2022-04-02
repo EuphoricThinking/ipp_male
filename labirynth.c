@@ -124,16 +124,24 @@ void final_release(Queue* neighbours, Labyrinth* loaded,
     free(temp_coordinates);
 }
 
+void exit_error(Labyrinth* loaded, int error_code) {
+    print_error(error_code);
+    delete_labyrinth(loaded);
+
+    exit(1);
+}
 void run_BFS(Labyrinth* data) {
     uint64_t start_index = find_index(data->start_coordinates,
                                           data->dimension_sizes,
                                           data->num_dimensions);
+    if (is_not_available(data, start_index)) {
+        exit_error(data, ERR_2);
+    }
+
     uint64_t end_index = find_index(data->end_coordinates, data->dimension_sizes,
                                     data->num_dimensions);
-    if (is_not_available(data, start_index) || is_not_available(data, end_index)) {
-        print_error(ERR_4);
-        delete_labyrinth(data);
-        exit(1);
+    if (is_not_available(data, end_index)) {
+        exit_error(data, ERR_3);
     }
 
     if (start_index == end_index) {
