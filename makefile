@@ -1,5 +1,5 @@
 CC	= gcc
-CFLAGS	= -Wall -Wextra -Wno-implicit-fallthrough -std=c17 -O2
+CFLAGS	= -Wall -Wextra -Wno-implicit-fallthrough -std=c17 -O2 -g
 
 .PHONY: all clean
 

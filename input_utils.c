@@ -313,7 +313,8 @@ Labyrinth* read_and_process_input() {
 //            printf("%lu ", modulo->array[i]);
 //        }
 //        printf("\n");
-
+  //      size_t l = modulo->length;
+ //       printf("size %lu \n", 8*l);
         Bitmap* to_be_filled = create_bitmap(labyrinth_size);
         result = load_labyrinth(labyrinth_size, num_dimensions, dimensions_sizes,
                                 start_coordinates, end_coordinates, true,

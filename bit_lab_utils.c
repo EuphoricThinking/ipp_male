@@ -42,7 +42,7 @@ Bitmap* create_bitmap(size_t length) {
 //	uint64_t* bit_array = malloc(sizeof(uint64_t)*DIV_64(length));
 	size_t cell_number = DIV_64(length + BIAS); // Roundup - length at least 1
 //	uint64_t* bit_array = malloc(sizeof(uint64_t)*(cell_number));  //roundup
-    uint64_t* bit_array = calloc(cell_number, sizeof(uint64_t));
+    uint64_t* bit_array = calloc(cell_number + 1, sizeof(uint64_t));
 
     if (!bit_array) {
         print_error(ERR_0);
@@ -262,12 +262,19 @@ Bitmap* convert_r_to_bitmap(char* r, size_t labyrinth_length) {
 	}
 //    printf("this\n");
 	Bitmap* modulo;
-	if (coefficients[M_POS] < labyrinth_length) {
-		modulo = create_bitmap(coefficients[M_POS]);
-	}
-	else {
+//	if (coefficients[M_POS] < labyrinth_length) {
+//		modulo = create_bitmap(coefficients[M_POS]);
+//	}
+//	else {
+//		modulo = create_bitmap(labyrinth_length);
+//	}
+    if (coefficients[M_POS] < labyrinth_length) {
 		modulo = create_bitmap(labyrinth_length);
 	}
+	else {
+		modulo = create_bitmap(coefficients[M_POS]);
+	}
+
 
 	uint32_t s_i = coefficients[S_POS];
     uint32_t w_i;
@@ -291,6 +298,7 @@ Bitmap* convert_r_to_bitmap(char* r, size_t labyrinth_length) {
         w_i = s_i%labyrinth_length;
 //        printf("set mod: %u\n", w_i);
         set_bit(modulo, (uint64_t)w_i);
+//        set_bit(modulo, (unsigned int)w_i);
     }
 
     return modulo;
