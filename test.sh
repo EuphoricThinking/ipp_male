@@ -23,8 +23,11 @@ fi
 
 for test in $2/*.in; do
 	prefix=${test%.in}
+	stderr_temp="${test%.in}_temp.err"
+	stdout_temp="${test%.in}_temp.out"
 	echo -n "$prefix "
 	echo ${test}
-	"./$1" < ${test} > "${test%.in}_temp.out"
+	"./$1" < ${test} > ${stdout_temp} 2> ${stderr_temp}
+#	diff ${test%.in}.out ${stdout_temp}
 done
 
