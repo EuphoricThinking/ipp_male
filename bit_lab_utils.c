@@ -17,6 +17,7 @@
 #define NUM_4_BIT_SUBCELLS 16
 #define HEX_CELL	(uint64_t)4
 
+// Postions defined as on Moodle
 #define A_POS 0
 #define B_POS 1
 #define M_POS 2
@@ -35,7 +36,6 @@ uint64_t return_hex_val(char sign) {
 	else if (sign == 'F' || sign == 'f') return F_VAL;
 	else if (isdigit(sign)) return (uint64_t)(sign - '0');
 	else return HEX_ERROR;
-	//isdigit - redurnt
 }
 
 Bitmap* create_bitmap(size_t length) {
@@ -54,12 +54,7 @@ Bitmap* create_bitmap(size_t length) {
 	return result;
 }
 
-/*
-	Hex index nie będzie ujemne, ponieważ zatrzymamy się na 'x';
-	od końca przechodzi hex_index, od początku przechodzi array
-
-	Sprawdź, czy liczba nie jest za długa
-*/
+// Beginning from the end of the char array,
 Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length,
                               uint64_t labyrinth_size) {
 	uint64_t hex_index = hex_length - 1;

@@ -9,22 +9,15 @@
 #define MOD_64(x) ((x) & (((uint64_t)1 << 6) - 1))
 #define MOD_2_32(x) ((x) & (((uint64_t)1 << 32) - 1))
 
+/*
+ * Provides structs enabling bitwise operations. Data is stored as a sequence
+ * of bits packed in types of the constant width - uint64_t
+ */
+
 typedef struct Bitmap {
         uint64_t length;
         uint64_t* array;
 } Bitmap;
-
-typedef struct Labyrinth {
-	uint64_t size;
-	size_t num_dimensions;
-	size_t* dimension_sizes;
-	size_t* start_coordinates;
-	size_t* end_coordinates;
-
-	bool R_mode;
-	struct Bitmap* bit_array;
-	struct Bitmap* modulo_array;
-} Labyrinth;
 
 extern Bitmap* convert_r_to_bitmap(char* r, size_t labyrinth_length);
 

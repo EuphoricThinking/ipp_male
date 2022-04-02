@@ -3,6 +3,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+/*
+ * A queue implemented with a linked list for BFS
+ */
+
 typedef struct List {
 	uint64_t val;
     uint64_t depth;
@@ -29,4 +33,5 @@ extern Queue* init_queue();
 extern void delete_node(List* node);
 
 extern bool is_empty(Queue* q);
+
 #endif /* QUEUE_H */
