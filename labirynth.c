@@ -63,22 +63,34 @@ void find_coordinates(size_t* coordinates, size_t* dimension_sizes,
     coordinates[length - 1] = rest_to_divide;
 }
 
-bool is_a_wall(Labyrinth* data, uint64_t index) {
+bool is_not_available(Labyrinth* data, uint64_t index) {
     if (data->R_mode) {
-        return is_filled_cell(data->modulo_array, MOD_32(index));
+        return is_filled_cell(data->modulo_array, MOD_32(index))
+            || is_filled_cell(data->bit_array, index);
     }
     else {
         return is_filled_cell(data->bit_array, index);
     }
 }
 
-bool find_neighbours(size_t* coordinates, Labyrinth* data, Queue* neighbours) {
+bool push_neighbours(size_t* coordinates, Labyrinth* data, Queue* neighbours,
+                     uint64_t depth) {
     size_t original;
+    uint64_t neighbour_index;
 
     for (uint64_t index = 0; index < data->num_dimensions; index++) {
         if (index > 0) {
             coordinates[index - 1] = original;
         }
         original = coordinates[index];
+
+        for (int diff = -1; diff <= 1; diff += 2) {
+            coordinates[index] = original + diff;
+            neighbour_index = find_index(coordinates, data->dimension_sizes,
+                                         data->num_dimensions);
+            if (!is_not_available(data, neighbour_index)) {
+
+            }
+        }
     }
 }
