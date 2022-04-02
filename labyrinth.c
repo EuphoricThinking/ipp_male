@@ -86,8 +86,8 @@ void push_neighbours(size_t* coordinates, Labyrinth* data, Queue* neighbours,
                      uint64_t current_depth) {
     size_t original;
     uint64_t neighbour_index;
-    uint64_t origindex = find_index(coordinates, data->dimension_sizes,
-                                    data->num_dimensions);
+//    uint64_t origindex = find_index(coordinates, data->dimension_sizes,
+//                                    data->num_dimensions);
 //    for (uint64_t i = 0; i < data->num_dimensions; i++) {
 //        printf("%lu ", coordinates[i]);
 //    }
