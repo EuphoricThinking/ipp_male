@@ -217,7 +217,7 @@ Bitmap* convert_r_to_bitmap(char* r, size_t labyrinth_length) {
 			r++;
 		}
 
-		if (*r == '\0' || !isdigit(*r) || *r == '\n' || *r == EOF) { //za mało
+		if  (!isdigit(*r)) { //(*r == '\0' || !isdigit(*r) || *r == '\n' || *r == EOF) { //za mało
 //			print_error(ERR_4);
 			//exit(1);
             return NULL;
@@ -242,13 +242,14 @@ Bitmap* convert_r_to_bitmap(char* r, size_t labyrinth_length) {
         return NULL;
     }
 
-//    printf("up\n");
-	if (counter == NUM_COEFF && *r != '\0') {
-		while (isspace(*r) && *r != '\0') {
+//    printf("counter %d\n", counter);
+	if (counter == NUM_COEFF) { //&& *r != '\0') {
+//        printf("HERE\n");
+		while (isspace(*r) && *r != '\0' && *r != '\n' && *r != EOF) {
 			r++;
 		}
 
-		if (*r != '\0') { //jakikolwiek niepusty znak | za dużo
+		if (*r != '\0' && *r != '\n' && *r != EOF) { //jakikolwiek niepusty znak | za dużo
 //			print_error(ERR_4);
 			//exit(1);
             return NULL;

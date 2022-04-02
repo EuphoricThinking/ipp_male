@@ -322,7 +322,7 @@ Labyrinth* read_and_process_input() {
             release_final(workline, dimensions_sizes, start_coordinates,
                           end_coordinates, ERR_4);
         }
-
+ //       solo();
 //        for (uint64_t i = 0; i < modulo->length; i++) {
 //            printf("%lu ", modulo->array[i]);
 //        }
@@ -334,7 +334,6 @@ Labyrinth* read_and_process_input() {
                                 to_be_filled, modulo);
     }
     else {
-
         Bitmap* filled_from_hex = convert_hex_to_bitmap(shortened,
                                                         strlen(shortened), labyrinth_size); //read_wdth
         if (!filled_from_hex) {
