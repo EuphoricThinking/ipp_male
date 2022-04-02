@@ -16,8 +16,9 @@ bool has_only_whitespace(char* read) {
 //            return false;
 //        }
 //    }
+
     size_t index = 0;
-    while (read[index] != '\n') {
+    while (read[index] != '\n' && read[index] != EOF && read[index] != '\0') {
         if (!isspace(read[index])) {
             return false;
         }
@@ -35,8 +36,9 @@ bool check_if_correct(char* read) {
 //                }
 //        }
         size_t index = 0;
-        while (read[index] != '\n') {
+        while (read[index] != '\n' && read[index] != EOF && read[index] != '\0') {
             if (!isdigit(read[index]) && !isspace(read[index])) {
+//                printf("%c THIS\n", read[index]);
                     return false;
             }
 
@@ -77,7 +79,7 @@ size_t* convert_to_size_t_array(char* read_input, size_t* length_after_processin
     char* next_string;
     size_t converted;
     size_t* err;
-    while (*to_pass != '\0' && *to_pass != '\n') {
+    while (*to_pass != '\0' && *to_pass != '\n' && *to_pass != EOF) {
         converted = strtoull(to_pass, &next_string, BASE);
         if (converted > SIZE_MAX || converted < 1 || errno == ERANGE) {
             free(number_array);
@@ -100,7 +102,7 @@ size_t* convert_to_size_t_array(char* read_input, size_t* length_after_processin
             }
         }
 
-        while (isspace(*to_pass) && *to_pass != '\0') {
+        while (isspace(*to_pass) && *to_pass != '\0' && *to_pass != EOF) {
             to_pass++;
         }
     }
@@ -153,10 +155,11 @@ Labyrinth* read_and_process_input() {
 	char* workline = NULL;
 	size_t getline_buffer;
     ssize_t err;
-    int err_message;
+//    int err_message;
     // Wcytaj wymiary
 	if ((err = getline(&workline, &getline_buffer, stdin)) < 1
         || !check_if_correct(workline)) {
+//        if (!check_if_correct(workline)) printf("ME");
 //            printf("%ld\n", getline_buffer);
 //            printf("%d\n", check_if_correct(workline));
 //            free(workline);
@@ -167,8 +170,9 @@ Labyrinth* read_and_process_input() {
 //                print_error(ERR_1);
 //            }
 //            exit(0);
-            err_message = err < 0 ? ERR_0 : ERR_1;
-        release_final(workline, NULL, NULL, NULL, err_message);
+//            err_message = err < 0 ? ERR_0 : ERR_1;
+//        release_final(workline, NULL, NULL, NULL, err_message);
+        release_final(workline, NULL, NULL, NULL, ERR_1);
     }
 
 //    solo();
@@ -202,8 +206,9 @@ Labyrinth* read_and_process_input() {
 //            print_error(ERR_2);
 //        }
 //        exit(1);
-        err_message = err < 0 ? ERR_0 : ERR_2;
-        release_final(workline, dimensions_sizes, NULL, NULL, err_message);
+//        err_message = err < 0 ? ERR_0 : ERR_2;
+//        release_final(workline, dimensions_sizes, NULL, NULL, err_message);
+        release_final(workline, dimensions_sizes, NULL, NULL, ERR_2);
     }
 
     size_t read_numbers;
@@ -231,11 +236,11 @@ Labyrinth* read_and_process_input() {
 //            print_error(ERR_3);
 //        }
 //        exit(1);
-        err_message = err < 0 ? ERR_0 : ERR_3;
-        release_final(workline, dimensions_sizes, start_coordinates, NULL,
-                      err_message);
+//        err_message = err < 0 ? ERR_0 : ERR_3;
 //        release_final(workline, dimensions_sizes, start_coordinates, NULL,
-//                      ERR_3);
+//                      err_message);
+        release_final(workline, dimensions_sizes, start_coordinates, NULL,
+                      ERR_3);
     }
 
     size_t* end_coordinates = convert_to_size_t_array(workline,
@@ -266,19 +271,24 @@ Labyrinth* read_and_process_input() {
 //        free(end_coordinates);
 //        print_error(ERR_0);
 //        exit(1);
-        err_message = err < 0 ? ERR_0 : ERR_4;
+//        err_message = err < 0 ? ERR_0 : ERR_4;
+//        release_final(workline, dimensions_sizes, start_coordinates,
+//                      end_coordinates, err_message);
         release_final(workline, dimensions_sizes, start_coordinates,
-                      end_coordinates, err_message);
+                      end_coordinates, ERR_4);
     }
  //   solo();
     // Sprawdzenie ostatniej linii
     char* test_last_line = NULL;
     size_t test_read;
     if ((err = getline(&test_last_line, &test_read, stdin)) > 0) {
-        err_message = (err == -1 ? ERR_0 : ERR_5);
+//        err_message = (err == -1 ? ERR_0 : ERR_5);
+//        free(test_last_line);
+//        release_final(workline, dimensions_sizes, start_coordinates,
+//                      end_coordinates, err_message);
         free(test_last_line);
         release_final(workline, dimensions_sizes, start_coordinates,
-                      end_coordinates, err_message);
+                      end_coordinates, ERR_5);
     }
     free(test_last_line);
 //    solo();
