@@ -297,6 +297,12 @@ Labyrinth* read_and_process_input() {
             release_final(workline, dimensions_sizes, start_coordinates,
                           end_coordinates, ERR_4);
         }
+
+        for (uint64_t i = 0; i < modulo->length; i++) {
+            printf("%lu ", modulo->array[i]);
+        }
+        printf("\n");
+
         Bitmap* to_be_filled = create_bitmap(labyrinth_size);
         result = load_labyrinth(labyrinth_size, num_dimensions, dimensions_sizes,
                                 start_coordinates, end_coordinates, true,

@@ -156,7 +156,7 @@ Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length, uint64_t labyrinth_s
 
 
 void set_bit(Bitmap* bit_array, uint64_t index) {
-	bit_array->array[DIV_64(index)] |= ((uint64_t)1 << (index - 1));
+	bit_array->array[DIV_64(index)] |= ((uint64_t)1 << (index));  //usunieta jedynka << index -1 //TODO
 }
 
 bool is_filled_cell(Bitmap* bit_array, uint64_t index) {
@@ -265,10 +265,17 @@ Bitmap* convert_r_to_bitmap(char* r, size_t labyrinth_length) {
 
 	uint32_t s_i = coefficients[S_POS];
     uint32_t w_i;
+
+    for (uint64_t i = 0; i < modulo->length; i++) {
+        printf("%lu ", modulo->array[i]);
+    }
+    printf("\n");
+
     for (uint32_t i = 0; i < coefficients[R_POS]; i++) {
         s_i = (coefficients[A_POS]*s_i + coefficients[B_POS])
                 %coefficients[M_POS];
         w_i = s_i%labyrinth_length;
+        printf("set mod: %u\n", w_i);
         set_bit(modulo, (uint64_t)w_i);
     }
 
