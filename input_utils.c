@@ -121,12 +121,11 @@ char* determine_mode(char* read) {
 //        read++;
 //        (*read_length)--;
 //    }
-    while (isspace(*read) && *read != '\0') {
+    while (isspace(*read) && *read != '\0' && *read != '\n' && *read != EOF) {
         read++;
     }
 
-    if (*read == '\0' || (*read != '0' && *read != 'R')
-        || (*read == '0' && *(read + 1) != 'x')) {
+    if ((*read != '0' && *read != 'R') || (*read == '0' && *(read + 1) != 'x')) {
         return NULL;
     }
 
@@ -293,6 +292,15 @@ Labyrinth* read_and_process_input() {
                       end_coordinates, ERR_4);
     }
  //   solo();
+//    solo();
+    // Skrócenie do pierwszych znaków określających liczbę
+    char* shortened = determine_mode(workline);
+
+    if (!shortened) {
+        release_final(workline, dimensions_sizes, start_coordinates,
+                      end_coordinates, ERR_4);
+    }
+
     // Sprawdzenie ostatniej linii
     char* test_last_line = NULL;
     size_t test_read;
@@ -306,14 +314,6 @@ Labyrinth* read_and_process_input() {
                       end_coordinates, ERR_5);
     }
     free(test_last_line);
-//    solo();
-    // Skrócenie do pierwszych znaków określających liczbę
-    char* shortened = determine_mode(workline);
-
-    if (!shortened) {
-        release_final(workline, dimensions_sizes, start_coordinates,
-                      end_coordinates, ERR_4);
-    }
 
     Labyrinth* result;
     if (*shortened == 'R') {
