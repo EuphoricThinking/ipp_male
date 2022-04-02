@@ -45,7 +45,7 @@ uint64_t find_index(size_t* coordinates, size_t* dimension_sizes,
 
     for (uint64_t i = 1; i < length; i++) {
         multiplier *= (uint64_t)dimension_sizes[i - 1];
-        index += ((uint64_t)coordinates[i] - 1)*multiplier;
+        index += ((uint64_t)coordinates[i] - (uint64_t)1)*multiplier;
     }
 
     return index;
@@ -79,7 +79,7 @@ void make_unavailable(Labyrinth* data, uint64_t index) {
     set_bit(data->bit_array, index);
 }
 
-bool push_neighbours(size_t* coordinates, Labyrinth* data, Queue* neighbours,
+void push_neighbours(size_t* coordinates, Labyrinth* data, Queue* neighbours,
                      uint64_t current_depth) {
     size_t original;
     uint64_t neighbour_index;
@@ -104,11 +104,11 @@ bool push_neighbours(size_t* coordinates, Labyrinth* data, Queue* neighbours,
     }
 }
 
-size_t* copy_cooridnates(size_t* cooridnates, size_t length) {
+size_t* copy_coordinates(size_t* coordinates, size_t length) {
     size_t* copied = malloc(length*sizeof(size_t));
-
+    
     for (size_t i = 0; i < length; i++) {
-        copied[i] = cooridnates[i];
+        copied[i] = coordinates[i];
     }
 
     return copied;
@@ -118,7 +118,9 @@ void final_release(Queue* neighbours, Labyrinth* loaded,
                    size_t* temp_coordinates, List* current_cell) {
     delete_queue(neighbours);
     delete_labyrinth(loaded);
-    delete_node(current_cell);
+    if (current_cell) {
+        delete_node(current_cell);
+    }
     free(temp_coordinates);
 }
 
@@ -141,7 +143,7 @@ uint64_t run_BFS(Labyrinth* data) {
     }
 
     Queue* neighbours = init_queue();
-    size_t* coordinates_to_overwrite = copy_cooridnates(data->start_coordinates,
+    size_t* coordinates_to_overwrite = copy_coordinates(data->start_coordinates,
                                                         data->num_dimensions);
     push_neighbours(coordinates_to_overwrite, data, neighbours, 1);
     List* current_neighbour;
@@ -152,7 +154,9 @@ uint64_t run_BFS(Labyrinth* data) {
 
         if (current_neighbour->val == end_index) {
             road_length = current_neighbour->depth;
-            final_release(neighbours, data, coordinates_to_overwrite, current_neighbour);
+            final_release(neighbours, data, coordinates_to_overwrite,
+                          current_neighbour);
+
             return road_length;
         }
 
@@ -164,6 +168,8 @@ uint64_t run_BFS(Labyrinth* data) {
                         current_neighbour->depth);
         delete_node(current_neighbour);
     }
+
+    final_release(neighbours, data, coordinates_to_overwrite, NULL);
 
     return -1;
 }
