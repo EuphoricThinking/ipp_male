@@ -178,7 +178,7 @@ void run_BFS(Labyrinth* data) {
     size_t* coordinates_to_overwrite = copy_coordinates(data->start_coordinates,
                                                         data->num_dimensions);
     push_neighbours(coordinates_to_overwrite, data, neighbours, 1);
-//    make_unavailable(data, start_index);
+    make_unavailable(data, start_index);
 //    if (is_not_available(data, start_index)) {
 //        printf("NOT AVAILABLE\n");
 //        return;
@@ -195,7 +195,7 @@ void run_BFS(Labyrinth* data) {
             final_release(neighbours, data, coordinates_to_overwrite,
                           current_neighbour);
 
-            printf("%lu\n", road_length);
+            printf("RES %lu\n", road_length);
 
             return;
         }
