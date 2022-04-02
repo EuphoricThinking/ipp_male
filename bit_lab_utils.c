@@ -40,6 +40,7 @@ uint64_t return_hex_val(char sign) {
 
 Bitmap* create_bitmap(size_t length) {
 	size_t cell_number = DIV_64(length + BIAS); // Roundup - length at least 1
+    // Added one for safety
     uint64_t* bit_array = calloc(cell_number + 1, sizeof(uint64_t));
 
     if (!bit_array) {
@@ -54,7 +55,8 @@ Bitmap* create_bitmap(size_t length) {
 	return result;
 }
 
-// Beginning from the end of the char array,
+// Beginning from the end of the char array, we write from the beginning
+// of the bit array - in 64-bit cells in form of unit64_t of the constant width.
 Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length,
                               uint64_t labyrinth_size) {
 	uint64_t hex_index = hex_length - 1;
@@ -67,6 +69,12 @@ Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length,
         return NULL;
 	}
 
+    // The values are stored by parts in 64-bit cells in form of uint64_t.
+    // Since conversion from hexadecimal to binary consists of writing
+    // the adjacent hexadecimal signs as four-bit blocks,
+    // after conversion from hex the blocks are right shifted according to
+    // the number of the section (one of the 16 sections, since 16*4 = 64)
+    // and merged with the resulting cell using OR.
 	uint64_t hex_converted;
 	uint64_t shift;
 	int bit_quartet;
@@ -102,6 +110,7 @@ Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length,
 			shift += 4;
 			bit_quartet++;
 
+            // Whether at least one number has been read
             if (!read_at_least_one) {
                 read_at_least_one = true;
             }
@@ -111,13 +120,13 @@ Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length,
 		else break;
 	}
 
-    // Nie wczytaliśmy żadnej liczby
     if (!read_at_least_one) {
         delete_bitmap(converted);
         return NULL;
     }
 
-    // Wypełnilismy wszystkie komórki
+    // After filling the cells, there can be still unrecognized signs
+    // (incorrect).
 	if (cell == converted->length) {
 		bool not_finished = true;
 		while (not_finished) {
@@ -138,9 +147,10 @@ Bitmap* convert_hex_to_bitmap(char* hex, size_t hex_length,
 }
 
 
-
+// Bitshift to the indicated position, after omitting appropriate number
+// of full cells.
 void set_bit(Bitmap* bit_array, uint64_t index) {
-	bit_array->array[DIV_64(index)] |= ((uint64_t)1 << (index));  //usunieta jedynka << index -1 //TODO
+	bit_array->array[DIV_64(index)] |= ((uint64_t)1 << (index));
 }
 
 bool is_filled_cell(Bitmap* bit_array, uint64_t index) {
@@ -182,7 +192,8 @@ Bitmap* convert_r_to_bitmap(char* r, size_t labyrinth_length) {
             return NULL;
 		}
 
-        correct_uint32_range = is_uint32(r, &converted, &spare_string);
+        correct_uint32_range = is_uint32(r, &converted,
+                                         &spare_string);
 
         if (!correct_uint32_range) {
             return NULL;
@@ -202,7 +213,8 @@ Bitmap* convert_r_to_bitmap(char* r, size_t labyrinth_length) {
 			r++;
 		}
 
-		if (*r != '\0' && *r != '\n' && *r != EOF) { //jakikolwiek niepusty znak | za dużo
+        // Any type of non-ending sign is incorrect
+		if (*r != '\0' && *r != '\n' && *r != EOF) {
             return NULL;
 		}
 	}
