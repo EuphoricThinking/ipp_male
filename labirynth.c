@@ -66,7 +66,7 @@ void find_coordinates(size_t* coordinates, size_t* dimension_sizes,
 }
 
 bool is_not_available(Labyrinth* data, uint64_t index) {
-    index--;  //TODO ADDED
+//    index--;  //TODO ADDED
     if (data->R_mode) {
         return is_filled_cell(data->modulo_array, MOD_32(index))
             || is_filled_cell(data->bit_array, index);
@@ -93,11 +93,16 @@ void push_neighbours(size_t* coordinates, Labyrinth* data, Queue* neighbours,
 
         for (int diff = -1; diff <= 1; diff += 2) {
             coordinates[index] = original + diff;
-            neighbour_index = find_index(coordinates, data->dimension_sizes,
-                                         data->num_dimensions);
-            if (!is_not_available(data, neighbour_index)) {
-                push(neighbours, neighbour_index, current_depth + 1);
-                make_unavailable(data, neighbour_index);                    // PRZEMYŚL, CZY NIE ZA DUŻO
+            printf("coordinate: %lu, original: %lu\n", coordinates[index], original);
+            if (coordinates[index]  > 0 && coordinates[index] <= data->size) {
+                neighbour_index = find_index(coordinates, data->dimension_sizes,
+                                             data->num_dimensions);
+                if (!is_not_available(data, neighbour_index)) {
+                    printf("pushed: %lu\n", neighbour_index);
+                    push(neighbours, neighbour_index, current_depth + 1);
+                    make_unavailable(data,
+                                     neighbour_index);                    // PRZEMYŚL, CZY NIE ZA DUŻO
+                }
             }
         }
 

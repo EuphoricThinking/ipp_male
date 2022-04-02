@@ -162,7 +162,7 @@ void set_bit(Bitmap* bit_array, uint64_t index) {
 bool is_filled_cell(Bitmap* bit_array, uint64_t index) {
 //	if (((bit_array->array[DIV_64(index)] >> MOD_64(index)) & (uint64_t)1) == 0) return false;
 //	return true;
-    printf("modulo shifted: %lu\n", (uint64_t)(bit_array->array[DIV_64(index)] >> MOD_64(index)));
+    printf("index: %lu, modulo shifted: %lu\n", index, MOD_64(index));
 	return (bit_array->array[DIV_64(index)] >> MOD_64(index)) & (uint64_t)1;
 }
 
